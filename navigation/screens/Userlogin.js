@@ -36,8 +36,7 @@ export default function () {
         />
       </View>
       <View  >
-        <Button title=' Forget password'  color="black" 
-         > 
+        <Button title=' Forget password'  color="black" > 
          
        
       </Button>
