@@ -39,7 +39,12 @@ const connection =mysql.createConnection( {
         </Text>
        
         <Text style={{alignItems:"center",justifyContent:"center", paddingTop:20,paddingLeft:10 ,paddingRight:10}}>ISBN: 9780399144462</Text>
-        
+        <View style={styles.fixToText}>
+            <Button title="Add to:" color="lightgrey" />
+       </View>
+       <View style={styles.fixToText}> 
+            <Button title="Buy now" color="lightgrey" />
+       </View>
     </View>
   </View>
   
@@ -71,6 +76,13 @@ const connection =mysql.createConnection( {
       padding:20,
       backgroundColor:"#C6E7DD",
       borderRadius: "12px",
+    },
+    fixToText: {
+        marginTop: 12,
+        marginRight:-80,
+        width: 280,
+        justifyContent: 'center',
+        alignContent:"center"
     }
    
   });
