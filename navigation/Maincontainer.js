@@ -8,7 +8,6 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import Home from './screens/Home';
 import Lists from './screens/Lists';
 
-import MOre from './screens/More';
 import Discovery from './screens/Discovery';
 import Account from './screens/Account';
 import More from './screens/More';

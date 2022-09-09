@@ -6,7 +6,7 @@ export default function More({ navigation }) {
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
             <Text
               //  onPress={() => alert('This is the "more" screen.')}
-                style={{ fontSize: 26, fontWeight: 'bold' }}>More 73 </Text>
+                style={{ fontSize: 26, fontWeight: 'bold' }}>More   </Text>
         </View>
     );
 }
