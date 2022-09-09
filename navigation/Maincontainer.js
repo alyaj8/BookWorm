@@ -53,11 +53,11 @@ export default function Maincontainer() {
             iconName = focused ? 'compass' : 'compass-outline';
           }
                         // You can return any component that you like here!
-                        return <Ionicons name={iconName} size={size} color={'green'} />;//
+                        return <Ionicons name={iconName} size={size} color={'#C6E7DD'} />;//
                     },
                 })}
                 tabBarOptions={{//to costmize the bar
-                    activeTintColor: 'green',
+                    activeTintColor: '#C6E7DD',
                     inactiveTintColor: 'grey',
                     labelStyle: { paddingBottom: 10, fontSize: 10 },
                     style: { padding: 10, height: 70 }
