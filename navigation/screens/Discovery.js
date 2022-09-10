@@ -10,7 +10,7 @@ import { View,
     Image,
     Dimensions } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons'
-import BookInfo  from '.BookInfo' ;
+import book  from '.BookInfo' ;
 import { NavigationContainer , navigation} from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
