@@ -10,6 +10,25 @@ import { View,
     Image,
     Dimensions } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons'
+import BookInfo  from './src/component/BookInfo' ;
+import { NavigationContainer , navigation} from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
+
+const Stack = createNativeStackNavigator();
+
+const MyStack = () => {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen
+          name="BookInfo"
+          component={BookInfo}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+};
 
 export default function Discovry({ navigation }) {
     return (
@@ -30,13 +49,14 @@ export default function Discovry({ navigation }) {
         </TouchableOpacity>
         <TouchableOpacity  style={styles.oneBook}>
         <Text>here bookInfo 2!</Text>
-          
-          
         </TouchableOpacity>
         <TouchableOpacity style={styles.oneBook}>
         <Text>here bookInfo 3!</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.oneBook}>
+        <TouchableOpacity style={styles.oneBook} 
+        onPress={() => {
+          navigation.navigate('BookInfo');
+        }}>
         <Text>here bookInfo 4!</Text>
         </TouchableOpacity>
       </View>
