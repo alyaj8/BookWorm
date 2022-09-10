@@ -8,9 +8,10 @@ import { View,
     StatusBar,
     ScrollView,
     Image,
-    Dimensions } from 'react-native';
+    Dimensions,
+       TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons'
-import book  from '.BookInfo' ;
+/*import book  from '.BookInfo' ;
 import { NavigationContainer , navigation} from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
@@ -28,7 +29,7 @@ const MyStack = () => {
       </Stack.Navigator>
     </NavigationContainer>
   );
-};
+};*/
 
 export default function Discovry({ navigation }) {
     return (
@@ -53,10 +54,7 @@ export default function Discovry({ navigation }) {
         <TouchableOpacity style={styles.oneBook}>
         <Text>here bookInfo 3!</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.oneBook} 
-        onPress={() => {
-          navigation.navigate('BookInfo');
-        }}>
+        <TouchableOpacity style={styles.oneBook}>
         <Text>here bookInfo 4!</Text>
         </TouchableOpacity>
       </View>
@@ -75,6 +73,9 @@ export default function Discovry({ navigation }) {
     );
 }
 
+/*onPress={() => {
+          navigation.navigate('BookInfo');
+        }}*/
 const styles = StyleSheet.create({
   container: {
     flex: 1,
