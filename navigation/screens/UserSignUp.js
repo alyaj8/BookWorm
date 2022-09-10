@@ -5,11 +5,27 @@ import {
   TextInput,
   Button,
   View,
-  Alert,
-  ActivityIndicator,
-  date,
 } from 'react-native'; 
+import Axios from 'axios';
 
+const register = () => {
+    Axios.post('https://http://localhost12555/register', {
+        first_name: firstnameReg,
+        last_name: lastnameReg,
+        username : usernameReg,
+        email : emailReg,
+        password: passwordReg,  
+    }).then((response) => {
+        console.log(response);
+    })
+}
+
+
+const [firstnameReg, setFirstnameReg] = useState('')
+const [lastnameReg, setLastnameReg] = useState('')
+const [usernameReg, setUsernameReg] = useState('')
+const [passwordReg, setPasswordReg] = useState('')
+const [emailReg, setEmailReg] = useState('')
 
 export default function  () {
   return (
@@ -20,6 +36,9 @@ export default function  () {
       style={styles.body}
         placeholder="First Name"
         underlineColorAndroid="transparent"
+        onChange={() => {
+            setFirstnameReg(e.target.value); 
+        }}
       />
     </View>
     <View style={styles.InputContainer}>
@@ -28,6 +47,9 @@ export default function  () {
         placeholder="Last Name"
        
         underlineColorAndroid="transparent"
+        onChange={() => {
+            setLastnameReg(e.target.value); 
+        }}
       />
     </View>
     <View style={styles.InputContainer}>
@@ -35,6 +57,9 @@ export default function  () {
       style={styles.body}
         placeholder="Username"
         underlineColorAndroid="transparent"
+        onChange={() => {
+            setUsernameReg(e.target.value); 
+        }}
       />
     </View>
 
@@ -46,7 +71,9 @@ export default function  () {
         <TextInput
           style={styles.body}
           placeholder="E-mail or  Username"
-          //onChangeText={setEmail} comment
+          onChange={() => {
+            setEmailReg(e.target.value); 
+        }}
           
           underlineColorAndroid="transparent"
         />
@@ -58,7 +85,9 @@ export default function  () {
           style={styles.body}
           secureTextEntry={true}
           placeholder="Password"
-         // onChangeText={setPassword} comment
+          onChange={() => {
+            setPasswordReg(e.target.value); 
+        }}
           
           underlineColorAndroid="transparent"
         />
@@ -66,8 +95,8 @@ export default function  () {
      
       
       <View style={styles.buttonCont} >
-        <Button title='SignUp'  color="black"
-        //onPress={() => onPressLogin()} //
+        <Button  onClick={register} title='SignUp'  color="black"
+       
          > 
       </Button>
       </View>
