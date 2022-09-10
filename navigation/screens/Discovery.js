@@ -24,6 +24,22 @@ export default function Discovry({ navigation }) {
             alignItems:"center"
         }}>
 
+        <View  style={{ alignItems: 'center',backgroundColor:"#fff",}}>
+        <TouchableOpacity style={styles.oneBook}>
+         <Text>here bookInfo 1!</Text>
+        </TouchableOpacity>
+        <TouchableOpacity  style={styles.oneBook}>
+        <Text>here bookInfo 2!</Text>
+          
+          
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.oneBook}>
+        <Text>here bookInfo 3!</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.oneBook}>
+        <Text>here bookInfo 4!</Text>
+        </TouchableOpacity>
+      </View>
 <Icon name="ios-search" size={20} style={{ marginRight: 10 }} />
             <TextInput
                  placeholder="Search by title or for a user"
@@ -38,3 +54,26 @@ export default function Discovry({ navigation }) {
         </View> 
     );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: 'lightgreen',
+    alignItems: 'center',
+    margin:15, 
+    
+  },
+  oneBook:
+  {
+    height:150,
+    justifyContent:"center",
+    width:370,
+    backgroundColor:"#b1e5d3",
+    borderRadius:25,
+    margin:5,
+    alignItems: 'center',
+    
+    
+    
+  }
+});
