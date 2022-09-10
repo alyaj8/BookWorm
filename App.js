@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { StyleSheet, Text,Image, SafeAreaView ,View} from 'react-native';
-import Maincontainer from './navigation/Maincontainer' ;
+import WelcomePage from './navigation/WelcomePage' ;
 
  function App() {
   return (
-    <Maincontainer/> 
+    <WelcomePage/> 
   );
 }
 /*const styles = StyleSheet.create({
