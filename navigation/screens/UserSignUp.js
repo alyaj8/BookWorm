@@ -1,106 +1,102 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   StyleSheet,
   Text,
   TextInput,
   Button,
   View,
-} from 'react-native'; 
-import Axios from 'axios';
+  Alert,
+  ActivityIndicator,
+  date,
+} from 'react-native';
+import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
 
-const register = () => {
-    Axios.post('https://http://localhost12555/register', {
-        first_name: firstnameReg,
-        last_name: lastnameReg,
-        username : usernameReg,
-        email : emailReg,
-        password: passwordReg,  
-    }).then((response) => {
-        console.log(response);
-    })
-}
+export default function UserSignUp({ navigation }) {
+  const [value, setValue] = React.useState({
+    email: '',
+    password: '',
+    error: ''
+  })
+  const auth = getAuth();
+  async function signUp() {
+    if (value.email === '' || value.password === '') {
+      setValue({
+        ...value,
+        error: 'Email and password are mandatory.'
+      })
+      return;
+    }
 
-
-const [firstnameReg, setFirstnameReg] = useState('')
-const [lastnameReg, setLastnameReg] = useState('')
-const [usernameReg, setUsernameReg] = useState('')
-const [passwordReg, setPasswordReg] = useState('')
-const [emailReg, setEmailReg] = useState('')
-
-export default function  () {
+    try {
+      await createUserWithEmailAndPassword(auth, value.email, value.password);
+      alert("User Created please Sign up")
+      navigation.navigate('Userlogin');
+    } catch (error) {
+      setValue({
+        ...value,
+        error: error.message,
+      })
+    }
+  }
   return (
     <View style={styles.container}>
       <Text style={[styles.title, styles.leftTitle]}>Create a new account</Text>
-      <View style={styles.InputContainer}>
-      <TextInput
-      style={styles.body}
-        placeholder="First Name"
-        underlineColorAndroid="transparent"
-        onChange={() => {
-            setFirstnameReg(e.target.value); 
-        }}
-      />
-    </View>
-    <View style={styles.InputContainer}>
-      <TextInput
-      style={styles.body}
-        placeholder="Last Name"
-       
-        underlineColorAndroid="transparent"
-        onChange={() => {
-            setLastnameReg(e.target.value); 
-        }}
-      />
-    </View>
-    <View style={styles.InputContainer}>
-      <TextInput
-      style={styles.body}
-        placeholder="Username"
-        underlineColorAndroid="transparent"
-        onChange={() => {
-            setUsernameReg(e.target.value); 
-        }}
-      />
-    </View>
+      <Text style={{ color: 'red' }}>{value?.error}</Text>
 
-    <View>
-   /////////////////////////////
-    </View>
+      <View style={styles.InputContainer}>
+        <TextInput
+          style={styles.body}
+          placeholder="First Name"
+          underlineColorAndroid="transparent"
+        />
+      </View>
+      <View style={styles.InputContainer}>
+        <TextInput
+          style={styles.body}
+          placeholder="Last Name"
+
+          underlineColorAndroid="transparent"
+        />
+      </View>
+      <View style={styles.InputContainer}>
+        <TextInput
+          style={styles.body}
+          placeholder="Username"
+          underlineColorAndroid="transparent"
+        />
+      </View>
+
+      <View>
+      </View>
 
       <View style={styles.InputContainer}>
         <TextInput
           style={styles.body}
           placeholder="E-mail or  Username"
-          onChange={() => {
-            setEmailReg(e.target.value); 
-        }}
-          
+          onChangeText={(text) => setValue({ ...value, email: text })}
           underlineColorAndroid="transparent"
         />
       </View>
-      
+
 
       <View style={styles.InputContainer}>
         <TextInput
           style={styles.body}
           secureTextEntry={true}
           placeholder="Password"
-          onChange={() => {
-            setPasswordReg(e.target.value); 
-        }}
-          
+          onChangeText={(text) => setValue({ ...value, password: text })}
           underlineColorAndroid="transparent"
         />
       </View>
-     
-      
+
+
       <View style={styles.buttonCont} >
-        <Button  onClick={register} title='SignUp'  color="black"
-       
-         > 
-      </Button>
+        <Button title='SignUp' color="black"
+          onPress={() => signUp()} //
+        >
+        </Button>
       </View>
-      
+
     </View>
   );
 
@@ -110,11 +106,11 @@ export default function  () {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent:'center',
+    justifyContent: 'center',
     alignItems: 'center',
   },
   title: {
-    
+
     fontWeight: 'bold',
     fontSize: 35,
     marginTop: 20,
@@ -122,24 +118,24 @@ const styles = StyleSheet.create({
   },
   body: {
     borderWidth: 1,
-    borderRadius:50,
+    borderRadius: 50,
     padding: 10,
     margin: 12,
     width: 250,
     height: 42,
     paddingLeft: 20,
     paddingRight: 20,
-    
+
   },
-  buttonCont:{
-    
+  buttonCont: {
+
     margin: 50,
-    padding:5,
+    padding: 5,
     width: 250,
     borderWidth: 1,
-    borderRadius:50,
-    backgroundColor:"#C6E7DD",
-    
+    borderRadius: 50,
+    backgroundColor: "#C6E7DD",
+
   },
 
 });
