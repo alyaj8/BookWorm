@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { StyleSheet, Text, Image, SafeAreaView, View } from 'react-native';
-import Userlogin from './navigation/screens/Userlogin'
 import UserSignUp from './navigation/screens/UserSignUp'
 import WelcomePage from './navigation/WelcomePage'
 import { NavigationContainer, navigation } from '@react-navigation/native';
@@ -30,10 +29,7 @@ function App() {
           name="WelcomePage"
           component={WelcomePage}
         />
-        <Stack.Screen
-          name="Userlogin"
-          component={Userlogin}
-        />
+      
         <Stack.Screen name="UserSignUp" component={UserSignUp} />
       </Stack.Navigator>
     </NavigationContainer>
