@@ -40,7 +40,7 @@ export default function WelcomePage () {
         
       <Text style={{
             fontFamily: 'Roboto-Medium',
-            fontSize: 28,
+            fontSize: 45,
             fontWeight: '500',
             color: '#333',
             marginBottom: 15,
@@ -65,22 +65,25 @@ export default function WelcomePage () {
       </View>
       <View>
         <TouchableOpacity onPress={() => {}}>
-          <Text style={{color:"#2F5233",fontWeight:'700',marginBottom:5, textDecorationLine: "underline"}}>Forget password?</Text>
+          <Text style={{color:"#2F5233",fontWeight:'700',marginBottom:5, textDecorationLine: "underline", fontSize: 20}}>Forget Password?</Text>
         </TouchableOpacity>
       </View>
 
     
        
-        <View>
+        <View >
         <TouchableOpacity
          onPress={signIn}
          style={{
           backgroundColor:"#B1D8B7",
           padding: 20,
+          margin: 15,
+          width: 350,
+          alignItems: 'center',
           borderRadius:10,
-          marginBottom: 30,
+          
          }}>
-          <Text style={{ textAlign:"center", color:"#ffff",fontWeight:'700',fontSize:16}}>Login</Text>
+          <Text style={{ textAlign:"center", color:"#ffff",fontWeight:'700',fontSize:20}}>Log In</Text>
         </TouchableOpacity>
       </View>
     
@@ -89,11 +92,11 @@ export default function WelcomePage () {
           style={{
             flexDirection: 'row',
             justifyContent: 'center',
-            marginBottom: 30,
+            margin: 20,
           }}>
-          <Text>New to the app?</Text>
+          <Text>New to the Bookworm?</Text>
           <TouchableOpacity onPress={() => navigation.navigate('UserSignUp')}>
-            <Text style={{color: '#2F5233', fontWeight: '700',textDecorationLine: "underline"}}> Register</Text>
+            <Text style={{color: '#2F5233', fontWeight: '700',textDecorationLine: "underline" , fontSize: 15,}}> Register</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -106,9 +109,11 @@ const styles = StyleSheet.create({
  
   body: {
     borderWidth: 1,
-    width: 300,
+    fontSize: 20,
+    width: 345,
     height: 50,
     paddingLeft: 20,
+    marginLeft:18,
     paddingRight: 20,
     backgroundColor:"#ffff",
     padding: 20,
@@ -116,5 +121,6 @@ const styles = StyleSheet.create({
     marginBottom: 30,
 
   },
+  
 
 });
