@@ -88,14 +88,19 @@ export default function UserSignUp({ navigation }) {
           underlineColorAndroid="transparent"
         />
       </View>
-
-
-      <View style={styles.buttonCont} >
-        <Button title='SignUp' color="black"
-          onPress={() => signUp()} //
-        >
-        </Button>
+      <View>
+        <TouchableOpacity
+         onPress={() => signUp()}
+         style={{
+          backgroundColor:"#B1D8B7",
+          padding: 20,
+          borderRadius:10,
+          marginBottom: 30,
+         }}>
+          <Text style={{ textAlign:"center", color:"#ffff",fontWeight:'700',fontSize:16}}>Login</Text>
+        </TouchableOpacity>
       </View>
+
 
     </View>
   );
