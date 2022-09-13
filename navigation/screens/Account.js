@@ -1,6 +1,7 @@
 import * as React from "react";
 import { View, Text, ScrollView, TouchableOpacity, Image } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
+import { getAuth, signOut } from "firebase/auth";
 
 export default function Account({ navigation }) {
   return (
@@ -95,7 +96,12 @@ export default function Account({ navigation }) {
           <Icon name="people-outline" size={30} style={{ marginRight: 10 }} />
           <Text style={{ fontSize: 16, marginTop: 7 }}>My friends</Text>
         </View>
-        <View
+        <TouchableOpacity
+            onPress={async ()=>{
+              const auth =getAuth()
+              await signOut(auth);
+              navigation.navigate('WelcomePage')
+            }}
           style={{
             alignSelf: "center",
             flexDirection: "row",
@@ -112,7 +118,7 @@ export default function Account({ navigation }) {
         >
           <Icon name="log-out-outline" size={30} style={{ marginRight: 10 }} />
           <Text style={{ fontSize: 16, marginTop: 7 }}>Log-out</Text>
-        </View>
+        </TouchableOpacity>
       </ScrollView>
     </View>
   );

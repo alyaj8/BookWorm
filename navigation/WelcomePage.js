@@ -123,7 +123,7 @@ export default function WelcomePage({ navigation }) {
             marginBottom: 30,
           }}
         >
-          <Text>New to the app?</Text>
+          <Text>New to the Bookworm?</Text>
           <TouchableOpacity onPress={() => navigation.navigate("UserSignUp")}>
             <Text
               style={{
