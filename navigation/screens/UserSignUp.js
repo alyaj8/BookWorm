@@ -29,7 +29,7 @@ export default function UserSignUp({ navigation }) {
 
     try {
       await createUserWithEmailAndPassword(auth, value.email, value.password);
-      alert("User Created please Sign up");
+      alert("User Created please Login");
       navigation.navigate("WelcomePage");
     } catch (error) {
       setValue({
@@ -70,7 +70,7 @@ export default function UserSignUp({ navigation }) {
       <View style={styles.InputContainer}>
         <TextInput
           style={styles.body}
-          placeholder="E-mail or  Username"
+          placeholder="E-mail"
           onChangeText={(text) => setValue({ ...value, email: text })}
           underlineColorAndroid="transparent"
         />

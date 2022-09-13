@@ -65,7 +65,7 @@ export default function WelcomePage({ navigation }) {
         <View>
           <TextInput
             style={styles.body}
-            placeholder="E-mail or  Username"
+            placeholder="E-mail"
             onChangeText={(text) => setValue({ ...value, email: text })}
             underlineColorAndroid="transparent"
           />
