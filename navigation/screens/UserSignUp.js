@@ -29,7 +29,7 @@ export default function UserSignUp({ navigation }) {
 
     try {
       await createUserWithEmailAndPassword(auth, value.email, value.password);
-      alert("User Created please Sign up");
+      alert("User Created please Login");
       navigation.navigate("WelcomePage");
     } catch (error) {
       setValue({
