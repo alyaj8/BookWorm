@@ -16,6 +16,7 @@ const firebaseConfig = {
   appId: "1:19414542563:web:460d20dd6abdeabef47dd6",
   measurementId: "G-F5B7J7EDXR",
 };
+export const setPassword= (email) => {   return firebase.auth().sendPasswordResetEmail(email) }
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);

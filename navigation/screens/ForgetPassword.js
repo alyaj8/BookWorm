@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { Component , useState} from 'react';
 import {
   StyleSheet,
   Text,
@@ -10,47 +10,36 @@ import {
 } from 'react-native'; 
 
 
-export default function () {
+export default function ForgetPassword ({navigation}) {
+  const [Email,setEmail]= useState('');////////varible wrong
+  const [password, setPassword] = useState('');
   return (
     <View style={styles.container}>
 
       <Text style={styles.title}>Forget password </Text>
       <View style={styles.InputContainer}>
-        <TextInput
-          style={styles.body}
-          placeholder="Old Password"
-          
-          
-          underlineColorAndroid="transparent"
-        />
+        
       </View>
       
 
+      
       <View style={styles.InputContainer}>
         <TextInput
           style={styles.body}
-          secureTextEntry={true}
-          placeholder="New Password"
-         // onChangeText={setPassword} comment
           
-          underlineColorAndroid="transparent"
-        />
-      </View>
-      <View style={styles.InputContainer}>
-        <TextInput
-          style={styles.body}
-          secureTextEntry={true}
-          placeholder="Confirm Password"
-        
-          
+          fontSize = '15'
+          placeholder="Enter your email"
+          value = {Email}
+          onChangeText={text=>setEmail(text)}
           underlineColorAndroid="transparent"
         />
       </View>
      
       
       <View style={styles.buttonCont} >
-        <Button title=' Set new password '  color="black"
+        <Button  onPress={()=> setPassword(password)}title=' Reset Password ' fontSize= '35' fontWeight='bold' color="#ffff"
          > 
+         
       </Button>
       </View>
       
@@ -91,6 +80,7 @@ const styles = StyleSheet.create({
     paddingLeft: 20,
     paddingRight: 20,
     
+    
   },
   buttonCont:{
     
@@ -100,6 +90,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius:50,
     backgroundColor:"#C6E7DD",
+    borderColor: '#C6E7DD',
     
   },
 
