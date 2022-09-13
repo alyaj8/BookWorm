@@ -110,11 +110,15 @@ export default function Discovry({ navigation }) {
                       backgroundColor: "white",
                       borderRadius: 10,
                       marginBottom: -2,
-                      marginTop: -12,
+                      marginTop: -7,
                       marginRight: -12,
                     }}
                   >
-                    <Icon name="add" size={18} style={{ color: "green" }} />
+                    <Icon
+                      name="bookmarks"
+                      size={18}
+                      style={{ color: "#00a46c" }}
+                    />
                   </View>
                 </View>
                 <TouchableOpacity>
@@ -182,7 +186,7 @@ export default function Discovry({ navigation }) {
 
 const styles = StyleSheet.create({
   container: {
-    height: 168,
+    height: 150,
     width: 138,
     borderRadius: 10,
 
@@ -201,7 +205,7 @@ const styles = StyleSheet.create({
   },
   card: {
     height: 250,
-    backgroundColor: "#EEF7F3",
+    backgroundColor: "#EDF5F0",
     marginHorizontal: 2,
     borderRadius: 10,
     marginBottom: 10,

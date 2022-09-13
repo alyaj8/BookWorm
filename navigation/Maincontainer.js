@@ -40,7 +40,7 @@ export default function Maincontainer() {
             if (rn === HomeName) {
               iconName = focused ? "home" : "home-outline";
             } else if (rn === ListssName) {
-              iconName = focused ? "list" : "list-outline";
+              iconName = focused ? "logo-buffer" : "logo-buffer";
             } else if (rn === MoreName) {
               iconName = focused
                 ? "ellipsis-horizontal-circle-sharp"
