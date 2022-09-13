@@ -70,7 +70,7 @@ export default function UserSignUp({ navigation }) {
       <View style={styles.InputContainer}>
         <TextInput
           style={styles.body}
-          placeholder="E-mail or  Username"
+          placeholder="E-mail"
           onChangeText={(text) => setValue({ ...value, email: text })}
           underlineColorAndroid="transparent"
         />
