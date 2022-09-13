@@ -60,13 +60,6 @@ export default function Maincontainer({ navigation }) {
             return <Ionicons name={iconName} size={28} color={"black"} />; //
           },
         })}
-        tabBarOptions={{
-          //to costmize the bar
-          activeTintColor: "black",
-          inactiveTintColor: "grey",
-          labelStyle: { paddingBottom: 10, fontSize: 10 },
-          style: { padding: 10, height: 70 },
-        }}
       >
         <Stack.Screen name={MoreName} component={More} />
         <Stack.Screen name={DiscovryName} component={Discovery} />
