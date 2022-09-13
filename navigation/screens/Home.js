@@ -44,12 +44,22 @@ export default function Home({ navigation }) {
           <View style={{ width: "50%" }}>
             <Text
               style={{
-                fontSize: 28,
+                fontSize: "25%",
                 color: "#FFF",
                 fontWeight: "bold",
+                alignItems: "flex-end",
               }}
             >
-              WELCOME TO BOOKWORM
+              WELCOME TO{"\n"}
+              <Text
+                style={{
+                  fontSize: "26.5%",
+                  color: "black",
+                  fontWeight: "bold",
+                }}
+              >
+                {"  "}BOOKWORM
+              </Text>
             </Text>
           </View>
         </View>
@@ -70,7 +80,7 @@ export default function Home({ navigation }) {
             paddingHorizontal: 20,
             marginHorizontal: 20,
             borderRadius: 15,
-            marginTop: 25,
+            marginTop: "4.6%",
             flexDirection: "row",
             alignItems: "center",
           }}
@@ -105,7 +115,7 @@ export default function Home({ navigation }) {
         </Text>
         <View style={{ flex: 1, flexDirection: "row" }}>
           <Image
-            style={{ height: 200, width: 190 }}
+            style={{ height: "80%", width: "50%", resizeMode: "stretch" }}
             source={require("./description.jpg")}
           />
           <Text
@@ -136,7 +146,7 @@ export default function Home({ navigation }) {
         </View>
       </View>
       <View>
-        <Text style={{ marginTop: 290 }}>{""}</Text>
+        <Text style={{ marginTop: "80%" }}>{""}</Text>
       </View>
     </View>
   );

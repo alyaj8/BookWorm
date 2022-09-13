@@ -30,12 +30,18 @@ import Icon from "react-native-vector-icons/Ionicons";
 export default function Discovry({ navigation }) {
   const [books, setBooks] = useState([]);
   const [url, setUrl] = useState("");
-  const width1 = Dimensions.get("screen").width / 2 - 30;
-  const hight1 = Dimensions.get("screen").height / 3 - 40;
+  const width1 = Dimensions.get("screen").width / 2 - 33;
+  const hight1 = Dimensions.get("screen").height / 3 - 35;
 
   const width2 = Dimensions.get("screen").width / 2.5 - 20;
 
   const booksCol = collection(db, "Book");
+  const Datacat = (str, num) => {
+    if (str.length > num) {
+      return str.substring(0, num) + "...";
+    }
+    return str;
+  };
 
   useEffect(() => {
     const q = query(booksCol); //which tabel
@@ -109,7 +115,7 @@ export default function Discovry({ navigation }) {
                       justifyContent: "center",
                       backgroundColor: "white",
                       borderRadius: 10,
-                      marginBottom: -2,
+                      marginBottom: 1,
                       marginTop: -7,
                       marginRight: -12,
                     }}
@@ -136,7 +142,9 @@ export default function Discovry({ navigation }) {
                         fontSize: "16",
                       }}
                     >
-                      {item.data.title} {"\n"}
+                      {Datacat(item.data.title, 10)}
+
+                      {"\n"}
                     </Text>
                     <Text
                       style={{
@@ -146,7 +154,8 @@ export default function Discovry({ navigation }) {
                       }}
                     >
                       By:
-                      {item.data.author} {"\n"}
+                      {Datacat(item.data.author, 19)}
+                      {"\n"}
                       <Icon
                         name="star"
                         size={16}
@@ -186,11 +195,11 @@ export default function Discovry({ navigation }) {
 
 const styles = StyleSheet.create({
   container: {
-    height: 150,
-    width: 138,
-    borderRadius: 10,
-
-    // alignItems: "stretch",
+    height: "75%",
+    width: "96%",
+    borderRadius: 4,
+    resizeMode: "stretch",
+    //alignItems: "center",
     // margin: 15,
   },
   oneBook: {
@@ -204,7 +213,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   card: {
-    height: 250,
+    height: "95%",
     backgroundColor: "#EDF5F0",
     marginHorizontal: 2,
     borderRadius: 10,
