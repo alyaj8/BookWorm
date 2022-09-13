@@ -1,10 +1,11 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Image, ScrollView,Button } from 'react-native';
-import Fetch from './src/Fetch';
+import Map from './screens/Map';
+//import Fetch from './src/Fetch';
 //import {userSate,userEffect} from "react";
 //import{collection, query,orderBy,onSanpshot,setDoc,doc,getDoc,getDocs} from "firebase/firestore";
 //import{db} from "../../config/firebase";
-export default function book() {
+export default function App() {
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
     <View style={{paddingTop:70, alignItems:"center", }}>
@@ -14,7 +15,25 @@ export default function book() {
       </View>
       <View style={{ borderRadius:25 , height:560,}}>
       <View style={{padding:10, justifyContent:"center", alignItems:"center"}}>
-      <Fetch/>
+  <View style={{padding:10, justifyContent:"center", alignItems:"center", backgroundColor:'#00a46c', borderRadius:15}}>
+      <Text style={{flew:1,alignItems:"center",justifyContent:"center", paddingTop:20,paddingLeft:10 ,paddingRight:10}}>Who Moved My Cheese? </Text>
+    <Text > by Spencer Johnson</Text>
+    <Text > _______________________________________________________</Text>
+    <Text style={{ paddingTop:10,paddingLeft:10 ,paddingRight:10}}>Review: </Text>
+    <Text style={{paddingLeft:10 ,paddingRight:10}}> _______________________________________________________</Text>
+    <Text style={{alignItems:"center",justifyContent:"center",paddingLeft:10 ,paddingRight:10}}> Your review of the book:</Text>
+    <Text style={{alignItems:"center",justifyContent:"center",paddingLeft:10 ,paddingRight:10}}> leave your comments and read other’s:</Text>
+    <Text style={{alignItems:"center",justifyContent:"center",paddingLeft:10 ,paddingRight:10}}> _______________________________________________________</Text>
+        <Text style={{alignItems:"center",justifyContent:"center", paddingTop:20,paddingLeft:10 ,paddingRight:10}}>Description:</Text>
+        <Text style={{alignItems:"center",justifyContent:"center",paddingLeft:15 ,paddingRight:15}}>
+                An Amazing Way to Deal with Change in Your Work and in Your Life, 
+                published on September 8, 1998, is a bestselling seminal work and 
+                motivational business fable by Spencer Johnson. The text describes 
+                the way one reacts to major change in one's work and life, and four 
+                typical reactions to those changes by two mice and two "Littlepeople", 
+                during their hunt for "cheese".
+        </Text><Text style={{paddingTop:20,paddingLeft:10 ,paddingRight:10}}>ISBN: 9780399144462</Text>
+        
         <View style={styles.fixToText}>
             <Button title="Add to:" color="lightgrey" />
        </View>
@@ -24,7 +43,7 @@ export default function book() {
       </View>
         <StatusBar style="auto" />
       </View>
-      
+    </View>
     </View>
     </ScrollView>
   );
@@ -42,88 +61,3 @@ const styles = StyleSheet.create({
     alignContent:"center"
 }
 });
-
-
-
-
-
-import {View , Text, FlatList, StyleSheet, Pressable} from 'react-native'
-import React, {useState,useEffect} from 'react'
-import {firebase} from '../config';
-
-const Fetch = () => {
-
-    const [users , setUsers] = useState([]);
-    const bookRef = firebase.firestore().collection('Book');
-
-    useEffect(async () => {
-        bookRef
-        .onSnapshot(
-            querySnapshot => {
-                const users =[]
-                querySnapshot.forEach((doc) =>{
-                    const {Description, ISBN, author, category, location, poster, title}= doc.data()
-                    users.push({
-                        id: doc.id,
-                        Description,
-                        ISBN,
-                        author,
-                        category,
-                        location,
-                        poster,
-                        title
-                    })
-                })
-                setUsers(users)
-            }
-        )
-
-    },[])
-
-
-
-    return(
-        <View style={{ flex:1, marginTop:100}}>
-           <FlatList
-                style={{height:'100%'}}
-                data={users}
-                numColumns={1}
-                renderItem={({item}) => (
-                    <Pressable style={styles.container}>
-                        <View style={styles.innerContainer}>
-                            <Text style={styles.itemHeading}>{item.poster}</Text>
-                            <Text style={styles.itemHeading}>{item.title}</Text>
-                            <Text style={styles.itemHeading}>{item.author}</Text>
-                            <Text style={styles.itemHeading}>{item.category}</Text>
-                            <Text style={styles.itemHeading}>{item.Description}</Text>
-                            <Text style={styles.itemHeading}>{item.ISBN}</Text>
-
-                        </View>
-
-                    </Pressable>  
-                )}
-           />
-        </View>
-    )
-}
-export default Fetch;
-
-const styles = StyleSheet.create({
-    container:{
-        backgroundColor:'#e5',
-        padding:15,
-        borderRadius:15,
-        margin:5,
-        marginHorizontal:10,   
-    },
-    innerContainer:{
-        alignItems:'center',
-        flexDirection:'column'
-    },
-    itemHeading:{
-        fontWeight:'bold'
-    },
-    itemText:{
-        fontWeight:'300'
-    }
-})
