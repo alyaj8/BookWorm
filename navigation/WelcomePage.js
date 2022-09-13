@@ -39,7 +39,6 @@ export default function WelcomePage () {
         </View>
         
       <Text style={{
-            fontFamily: 'Roboto-Medium',
             fontSize: 45,
             fontWeight: '500',
             color: '#333',
@@ -78,7 +77,7 @@ export default function WelcomePage () {
           backgroundColor:"#B1D8B7",
           padding: 20,
           margin: 15,
-          width: 350,
+          width: 300,
           alignItems: 'center',
           borderRadius:10,
           
@@ -110,10 +109,10 @@ const styles = StyleSheet.create({
   body: {
     borderWidth: 1,
     fontSize: 20,
-    width: 345,
+    width: 320,
     height: 50,
     paddingLeft: 20,
-    marginLeft:18,
+    marginLeft:10,
     paddingRight: 20,
     backgroundColor:"#ffff",
     padding: 20,
