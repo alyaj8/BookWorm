@@ -5,7 +5,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NavigationContainer } from "@react-navigation/native";
 import { Stack } from "../App";
 
-
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
 // Screens
@@ -24,7 +24,7 @@ const MoreName = "More";
 const DiscovryName = "Discovery";
 const AccountName = "Account";
 
-
+const Tab = createBottomTabNavigator();
 //export default Maincontainer;
 
 export default function Maincontainer({ navigation }) {
@@ -32,7 +32,7 @@ export default function Maincontainer({ navigation }) {
   return (
     //for bottom navigation
     
-      <Stack.Navigator
+      <Tab.Navigator
         initialRouteName={HomeName} //to go to the first screen
         screenOptions={({ route }) => ({
           //route means the location u r at
@@ -61,14 +61,14 @@ export default function Maincontainer({ navigation }) {
           },
         })}
       >
-        <Stack.Screen name={MoreName} component={More} />
-        <Stack.Screen name={DiscovryName} component={Discovery} />
+        <Tab.Screen name={MoreName} component={More} />
+        <Tab.Screen name={DiscovryName} component={Discovery} />
 
-        <Stack.Screen name={HomeName} component={Home} />
+        <Tab.Screen name={HomeName} component={Home} />
 
-        <Stack.Screen name={ListssName} component={Lists} />
-        <Stack.Screen name={AccountName} component={Account} />
-      </Stack.Navigator>
+        <Tab.Screen name={ListssName} component={Lists} />
+        <Tab.Screen name={AccountName} component={Account} />
+      </Tab.Navigator>
     
   );
 }
