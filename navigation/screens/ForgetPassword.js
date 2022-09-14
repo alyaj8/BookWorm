@@ -14,6 +14,21 @@ import {
 import {getAuth,sendPasswordResetEmail} from "firebase/auth";
 
 export default function ForgetPassword({navigation}) {
+  function msg (error){
+    switch (error.code){
+           case "auth/invalid-email":
+            error.code = "Wrong email address";
+            break;
+  
+            case "auth/user-not-found":
+              error.code= "There is no account for this email,try to register ";
+              break;
+  
+            default:
+            return error.code; 
+          }
+          return error.code;
+      }
   const [Email, setEmail] = useState('');////////varible wrong
 
   return (
@@ -58,12 +73,10 @@ export default function ForgetPassword({navigation}) {
                 .then(() => {
                   alert('Email sent, please check your email')
                 })
-                .catch((error) => {
-                  const errorCode = error.code;
-                  const errorMessage = error.message;
-                  alert(errorMessage)
-                 console.log(errorMessage)
-                });
+                .catch((er) => {
+                  er = msg(er);
+                  alert(er);
+              });
 
           }} title=' Reset Password ' fontSize='35' fontWeight='bold'
                   color="#ffff"
