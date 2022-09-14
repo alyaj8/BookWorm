@@ -91,8 +91,8 @@ export default function Discovry({ navigation }) {
     setUrl(link1)  }*/
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <ScrollView>
+    <ScrollView>
+      <SafeAreaView style={{ flex: 1 }}>
         <ImageBackground source={require("./111.jpg")} resizeMode="cover">
           <View
             style={{
@@ -211,8 +211,8 @@ export default function Discovry({ navigation }) {
             />
           </View>
         </ImageBackground>
-      </ScrollView>
-    </SafeAreaView>
+      </SafeAreaView>
+    </ScrollView>
   );
 }
 

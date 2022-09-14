@@ -10,32 +10,40 @@ import {
   date,
 } from "react-native";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-function msg (error){
-  switch (error.code){
-         case "auth/invalid-email":
-          error.code = "Wrong email address";
-          break;
+import Icon from "react-native-vector-icons/Ionicons";
 
-          case "auth/email-already-in-use":
-            error.code= "The email is already registered try to login or use forgot password";
-            break;
+function msg(error) {
+  switch (error.code) {
+    case "auth/invalid-email":
+      error.code = "Wrong email address";
+      break;
 
-          default:
-          return error.code; 
-        }
-        return error.code;
-    }
+    case "auth/email-already-in-use":
+      error.code =
+        "The email is already registered try to login or use forgot password";
+      break;
+
+    default:
+      return error.code;
+  }
+  return error.code;
+}
 export default function UserSignUp({ navigation }) {
   const [value, setValue] = React.useState({
     email: "",
     password: "",
-    username:"",
-    firstname:"",
+    username: "",
+    firstname: "",
     error: "",
   });
   const auth = getAuth();
   async function signUp() {
-    if ( value.firstname ==="" || value.email === "" || value.username === ""||value.password === ""){
+    if (
+      value.firstname === "" ||
+      value.email === "" ||
+      value.username === "" ||
+      value.password === ""
+    ) {
       setValue({
         ...value,
         error: " First name, username, Email and password are mandatory.",
@@ -47,7 +55,7 @@ export default function UserSignUp({ navigation }) {
       alert("User Created please Login");
       navigation.navigate("WelcomePage");
     } catch (er) {
-      er = msg(er)
+      er = msg(er);
       setValue({
         ...value,
         error: er,
@@ -55,7 +63,6 @@ export default function UserSignUp({ navigation }) {
     }
   }
   return (
-          
     <View style={styles.container}>
       <View
         style={{
@@ -64,9 +71,12 @@ export default function UserSignUp({ navigation }) {
           paddingHorizontal: 20,
         }}
       >
-        <Text style={{ fontSize: 22 }} onPress={() => navigation.goBack()}>
-          Back
-        </Text>
+        <Icon
+          name="arrow-back-outline"
+          size={40}
+          style={{ color: "black" }}
+          onPress={() => navigation.goBack()}
+        />
       </View>
       <Text style={[styles.title, styles.leftTitle]}>Create a new account</Text>
       <Text style={{ color: "red" }}>{value?.error}</Text>
