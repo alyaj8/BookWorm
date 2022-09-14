@@ -10,7 +10,21 @@ import {
   date,
 } from "react-native";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+function msg (error){
+  switch (error.code){
+         case "auth/invalid-email":
+          error.code = "Wrong email address";
+          break;
 
+          case "auth/email-already-in-use":
+            error.code= "The email is already registered try to login or use forgot password";
+            break;
+
+          default:
+          return error.code; 
+        }
+        return error.code;
+    }
 export default function UserSignUp({ navigation }) {
   const [value, setValue] = React.useState({
     email: "",
@@ -33,9 +47,10 @@ export default function UserSignUp({ navigation }) {
       alert("User Created please Login");
       navigation.navigate("WelcomePage");
     } catch (er) {
+      er = msg(er)
       setValue({
         ...value,
-        error: er.code,
+        error: er,
       });
     }
   }
