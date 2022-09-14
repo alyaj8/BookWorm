@@ -11,6 +11,7 @@ import "firebase/auth";
 import Maincontainer from "./navigation/Maincontainer";
 import ForgetPassword from "./navigation/screens/ForgetPassword";
 import BookInfo from "./navigation/screens/BookInfo";
+import Adminpage from "./navigation/screens/Adminpage";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCb8vT5-UmFZV-954feGAE2L0-T4Tgpqhs",
@@ -37,6 +38,7 @@ function App() {
         <Stack.Screen name="ForgetPassword" component={ForgetPassword} />
         <Stack.Screen name="UserSignUp" component={UserSignUp} />
         <Stack.Screen name="BookInfo" component={BookInfo} />
+        <Stack.Screen name="Adminpage" component={Adminpage} />
       </Stack.Navigator>
     </NavigationContainer>
   );
