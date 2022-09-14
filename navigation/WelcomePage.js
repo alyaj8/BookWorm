@@ -10,7 +10,28 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+function msg (error){
+  switch (error.code){
+         case "auth/invalid-email":
+          error.code = "Wrong email address";
+          break;
 
+          case "auth/user-not-found":
+            error.code= "There is no account for this email,you have to register first";
+            break;
+          
+            case "auth/wrong-password":
+              error.code= "Password is not correct";
+              break;
+              case "auth/too-many-requests":
+                error.code= "You have exceeded the attempts limit, try again later";
+                break;
+
+          default:
+          return error.code; 
+        }
+        return error.code;
+    }
 export default function WelcomePage({ navigation }) {
   const [value, setValue] = React.useState({
     email: "",
@@ -27,14 +48,16 @@ export default function WelcomePage({ navigation }) {
       });
       return;
     }
-
+  
     try {
+   
       await signInWithEmailAndPassword(auth, value.email, value.password);
       navigation.navigate("Maincontainer");
-    } catch (error) {
+    } catch (er) {
+      er = msg(er)
       setValue({
         ...value,
-        error: error.message,
+        error: er,
       });
     }
   }
@@ -123,7 +146,7 @@ export default function WelcomePage({ navigation }) {
             marginBottom: 30,
           }}
         >
-          <Text>New to the Bookworm?</Text>
+          <Text>New to the app?</Text>
           <TouchableOpacity onPress={() => navigation.navigate("UserSignUp")}>
             <Text
               style={{

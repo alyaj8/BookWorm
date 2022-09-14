@@ -10,36 +10,64 @@ import {
   date,
 } from "react-native";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+function msg (error){
+  switch (error.code){
+         case "auth/invalid-email":
+          error.code = "Wrong email address";
+          break;
 
+          case "auth/email-already-in-use":
+            error.code= "The email is already registered try to login or use forgot password";
+            break;
+
+          default:
+          return error.code; 
+        }
+        return error.code;
+    }
 export default function UserSignUp({ navigation }) {
   const [value, setValue] = React.useState({
     email: "",
     password: "",
+    username:"",
+    firstname:"",
     error: "",
   });
   const auth = getAuth();
   async function signUp() {
-    if (value.email === "" || value.password === "") {
+    if ( value.firstname ==="" || value.email === "" || value.username === ""||value.password === ""){
       setValue({
         ...value,
-        error: "Email and password are mandatory.",
+        error: " First name, username, Email and password are mandatory.",
       });
       return;
     }
-
     try {
       await createUserWithEmailAndPassword(auth, value.email, value.password);
       alert("User Created please Login");
       navigation.navigate("WelcomePage");
-    } catch (error) {
+    } catch (er) {
+      er = msg(er)
       setValue({
         ...value,
-        error: error.message,
+        error: er,
       });
     }
   }
   return (
+          
     <View style={styles.container}>
+      <View
+        style={{
+          width: "100%",
+          height: 40,
+          paddingHorizontal: 20,
+        }}
+      >
+        <Text style={{ fontSize: 22 }} onPress={() => navigation.goBack()}>
+          Back
+        </Text>
+      </View>
       <Text style={[styles.title, styles.leftTitle]}>Create a new account</Text>
       <Text style={{ color: "red" }}>{value?.error}</Text>
 
@@ -47,6 +75,7 @@ export default function UserSignUp({ navigation }) {
         <TextInput
           style={styles.body}
           placeholder="First Name"
+          onChangeText={(text) => setValue({ ...value, firstname: text })}
           underlineColorAndroid="transparent"
         />
       </View>
@@ -61,6 +90,7 @@ export default function UserSignUp({ navigation }) {
         <TextInput
           style={styles.body}
           placeholder="Username"
+          onChangeText={(text) => setValue({ ...value, username: text })}
           underlineColorAndroid="transparent"
         />
       </View>
