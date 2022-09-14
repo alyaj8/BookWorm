@@ -170,8 +170,8 @@ const styles = StyleSheet.create({
     margin: 50,
     padding: 5,
     width: 250,
-    borderWidth: 1,
+    
     borderRadius: 50,
-    backgroundColor: "#C6E7DD",
+    backgroundColor: "#B1D8B7",
   },
 });
