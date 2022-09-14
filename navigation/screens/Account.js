@@ -34,7 +34,6 @@ export default function Account({ navigation }) {
           </Text>
           <Text style={{ fontSize: 15, fontWeight: "bold", color: "grey" }}>
             {" "}
-            Alya Aljuraywi
           </Text>
         </View>
 
@@ -97,11 +96,11 @@ export default function Account({ navigation }) {
           <Text style={{ fontSize: 16, marginTop: 7 }}>My friends</Text>
         </View>
         <TouchableOpacity
-            onPress={async ()=>{
-              const auth =getAuth()
-              await signOut(auth);
-              navigation.navigate('WelcomePage')
-            }}
+          onPress={async () => {
+            const auth = getAuth();
+            await signOut(auth);
+            navigation.navigate("WelcomePage");
+          }}
           style={{
             alignSelf: "center",
             flexDirection: "row",
