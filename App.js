@@ -10,6 +10,7 @@ import { initializeApp } from "firebase/app";
 import "firebase/auth";
 import Maincontainer from "./navigation/Maincontainer";
 import ForgetPassword from "./navigation/screens/ForgetPassword";
+import BookInfo from "./navigation/screens/BookInfo";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCb8vT5-UmFZV-954feGAE2L0-T4Tgpqhs",
@@ -27,12 +28,15 @@ initializeApp(firebaseConfig);
 function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="WelcomePage">
+      <Stack.Navigator
+        screenOptions={{ headerShown: false }}
+        initialRouteName="WelcomePage"
+      >
         <Stack.Screen name="WelcomePage" component={WelcomePage} />
         <Stack.Screen name="Maincontainer" component={Maincontainer} />
         <Stack.Screen name="ForgetPassword" component={ForgetPassword} />
         <Stack.Screen name="UserSignUp" component={UserSignUp} />
-        
+        <Stack.Screen name="BookInfo" component={BookInfo} />
       </Stack.Navigator>
     </NavigationContainer>
   );
