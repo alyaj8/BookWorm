@@ -23,10 +23,6 @@ export default function ForgetPassword({navigation}) {
             case "auth/user-not-found":
               error.code= "There is no account for this email,try to register ";
               break;
-
-              case "auth/network-request-failed":
-                error.code= "No internet connection,Check your wifi.Try again";
-                break;
   
             default:
             return error.code; 
@@ -133,8 +129,8 @@ const styles = StyleSheet.create({
     width: 350,
     borderWidth: 1,
     borderRadius: 10,
-    backgroundColor: "#B1D8B7",
-    borderColor: '#B1D8B7',
+    backgroundColor: "#C6E7DD",
+    borderColor: '#C6E7DD',
 
   },
 
