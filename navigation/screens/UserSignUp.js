@@ -15,26 +15,27 @@ export default function UserSignUp({ navigation }) {
   const [value, setValue] = React.useState({
     email: "",
     password: "",
+    username:"",
+    firstname:"",
     error: "",
   });
   const auth = getAuth();
   async function signUp() {
-    if (value.email === "" || value.password === "") {
+    if ( value.firstname ==="" || value.email === "" || value.username === ""||value.password === ""){
       setValue({
         ...value,
-        error: "Email and password are mandatory.",
+        error: " First name, username, Email and password are mandatory.",
       });
       return;
     }
-
     try {
       await createUserWithEmailAndPassword(auth, value.email, value.password);
       alert("User Created please Login");
       navigation.navigate("WelcomePage");
-    } catch (error) {
+    } catch (er) {
       setValue({
         ...value,
-        error: error.message,
+        error: er.code,
       });
     }
   }
@@ -47,6 +48,7 @@ export default function UserSignUp({ navigation }) {
         <TextInput
           style={styles.body}
           placeholder="First Name"
+          onChangeText={(text) => setValue({ ...value, firstname: text })}
           underlineColorAndroid="transparent"
         />
       </View>
@@ -61,6 +63,7 @@ export default function UserSignUp({ navigation }) {
         <TextInput
           style={styles.body}
           placeholder="Username"
+          onChangeText={(text) => setValue({ ...value, username: text })}
           underlineColorAndroid="transparent"
         />
       </View>
