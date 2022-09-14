@@ -10,6 +10,8 @@ import {
   date,
 } from "react-native";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import {collection, doc, getFirestore, setDoc} from "firebase/firestore";
+
 function msg (error){
   switch (error.code){
          case "auth/invalid-email":
@@ -21,7 +23,7 @@ function msg (error){
             break;
 
           default:
-          return error.code; 
+          return error.code;
         }
         return error.code;
     }
@@ -31,10 +33,12 @@ export default function UserSignUp({ navigation }) {
     password: "",
     username:"",
     firstname:"",
+    lastname:"",
     error: "",
   });
   const auth = getAuth();
   async function signUp() {
+
     if ( value.firstname ==="" || value.email === "" || value.username === ""||value.password === ""){
       setValue({
         ...value,
@@ -43,7 +47,18 @@ export default function UserSignUp({ navigation }) {
       return;
     }
     try {
-      await createUserWithEmailAndPassword(auth, value.email, value.password);
+      const {user} = await createUserWithEmailAndPassword(auth, value.email, value.password);
+      console.log('user',user.uid)
+      const db = getFirestore();
+      const data = {
+        email:value.email,
+        username:value.username,
+        firstname:value.firstname,
+        lastname:value.lastname,
+        password:value.password,
+        isAdmin:false
+      };
+      await setDoc(doc(db, "users", user.uid), data);
       alert("User Created please Login");
       navigation.navigate("WelcomePage");
     } catch (er) {
@@ -52,10 +67,11 @@ export default function UserSignUp({ navigation }) {
         ...value,
         error: er,
       });
+      console.log(er);
     }
   }
   return (
-          
+
     <View style={styles.container}>
       <View
         style={{
@@ -83,6 +99,7 @@ export default function UserSignUp({ navigation }) {
         <TextInput
           style={styles.body}
           placeholder="Last Name"
+          nChangeText={(text) => setValue({ ...value, lastname: text })}
           underlineColorAndroid="transparent"
         />
       </View>
