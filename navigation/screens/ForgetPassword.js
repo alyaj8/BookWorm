@@ -23,6 +23,10 @@ export default function ForgetPassword({navigation}) {
             case "auth/user-not-found":
               error.code= "There is no account for this email,try to register ";
               break;
+
+              case "auth/network-request-failed":
+                error.code= "No internet connection,Check your wifi.Try again";
+                break;
   
             default:
             return error.code; 
