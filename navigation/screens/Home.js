@@ -12,6 +12,7 @@ import {
   Dimensions,
   Button,
   Alert,
+  ImageBackground,
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 //import { LinearGradient } from "expo-linear-gradient";
@@ -83,6 +84,8 @@ export default function Home({ navigation }) {
             marginTop: "4.6%",
             flexDirection: "row",
             alignItems: "center",
+            borderColor: "black",
+            borderWidth: 0.2,
           }}
         >
           <Icon name="ios-search" size={20} style={{ marginRight: 10 }} />

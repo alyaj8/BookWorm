@@ -7,6 +7,7 @@ import {
   ScrollView,
   Button,
 } from "react-native";
+import MapView from "react-native-maps";
 //import Map from './screens/Map';
 //import Fetch from './src/Fetch';
 //import {userSate,userEffect} from "react";
@@ -159,6 +160,15 @@ export default function BookInfo({ route, navigation }) {
           </View>
         </View>
       </View>
+      <MapView
+        style={{ width: 200, height: 300 }}
+        region={{
+          latitude: book.location._lat,
+          longitude: book.location._long,
+          latitudeDelta: 0.0922,
+          longitudeDelta: 0.0421,
+        }}
+      />
     </ScrollView>
   );
 }
