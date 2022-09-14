@@ -40,7 +40,19 @@ export default function UserSignUp({ navigation }) {
     }
   }
   return (
+          
     <View style={styles.container}>
+      <View
+        style={{
+          width: "100%",
+          height: 40,
+          paddingHorizontal: 20,
+        }}
+      >
+        <Text style={{ fontSize: 22 }} onPress={() => navigation.goBack()}>
+          Back
+        </Text>
+      </View>
       <Text style={[styles.title, styles.leftTitle]}>Create a new account</Text>
       <Text style={{ color: "red" }}>{value?.error}</Text>
 

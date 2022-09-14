@@ -4,17 +4,33 @@ import {
   Text,
   TextInput,
   Button,
+  Image,
+  Dimensions,
+  ImageBackground,
   View,
   Alert,
   ActivityIndicator,
 } from 'react-native';
 import {getAuth,sendPasswordResetEmail} from "firebase/auth";
 
-export default function ForgetPassword() {
+export default function ForgetPassword({navigation}) {
   const [Email, setEmail] = useState('');////////varible wrong
 
   return (
       <View style={styles.container}>
+        
+        <View
+        style={{
+          width: "100%",
+          height: 40,
+          marginTop: 50,
+          paddingHorizontal: 20,
+        }}
+      >
+        <Text style={{ fontSize: 22 }} onPress={() => navigation.goBack()}>
+          Back
+        </Text>
+      </View>
 
         <Text style={styles.title}>Forget password </Text>
 
@@ -66,7 +82,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 10,
-    backgroundColor: 'whiteghost',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -74,8 +89,8 @@ const styles = StyleSheet.create({
 
     fontWeight: 'bold',
     fontSize: 35,
-    marginTop: 20,
-    marginBottom: 20,
+    marginTop: 150,
+    
   },
   leftTitle: {
     alignSelf: 'stretch',
@@ -85,11 +100,10 @@ const styles = StyleSheet.create({
 
   body: {
     borderWidth: 1,
-    borderRadius: 50,
-    padding: 10,
+    borderRadius: 10,
+    padding: 15,
     margin: 12,
-    width: 250,
-    height: 42,
+    width: 350,
     paddingLeft: 20,
     paddingRight: 20,
 
@@ -99,9 +113,9 @@ const styles = StyleSheet.create({
 
     margin: 50,
     padding: 5,
-    width: 250,
+    width: 350,
     borderWidth: 1,
-    borderRadius: 50,
+    borderRadius: 10,
     backgroundColor: "#C6E7DD",
     borderColor: '#C6E7DD',
 
