@@ -10,35 +10,41 @@ import {
   date,
 } from "react-native";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-import {collection, doc, getFirestore, setDoc} from "firebase/firestore";
+import { collection, doc, getFirestore, setDoc } from "firebase/firestore";
+import Icon from "react-native-vector-icons/Ionicons";
 
-function msg (error){
-  switch (error.code){
-         case "auth/invalid-email":
-          error.code = "Wrong email address";
-          break;
+function msg(error) {
+  switch (error.code) {
+    case "auth/invalid-email":
+      error.code = "Wrong email address";
+      break;
 
-          case "auth/email-already-in-use":
-            error.code= "The email is already registered try to login or use forgot password";
-            break;
+    case "auth/email-already-in-use":
+      error.code =
+        "The email is already registered try to login or use forgot password";
+      break;
 
-          default:
-          return error.code;
-        }
-        return error.code;
-    }
+    default:
+      return error.code;
+  }
+  return error.code;
+}
 export default function UserSignUp({ navigation }) {
   const [value, setValue] = React.useState({
     email: "",
     password: "",
-    username:"",
-    firstname:"",
+    username: "",
+    firstname: "",
     error: "",
   });
   const auth = getAuth();
   async function signUp() {
-
-    if ( value.firstname ==="" || value.email === "" || value.username === ""||value.password === ""){
+    if (
+      value.firstname === "" ||
+      value.email === "" ||
+      value.username === "" ||
+      value.password === ""
+    ) {
       setValue({
         ...value,
         error: " First name, username, Email and password are mandatory.",
@@ -46,20 +52,24 @@ export default function UserSignUp({ navigation }) {
       return;
     }
     try {
-      const {user} = await createUserWithEmailAndPassword(auth, value.email, value.password);
-      console.log('user',user.uid)
+      const { user } = await createUserWithEmailAndPassword(
+        auth,
+        value.email,
+        value.password
+      );
+      console.log("user", user.uid);
       const db = getFirestore();
       const data = {
-        email:value.email,
-        username:value.username,
-        firstname:value.firstname,
-        isAdmin:false
+        email: value.email,
+        username: value.username,
+        firstname: value.firstname,
+        isAdmin: false,
       };
       await setDoc(doc(db, "users", user.uid), data);
       alert("User Created please Login");
       navigation.navigate("WelcomePage");
     } catch (er) {
-      er = msg(er)
+      er = msg(er);
       setValue({
         ...value,
         error: er,
@@ -68,7 +78,6 @@ export default function UserSignUp({ navigation }) {
     }
   }
   return (
-
     <View style={styles.container}>
       <View
         style={{
@@ -77,9 +86,12 @@ export default function UserSignUp({ navigation }) {
           paddingHorizontal: 20,
         }}
       >
-        <Text style={{ fontSize: 22 }} onPress={() => navigation.goBack()}>
-          Back
-        </Text>
+        <Icon
+          name="arrow-back-outline"
+          size={40}
+          style={{ color: "black" }}
+          onPress={() => navigation.goBack()}
+        />
       </View>
       <Text style={[styles.title, styles.leftTitle]}>Create a new account</Text>
       <Text style={{ color: "red" }}>{value?.error}</Text>
@@ -168,6 +180,7 @@ const styles = StyleSheet.create({
     width: 250,
     borderWidth: 1,
     borderRadius: 50,
-    backgroundColor: "#C6E7DD",
+    backgroundColor: "#00a46c",
+    fontWeight: "bold",
   },
 });

@@ -127,7 +127,7 @@ export default function BookInfo({ route, navigation }) {
                 flexDirection: "row",
                 borderRadius: 25,
                 backgroundColor: "#00a46c",
-                paddingHorizontal: 20,
+                paddingHorizontal: 19,
               }}
             >
               <Text
@@ -138,7 +138,11 @@ export default function BookInfo({ route, navigation }) {
                 }}
               >
                 {"ADD TO LIST"}
-                <Icon name="add" size={36} style={{ color: "white" }} />
+                <Icon
+                  name="add"
+                  size={33}
+                  style={{ color: "white", margin: 2 }}
+                />
               </Text>
             </View>
             <Text>
