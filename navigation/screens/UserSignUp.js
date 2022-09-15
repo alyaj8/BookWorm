@@ -22,6 +22,11 @@ function msg (error){
             error.code= "The email is already registered try to login or use forgot password";
             break;
 
+            case "auth/weak-password":
+              error.code= "week password";
+              break;
+  
+
           default:
           return error.code;
         }

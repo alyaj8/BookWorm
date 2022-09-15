@@ -90,7 +90,6 @@ export default function WelcomePage({navigation}) {
 
           <Text
               style={{
-                fontFamily: "Roboto-Medium",
                 fontSize: 28,
                 fontWeight: "500",
                 color: "#333",
