@@ -33,7 +33,6 @@ export default function AdminAccount({ navigation }) {
           </Text>
           <Text style={{ fontSize: 15, fontWeight: "bold", color: "grey" }}>
             {" "}
-            Alya Aljuraywi
           </Text>
         </View>
 
@@ -57,11 +56,11 @@ export default function AdminAccount({ navigation }) {
         </View>
 
         <TouchableOpacity
-            onPress={async ()=>{
-              const auth =getAuth()
-              await signOut(auth);
-              navigation.navigate('WelcomePage')
-            }}
+          onPress={async () => {
+            const auth = getAuth();
+            await signOut(auth);
+            navigation.navigate("WelcomePage");
+          }}
           style={{
             alignSelf: "center",
             flexDirection: "row",

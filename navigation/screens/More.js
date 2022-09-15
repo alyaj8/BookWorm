@@ -8,7 +8,7 @@ export default function More({ navigation }) {
         //  onPress={() => alert('This is the "more" screen.')}
         style={{ fontSize: 26, fontWeight: "bold" }}
       >
-        More w{" "}
+        {"\n"}{" "}
       </Text>
     </View>
   );

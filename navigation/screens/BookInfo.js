@@ -134,13 +134,13 @@ export default function BookInfo({ route, navigation }) {
                 style={{
                   fontWeight: "bold",
                   paddingBottom: 10,
-                  fontSize: 18,
+                  fontSize: 21,
                 }}
               >
                 {"ADD TO LIST"}
                 <Icon
                   name="add"
-                  size={33}
+                  size={37}
                   style={{ color: "white", margin: 2 }}
                 />
               </Text>
@@ -150,11 +150,11 @@ export default function BookInfo({ route, navigation }) {
               Review it
             </Text>
             <View style={{ flex: 1, flexDirection: "row", paddingTop: 10 }}>
-              <Icon name="star-outline" size={36} style={{ color: "gold" }} />
-              <Icon name="star-outline" size={36} style={{ color: "gold" }} />
-              <Icon name="star-outline" size={36} style={{ color: "gold" }} />
-              <Icon name="star-outline" size={36} style={{ color: "gold" }} />
-              <Icon name="star-outline" size={36} style={{ color: "gold" }} />
+              <Icon name="star-outline" size={38} style={{ color: "gold" }} />
+              <Icon name="star-outline" size={38} style={{ color: "gold" }} />
+              <Icon name="star-outline" size={38} style={{ color: "gold" }} />
+              <Icon name="star-outline" size={38} style={{ color: "gold" }} />
+              <Icon name="star-outline" size={38} style={{ color: "gold" }} />
             </View>
 
             <Text style={{ fontWeight: "bold", alignSelf: "flex-start" }}>
@@ -183,7 +183,7 @@ export default function BookInfo({ route, navigation }) {
                 marginBottom: 101,
               }}
             >
-              <Text style={{ fontWeight: "bold", alignSelf: "flex-start" }}>
+              <Text style={{ fontWeight: "bold" }}>
                 {"\n"}
                 {"Where to find"}
               </Text>
@@ -194,10 +194,6 @@ export default function BookInfo({ route, navigation }) {
                   longitude: book.location._long,
                 }}
               />
-            </View>
-
-            <View style={styles.fixToText}>
-              <Button title="Buy it used" color="black" />
             </View>
           </View>
         </ImageBackground>
@@ -213,7 +209,6 @@ const styles = StyleSheet.create({
   fixToText: {
     width: 170,
     justifyContent: "center",
-    alignContent: "center",
     borderRadius: 50,
     backgroundColor: "#00a46c",
   },

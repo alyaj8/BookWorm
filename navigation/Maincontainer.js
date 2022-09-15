@@ -44,7 +44,7 @@ export default function Maincontainer({ navigation }) {
           if (rn === HomeName) {
             iconName = focused ? "home" : "home-outline";
           } else if (rn === ListssName) {
-            iconName = focused ? "logo-buffer" : "logo-buffer";
+            iconName = focused ? "layers" : "layers-outline";
           } else if (rn === MoreName) {
             iconName = focused
               ? "ellipsis-horizontal-circle-sharp"
@@ -55,7 +55,7 @@ export default function Maincontainer({ navigation }) {
             iconName = focused ? "compass" : "compass-outline";
           }
           // You can return any component that you like here!
-          return <Ionicons name={iconName}  size={28} color={"black"} />; //
+          return <Ionicons name={iconName} size={30} color={"green"} />; //
         },
       })}
     >
