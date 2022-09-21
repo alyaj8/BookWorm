@@ -11,6 +11,7 @@ import {
   Alert,
   ActivityIndicator,
 } from 'react-native';
+import Icon from "react-native-vector-icons/Ionicons";
 import {getAuth,sendPasswordResetEmail} from "firebase/auth";
 
 export default function ForgetPassword({navigation}) {
@@ -46,9 +47,12 @@ export default function ForgetPassword({navigation}) {
           paddingHorizontal: 20,
         }}
       >
-        <Text style={{ fontSize: 22 }} onPress={() => navigation.goBack()}>
-          Back
-        </Text>
+        <Icon
+              name="arrow-back-outline"
+              size={40}
+              style={{ color: "black",  }}
+              onPress={() => navigation.goBack()}
+            />
       </View>
 
         <Text style={styles.title}>Forget password </Text>
