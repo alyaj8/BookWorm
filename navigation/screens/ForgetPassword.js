@@ -132,7 +132,7 @@ const styles = StyleSheet.create({
   },
   buttonCont: {
 
-    margin: 50,
+    marginBottom: 180,
     padding: 5,
     width: 350,
     borderWidth: 1,
