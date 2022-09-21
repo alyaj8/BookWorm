@@ -9,6 +9,7 @@ import {
   ActivityIndicator,
   date,
 } from "react-native";
+import Icon from "react-native-vector-icons/Ionicons";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import {collection, doc, getFirestore, setDoc} from "firebase/firestore";
 
@@ -85,11 +86,14 @@ export default function UserSignUp({ navigation }) {
           paddingHorizontal: 20,
         }}
       >
-        <Text style={{ fontSize: 22 }} onPress={() => navigation.goBack()}>
-          Back
-        </Text>
+        <Icon
+              name="arrow-back-outline"
+              size={40}
+              style={{ color: "black",  }}
+              onPress={() => navigation.goBack()}
+            />
       </View>
-      <Text style={[styles.title, styles.leftTitle]}>Create a new account</Text>
+      <Text style={[styles.title ]}>Create a new account</Text>
       <Text style={{ color: "red" }}>{value?.error}</Text>
 
       <View style={styles.InputContainer}>
@@ -154,8 +158,11 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    marginTop: 30, 
   },
   title: {
+    alignItems: "left",
+    justifyContent: "left",
     fontWeight: "bold",
     fontSize: 35,
     marginTop: 20,
@@ -166,12 +173,13 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     padding: 10,
     margin: 12,
-    width: 250,
+    width: 350,
     height: 42,
     paddingLeft: 20,
     paddingRight: 20,
   },
   buttonCont: {
+    
     margin: 50,
     padding: 5,
     width: 250,
