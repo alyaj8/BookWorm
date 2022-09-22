@@ -170,7 +170,7 @@ const styles = StyleSheet.create({
   },
   body: {
     borderWidth: 1,
-    borderRadius: 50,
+    borderRadius: 10,
     padding: 10,
     margin: 12,
     width: 350,
@@ -184,7 +184,7 @@ const styles = StyleSheet.create({
     padding: 5,
     width: 250,
     
-    borderRadius: 50,
+    borderRadius: 10,
     backgroundColor: "#B1D8B7",
   },
 });
