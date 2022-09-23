@@ -11,7 +11,6 @@ import {
   TextInput,
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
-import MapView from "react-native-maps";
 //import Map from './screens/Map';
 //import Fetch from './src/Fetch';
 //import {userSate,userEffect} from "react";
@@ -184,13 +183,6 @@ export default function BookInfo({ route, navigation }) {
                   {"\n"}
                   {"Where to find"}
                 </Text>
-                <MapView
-                  style={{ width: 100, height: 150 }}
-                  region={{
-                    latitude: book.location._lat,
-                    longitude: book.location._long,
-                  }}
-                />
               </View>
 
               <View style={styles.fixToText}>
