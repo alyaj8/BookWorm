@@ -92,126 +92,126 @@ export default function Discovry({ navigation }) {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <ScrollView>
-        <ImageBackground source={require("./111.jpg")} resizeMode="cover">
-          <View
+      <ImageBackground source={require("./111.jpg")} resizeMode="cover">
+        <View
+          style={{
+            backgroundColor: "#FFF",
+            // D0ECDF
+            paddingVertical: 8,
+            paddingHorizontal: 20,
+            marginHorizontal: 20,
+            borderRadius: 15,
+            marginTop: 25,
+            marginBottom: -10,
+            flexDirection: "row",
+            alignItems: "center",
+            borderColor: "black",
+            borderWidth: 0.2,
+          }}
+        >
+          <Icon name="ios-search" size={20} style={{ marginRight: 10 }} />
+          <TextInput
+            placeholder="Search by title or for a user"
+            placeholderTextColor="#b1e5d3"
             style={{
-              backgroundColor: "#FFF",
-              // D0ECDF
-              paddingVertical: 8,
-              paddingHorizontal: 20,
-              marginHorizontal: 20,
-              borderRadius: 15,
-              marginTop: 25,
-              marginBottom: -10,
-              flexDirection: "row",
-              alignItems: "center",
-              borderColor: "black",
-              borderWidth: 0.2,
+              fontWeight: "bold",
+              fontSize: 18,
+              width: 260,
             }}
-          >
-            <Icon name="ios-search" size={20} style={{ marginRight: 10 }} />
-            <TextInput
-              placeholder="Search by title or for a user"
-              placeholderTextColor="#b1e5d3"
-              style={{
-                fontWeight: "bold",
-                fontSize: 18,
-                width: 260,
-              }}
-            />
-          </View>
-          <View
-            style={{
-              backgroundColor: "#FFF",
-              paddingVertical: 6,
-              paddingHorizontal: 10,
-              margin: 20,
-              borderRadius: 10,
-              marginTop: 25,
-              flexDirection: "row",
-              alignItems: "center",
-              borderColor: "#00a46c",
-              borderWidth: 0.6,
-            }}
-          >
-            <FlatList
-              columnWrapperStyle={{ justifyContent: "space-between" }}
-              numColumns={2}
-              data={books}
-              keyExtractor={(item) => item.title}
-              renderItem={({ item }) => (
-                //  restUrl(item.data.poster)
-                <View style={{ width: width1, height: hight1 }}>
-                  <View style={styles.card}>
-                    <View style={{ alignItems: "flex-end" }}>
-                      <View
+          />
+        </View>
+        <View
+          style={{
+            backgroundColor: "#fff",
+            paddingVertical: 10,
+            paddingHorizontal: 10,
+            marginLeft: 20,
+            marginRight: 20,
+            borderRadius: 10,
+            marginTop: 25,
+            flexDirection: "row",
+            alignItems: "center",
+            borderColor: "#00a46c",
+            borderWidth: 0.6,
+            marginBottom: 110,
+          }}
+        >
+          <FlatList
+            columnWrapperStyle={{ justifyContent: "space-between" }}
+            numColumns={2}
+            data={books}
+            keyExtractor={(item) => item.title}
+            renderItem={({ item }) => (
+              //  restUrl(item.data.poster)
+              <View style={{ width: width1, height: hight1 }}>
+                <View style={styles.card}>
+                  <View style={{ alignItems: "flex-end" }}>
+                    <View
+                      style={{
+                        width: 19,
+                        height: 19,
+                        alignItems: "center",
+                        justifyContent: "center",
+                        borderRadius: 10,
+                        marginTop: -7,
+                        marginRight: -12,
+                      }}
+                    >
+                      <Icon
+                        name="bookmarks"
+                        size={16}
+                        style={{ color: "#00a46c" }}
+                      />
+                    </View>
+                  </View>
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate("BookInfo", item)}
+                  >
+                    <Image
+                      style={styles.container}
+                      source={{
+                        uri: item.poster,
+                      }}
+                    />
+                    <Text>
+                      <Text
                         style={{
-                          width: 19,
-                          height: 19,
-                          alignItems: "center",
-                          justifyContent: "center",
-                          borderRadius: 10,
-                          marginTop: -7,
-                          marginRight: -12,
+                          textAlign: "center",
+                          fontWeight: "bold",
+                          fontSize: 12,
+                          //margin: 10,
                         }}
                       >
-                        <Icon
-                          name="bookmarks"
-                          size={16}
-                          style={{ color: "#00a46c" }}
-                        />
-                      </View>
-                    </View>
-                    <TouchableOpacity
-                      onPress={() => navigation.navigate("BookInfo", item)}
-                    >
-                      <Image
-                        style={styles.container}
-                        source={{
-                          uri: item.poster,
-                        }}
-                      />
-                      <Text>
-                        <Text
-                          style={{
-                            textAlign: "center",
-                            fontWeight: "bold",
-                            fontSize: 12,
-                            //margin: 10,
-                          }}
-                        >
-                          {Datacat(item.title, 11)}
-                          {"\n"}
-                        </Text>
-                        <Text
-                          style={{
-                            textAlign: "left",
-                            color: "grey",
-                            fontSize: 9,
-                          }}
-                        >
-                          By:
-                          {Datacat(item.author, 19)} {"\n"}{" "}
-                        </Text>
-                        <Icon name="star" size={16} style={{ color: "gold" }} />
-                        <Icon name="star" size={16} style={{ color: "gold" }} />
-                        <Icon name="star" size={16} style={{ color: "gold" }} />
-                        <Icon name="star" size={16} style={{ color: "gold" }} />
-                        <Icon
-                          name="star-half"
-                          size={16}
-                          style={{ color: "gold" }}
-                        />
+                        {Datacat(item.title, 11)}
+                        {"\n"}
                       </Text>
-                    </TouchableOpacity>
-                  </View>
+                      <Text
+                        style={{
+                          textAlign: "left",
+                          color: "grey",
+                          fontSize: 9,
+                        }}
+                      >
+                        By:
+                        {Datacat(item.author, 19)} {"\n"}{" "}
+                      </Text>
+                      <Icon name="star" size={16} style={{ color: "gold" }} />
+                      <Icon name="star" size={16} style={{ color: "gold" }} />
+                      <Icon name="star" size={16} style={{ color: "gold" }} />
+                      <Icon name="star" size={16} style={{ color: "gold" }} />
+                      <Icon
+                        name="star-half"
+                        size={16}
+                        style={{ color: "gold" }}
+                      />
+                    </Text>
+                  </TouchableOpacity>
                 </View>
-              )} //here i want my data
-            />
-          </View>
-        </ImageBackground>
-      </ScrollView>
+              </View>
+            )} //here i want my data
+          />
+        </View>
+      </ImageBackground>
     </SafeAreaView>
   );
 }

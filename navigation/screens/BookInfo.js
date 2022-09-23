@@ -172,19 +172,6 @@ export default function BookInfo({ route, navigation }) {
                 />
               </View>
 
-              <View
-                style={{
-                  height: 100,
-                  width: 100,
-                  marginBottom: 101,
-                }}
-              >
-                <Text style={{ fontWeight: "bold", alignSelf: "flex-start" }}>
-                  {"\n"}
-                  {"Where to find"}
-                </Text>
-              </View>
-
               <View style={styles.fixToText}>
                 <Button title="Buy it used" color="black" />
               </View>
@@ -206,6 +193,7 @@ const styles = StyleSheet.create({
     alignContent: "center",
     borderRadius: 50,
     backgroundColor: "#00a46c",
+    marginTop: 40,
   },
   imagePoster: {
     width: "100%",
