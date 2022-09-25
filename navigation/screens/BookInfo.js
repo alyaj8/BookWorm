@@ -9,6 +9,7 @@ import {
   SafeAreaView,
   ImageBackground,
   TextInput,
+  TouchableOpacity,
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 //import Map from './screens/Map';
@@ -130,6 +131,7 @@ export default function BookInfo({ route, navigation }) {
                   paddingHorizontal: 20,
                 }}
               >
+                <TouchableOpacity>
                 <Text
                   style={{
                     fontWeight: "bold",
@@ -140,6 +142,7 @@ export default function BookInfo({ route, navigation }) {
                   {"ADD TO LIST"}
                   <Icon name="add" size={36} style={{ color: "white" }} />
                 </Text>
+                </TouchableOpacity>
               </View>
               <Text>
                 {"\n"}
