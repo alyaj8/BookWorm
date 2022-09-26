@@ -9,8 +9,12 @@ import {
   SafeAreaView,
   ImageBackground,
   TextInput,
+  TouchableOpacity,
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
+import StripeApp from "./StripeApp";
+import { StripeProvider } from "@stripe/stripe-react-native";
+import react from "react";
 //import Map from './screens/Map';
 //import Fetch from './src/Fetch';
 //import {userSate,userEffect} from "react";
@@ -171,9 +175,13 @@ export default function BookInfo({ route, navigation }) {
                   scrollEnabled
                 />
               </View>
-
-              <View style={styles.fixToText}>
-                <Button title="Buy it used" color="black" />
+              <View>
+                <TouchableOpacity
+                  style={styles.fixToText}
+                  onPress={() => navigation.navigate("StripeApp")}
+                >
+                  <Text>buy it here</Text>
+                </TouchableOpacity>
               </View>
             </View>
           </ImageBackground>
@@ -188,12 +196,14 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   fixToText: {
-    width: 170,
+    width: 90,
+    height: 50,
     justifyContent: "center",
     alignContent: "center",
     borderRadius: 50,
     backgroundColor: "#00a46c",
     marginTop: 40,
+    paddingLeft: 10,
   },
   imagePoster: {
     width: "100%",
@@ -202,3 +212,8 @@ const styles = StyleSheet.create({
     marginBottom: "67%",
   },
 });
+/*<TouchableOpacity
+onPress={() => navigation.navigate("StripeApp")}
+>
+<Text>buy Here</Text>
+</TouchableOpacity>*/

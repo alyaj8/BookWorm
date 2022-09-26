@@ -12,7 +12,9 @@ import Maincontainer from "./navigation/Maincontainer";
 import ForgetPassword from "./navigation/screens/ForgetPassword";
 import BookInfo from "./navigation/screens/BookInfo";
 import Adminpage from "./navigation/screens/Adminpage";
-
+import StripeApp from "./navigation/screens/StripeApp";
+import { StripeProvider } from "@stripe/stripe-react-native";
+import { LogBox } from "react-native";
 const firebaseConfig = {
   apiKey: "AIzaSyCb8vT5-UmFZV-954feGAE2L0-T4Tgpqhs",
   authDomain: "group16-de98b.firebaseapp.com",
@@ -25,22 +27,26 @@ const firebaseConfig = {
 
 export const Stack = createNativeStackNavigator();
 initializeApp(firebaseConfig);
-
+const PUBLISHABLE_KEY =
+  "pk_test_51Ll5efFetd1JSL8vQ1WpbGvxBewQSJi8ZUzB6WD0i19CUUkzdnaHAQzja4LNFMZpUWAZKUPTdSklL2KZSI1k9Qfy00MZ31WOSr";
 function App() {
   return (
-    <NavigationContainer>
-      <Stack.Navigator
-        screenOptions={{ headerShown: false }}
-        initialRouteName="WelcomePage"
-      >
-        <Stack.Screen name="WelcomePage" component={WelcomePage} />
-        <Stack.Screen name="Maincontainer" component={Maincontainer} />
-        <Stack.Screen name="ForgetPassword" component={ForgetPassword} />
-        <Stack.Screen name="UserSignUp" component={UserSignUp} />
-        <Stack.Screen name="BookInfo" component={BookInfo} />
-        <Stack.Screen name="Adminpage" component={Adminpage} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <StripeProvider publishableKey="pk_test_51Ll5efFetd1JSL8vQ1WpbGvxBewQSJi8ZUzB6WD0i19CUUkzdnaHAQzja4LNFMZpUWAZKUPTdSklL2KZSI1k9Qfy00MZ31WOSr">
+      <NavigationContainer>
+        <Stack.Navigator
+          screenOptions={{ headerShown: false }}
+          initialRouteName="WelcomePage"
+        >
+          <Stack.Screen name="WelcomePage" component={WelcomePage} />
+          <Stack.Screen name="Maincontainer" component={Maincontainer} />
+          <Stack.Screen name="ForgetPassword" component={ForgetPassword} />
+          <Stack.Screen name="UserSignUp" component={UserSignUp} />
+          <Stack.Screen name="BookInfo" component={BookInfo} />
+          <Stack.Screen name="Adminpage" component={Adminpage} />
+          <Stack.Screen name="StripeApp" component={StripeApp} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </StripeProvider>
   );
 }
 /*const styles = StyleSheet.create({
