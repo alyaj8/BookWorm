@@ -1,6 +1,7 @@
 import * as React from "react";
 import { View, Text ,Image,TextInput,ScrollView,TouchableOpacity} from "react-native";
-import { LinearGradient } from 'expo-linear-gradient'
+import { LinearGradient } from 'expo-linear-gradient';
+import ReadBookList from "./ReadBookList";
 
 export default function Lists({ navigation }) {
   return (
@@ -10,7 +11,7 @@ export default function Lists({ navigation }) {
   }}>
      <View style={{
          backgroundColor:"#00a46c",
-         height:"23%",
+         height:"15%",
          borderBottomLeftRadius:20,
          borderBottomRightRadius:20,
          paddingHorizontal:20,
@@ -50,18 +51,22 @@ export default function Lists({ navigation }) {
 
                    </View>
                    <View style={{width:"50%", alignItems:"flex-end"}}>
+                   <TouchableOpacity
+                    onPress={() => navigation.navigate("ReadBookList")}>
                         <View style={{
                             backgroundColor:"#00a46c",
                             paddingHorizontal:20,
                             paddingVertical:5,
                             borderRadius:15
                         }}>
+                          
                             <Text style={{
                                 fontWeight:"bold",
                                 fontSize:13,
                                 color:"#FFF"
                             }}>View all</Text>
                         </View> 
+                      </TouchableOpacity>
                    </View> 
                </View>
 
@@ -82,7 +87,7 @@ export default function Lists({ navigation }) {
                         }}
                     />
                     <TouchableOpacity 
-                        onPress={()=>navigation.navigate("Detail")}
+                        onPress={()=>navigation.navigate("")}
                         style={{
                             height:250,
                             elevation:2,
@@ -105,67 +110,13 @@ export default function Lists({ navigation }) {
                         }}>
                             <Text style={{
                                 fontWeight:"bold"
-                            }}>Book name </Text>
+                            }}>Book title </Text>
                          
                         </View>
                     </TouchableOpacity>
 
-                    <TouchableOpacity 
-                        onPress={()=>navigation.navigate("Detail")}
-                        style={{
-                            height:250,
-                            elevation:2,
-                            backgroundColor:"#FFF",
-                            marginLeft:20,
-                            marginTop:20,
-                            borderRadius:15,
-                            marginBottom:10,
-                            width:160
-                        }}
-                    >
-                          <Image
-                            
-                        />
-                        <View style={{
-                            flexDirection:"row",
-                            paddingTop:10,
-                            paddingHorizontal:10
-                        }}>
-                            <Text style={{
-                                fontWeight:"bold"
-                            }}>Book name </Text>
-                         
-                        </View>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity 
-                        onPress={()=>navigation.navigate("Detail")}
-                        style={{
-                            height:250,
-                            elevation:2,
-                            backgroundColor:"#FFF",
-                            marginLeft:20,
-                            marginTop:20,
-                            borderRadius:15,
-                            marginBottom:10,
-                            width:160
-                        }}
-                    >
-                          <Image
-                            
-                        />
-                        <View style={{
-                            flexDirection:"row",
-                            paddingTop:10,
-                            paddingHorizontal:10
-                        }}>
-                            <Text style={{
-                                fontWeight:"bold"
-                            }}>Book name </Text>
-                         
-                        </View>
-                    </TouchableOpacity>
-
+               
+              
                     
                 </ScrollView> 
       </View>
