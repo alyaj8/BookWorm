@@ -3,7 +3,7 @@ import { StyleSheet, Text, Image, SafeAreaView, View } from "react-native";
 import UserSignUp from "./navigation/screens/UserSignUp";
 import WelcomePage from "./navigation/WelcomePage";
 import Home from "./navigation/screens/Home";
-
+import Orders from "./navigation/screens/Orders";
 import { NavigationContainer, navigation } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { initializeApp } from "firebase/app";
@@ -44,6 +44,7 @@ function App() {
           <Stack.Screen name="BookInfo" component={BookInfo} />
           <Stack.Screen name="Adminpage" component={Adminpage} />
           <Stack.Screen name="StripeApp" component={StripeApp} />
+          <Stack.Screen name="Orders" component={Orders}/>
         </Stack.Navigator>
       </NavigationContainer>
     </StripeProvider>
