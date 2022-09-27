@@ -16,6 +16,9 @@ import {
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 //import { LinearGradient } from "expo-linear-gradient";
+//import PDFView from "react-native-view-pdf/lib/index";
+//import PDFReader from "rn-pdf-reader-js";
+//import Pdf from "react-native-pdf";
 
 export default function Bookpdf({ navigation }) {
   return (
@@ -25,7 +28,9 @@ export default function Bookpdf({ navigation }) {
         flex: 1,
       }}
     >
-      <Text>pdf display</Text>
+      <Text>
+        {"\n"} {"\n"} {"\n"}here each book pdf{" "}
+      </Text>
     </View>
   );
 }

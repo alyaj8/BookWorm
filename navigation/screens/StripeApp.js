@@ -64,7 +64,7 @@ const StripeApp = ({ props, navigation }) => {
         } else if (paymentIntent) {
           setLoading(false);
           alert("Payment Successful");
-          navigation.navigate("Home");
+          navigation.navigate("Bookpdf");
           console.log("Payment successful ", paymentIntent);
         }
       }

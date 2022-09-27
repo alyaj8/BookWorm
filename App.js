@@ -3,7 +3,8 @@ import { StyleSheet, Text, Image, SafeAreaView, View } from "react-native";
 import UserSignUp from "./navigation/screens/UserSignUp";
 import WelcomePage from "./navigation/WelcomePage";
 import Home from "./navigation/screens/Home";
-import Orders from "./navigation/screens/Orders";
+import Bookpdf from "./navigation/screens/Bookpdf";
+
 import { NavigationContainer, navigation } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { initializeApp } from "firebase/app";
@@ -12,7 +13,6 @@ import Maincontainer from "./navigation/Maincontainer";
 import ForgetPassword from "./navigation/screens/ForgetPassword";
 import BookInfo from "./navigation/screens/BookInfo";
 import Adminpage from "./navigation/screens/Adminpage";
-import ReadBookList from "./navigation/screens/ReadBookList";
 import StripeApp from "./navigation/screens/StripeApp";
 import { StripeProvider } from "@stripe/stripe-react-native";
 import { LogBox } from "react-native";
@@ -44,9 +44,8 @@ function App() {
           <Stack.Screen name="UserSignUp" component={UserSignUp} />
           <Stack.Screen name="BookInfo" component={BookInfo} />
           <Stack.Screen name="Adminpage" component={Adminpage} />
-          <Stack.Screen name="ReadBookList" component={ReadBookList} />
           <Stack.Screen name="StripeApp" component={StripeApp} />
-          <Stack.Screen name="Orders" component={Orders}/>
+          <Stack.Screen name="Bookpdf" component={Bookpdf} />
         </Stack.Navigator>
       </NavigationContainer>
     </StripeProvider>
