@@ -1,6 +1,8 @@
 import * as React from "react";
+
 import { View, Text, ScrollView, TouchableOpacity, Image } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
+
 import { getAuth, signOut } from "firebase/auth";
 
 export default function Account({ navigation }) {
@@ -55,7 +57,9 @@ export default function Account({ navigation }) {
           <Icon name="person-outline" size={30} style={{ marginRight: 10 }} />
           <Text style={{ fontSize: 16, marginTop: 7 }}>My detailes</Text>
         </View>
-        <View
+        <TouchableOpacity
+         onPress = { () => navigation.navigate("Orders")}
+        
           style={{
             alignSelf: "center",
             flexDirection: "row",
@@ -76,7 +80,8 @@ export default function Account({ navigation }) {
             style={{ marginRight: 10 }}
           />
           <Text style={{ fontSize: 16, marginTop: 7 }}>My orders </Text>
-        </View>
+        
+        </TouchableOpacity>
         <View
           style={{
             alignSelf: "center",
