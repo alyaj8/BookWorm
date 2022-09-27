@@ -2229,6 +2229,11 @@
   "resolved" "https://registry.npmjs.org/@sideway/pinpoint/-/pinpoint-2.0.0.tgz"
   "version" "2.0.0"
 
+"@stripe/stripe-react-native@^0.19.0":
+  "integrity" "sha512-J4UWmg8oUIhMvLsU94pWqsXpLyxxh3wT4AG/VKdzzb3Wn80a2b6zeOxtY3/7uoNV4AGurhZXvo7Gv01/y7MChQ=="
+  "resolved" "https://registry.npmjs.org/@stripe/stripe-react-native/-/stripe-react-native-0.19.0.tgz"
+  "version" "0.19.0"
+
 "@types/graceful-fs@^4.1.2":
   "integrity" "sha512-anKkLmZZ+xm4p8JWBf4hElkM4XR+EZeA2M9BAkkTldmcyDY4mbdIJnRghDJH3Ov5ooY7/UAoENtmdMSkaAd7Cw=="
   "resolved" "https://registry.npmjs.org/@types/graceful-fs/-/graceful-fs-4.1.5.tgz"
@@ -3599,6 +3604,11 @@
   "resolved" "https://registry.npmjs.org/expo-keep-awake/-/expo-keep-awake-10.2.0.tgz"
   "version" "10.2.0"
 
+"expo-linear-gradient@^11.4.0":
+  "integrity" "sha512-qtIfsLs7NOpfxYrFSJL5uLtNHIkBHQFuQ3f7++XpoJTSm4eQVFxjjkCGWiLIrkpVjKzmgp3DLuIVsadsGX21lA=="
+  "resolved" "https://registry.npmjs.org/expo-linear-gradient/-/expo-linear-gradient-11.4.0.tgz"
+  "version" "11.4.0"
+
 "expo-location@^14.3.0":
   "integrity" "sha512-CKU6bW1rB6521LruyUsZm6dQXXBix9E64ZZmOpVgom1DQ3Bfd23IBvXXeUQeIhy+NbOzF1itFrPTLzspgl6wPg=="
   "resolved" "https://registry.npmjs.org/expo-location/-/expo-location-14.3.0.tgz"
@@ -3630,7 +3640,7 @@
   "resolved" "https://registry.npmjs.org/expo-status-bar/-/expo-status-bar-1.4.0.tgz"
   "version" "1.4.0"
 
-"expo@*", "expo@~46.0.9":
+"expo@*", "expo@>=46.0.9", "expo@~46.0.9":
   "integrity" "sha512-MUDLTnBYOOabzFo2HATTMXiAYoQ4n1IWBM3HlOmsQVoMBKOs6FcZDqte/lwK80KkhHIpr1Q37JD8Dq1Fk4b9eA=="
   "resolved" "https://registry.npmjs.org/expo/-/expo-46.0.10.tgz"
   "version" "46.0.10"
@@ -4872,6 +4882,11 @@
   "version" "3.3.0"
   dependencies:
     "immediate" "~3.0.5"
+
+"linear-gradient@^1.0.6":
+  "integrity" "sha512-ogM9DW9Zu9opIri7edn/2qROr2lZRtogkGWs/7aOi9QkKqQhfC3MjvwddWFTF7y4ezRDgYyP7+QlkWIV8kyITA=="
+  "resolved" "https://registry.npmjs.org/linear-gradient/-/linear-gradient-1.0.6.tgz"
+  "version" "1.0.6"
 
 "lines-and-columns@^1.1.6":
   "integrity" "sha512-7ylylesZQ/PV29jhEDl3Ufjo6ZX7gCqJr5F7PKrqc93v7fzSymt1BpwEU8nAUXs8qzzvqhbjhK5QZg6Mt/HkBg=="

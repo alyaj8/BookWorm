@@ -28,7 +28,7 @@ export default function Home({ navigation }) {
       <View
         style={{
           backgroundColor: "#00a46c",
-          height: "20%",
+          height: "15%",
           borderBottomLeftRadius: 20,
           borderBottomRightRadius: 20,
           paddingHorizontal: 20,
@@ -38,31 +38,11 @@ export default function Home({ navigation }) {
           style={{
             flexDirection: "row",
             alignItems: "center",
-            marginTop: 25,
+            marginTop: 20,
             width: "100%",
           }}
         >
-          <View style={{ width: "50%" }}>
-            <Text
-              style={{
-                fontSize: "25%",
-                color: "#FFF",
-                fontWeight: "bold",
-                alignItems: "flex-end",
-              }}
-            >
-              WELCOME TO{"\n"}
-              <Text
-                style={{
-                  fontSize: "26.5%",
-                  color: "black",
-                  fontWeight: "bold",
-                }}
-              >
-                {"  "}BOOKWORM
-              </Text>
-            </Text>
-          </View>
+          
         </View>
       </View>
       <View

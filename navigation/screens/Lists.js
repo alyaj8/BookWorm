@@ -1,15 +1,126 @@
 import * as React from "react";
-import { View, Text } from "react-native";
+import { View, Text ,Image,TextInput,ScrollView,TouchableOpacity} from "react-native";
+import { LinearGradient } from 'expo-linear-gradient';
+import ReadBookList from "./ReadBookList";
 
 export default function Lists({ navigation }) {
   return (
-    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <Text
-        //   onPress={() => alert('This is the "lists" screen.')}///navigation.navigate('home')
-        style={{ fontSize: 26, fontWeight: "bold" }}
-      >
-        Lists
-      </Text>
-    </View>
+    <View style={{
+      backgroundColor:"#FFF",
+      flex:1
+  }}>
+     <View style={{
+         backgroundColor:"#00a46c",
+         height:"15%",
+         borderBottomLeftRadius:20,
+         borderBottomRightRadius:20,
+         paddingHorizontal:20,
+         marginBottom:15
+     }}>
+ 
+               <View style={{
+                   flexDirection:"row",
+                   alignItems:"center",
+                   marginTop:25,
+                   width:"100%"
+               }}>
+                   <View style={{width:"50%"}}>
+                        <Text style={{
+                            fontSize:22,
+                            color:"#FFF",
+                            fontWeight:"bold"
+                        }}>You read n books</Text>
+                        </View>
+                   </View>
+
+                   </View>
+                 
+               
+            <View style={{
+                   flexDirection:"row",
+                   paddingHorizontal:20,
+                   width:"100%",
+                   alignItems:"center"
+               }}>
+                   <View style={{width:"50%"}}>
+                        <Text style={{
+                            fontWeight:"bold",
+                            fontSize:17,
+                            color:"#585a61"
+                        }}>Read Books</Text>
+
+                   </View>
+                   <View style={{width:"50%", alignItems:"flex-end"}}>
+                   <TouchableOpacity
+                    onPress={() => navigation.navigate("ReadBookList")}>
+                        <View style={{
+                            backgroundColor:"#00a46c",
+                            paddingHorizontal:20,
+                            paddingVertical:5,
+                            borderRadius:15
+                        }}>
+                          
+                            <Text style={{
+                                fontWeight:"bold",
+                                fontSize:13,
+                                color:"#FFF"
+                            }}>View all</Text>
+                        </View> 
+                      </TouchableOpacity>
+                   </View> 
+               </View>
+
+               <ScrollView 
+                    horizontal
+                    showsHorizontalScrollIndicator={false}
+                    style={{height:400}}
+                >
+                    <LinearGradient
+                        colors={["rgba(0,164,109,0.09)", "transparent"]}
+                        style={{
+                            position:"absolute",
+                            left:0,
+                            right:0,
+                            height:100,
+                            marginTop:220,
+                            top:0
+                        }}
+                    />
+                    <TouchableOpacity 
+                        onPress={()=>navigation.navigate("")}
+                        style={{
+                            height:250,
+                            elevation:2,
+                            backgroundColor:"#FFF",
+                            marginLeft:20,
+                            marginTop:20,
+                            borderRadius:15,
+                            marginBottom:10,
+                            width:160
+                        }}
+                    >
+     
+                          <Image
+                            
+                        />
+                        <View style={{
+                            flexDirection:"row",
+                            paddingTop:10,
+                            paddingHorizontal:10
+                        }}>
+                            <Text style={{
+                                fontWeight:"bold"
+                            }}>Book title </Text>
+                         
+                        </View>
+                    </TouchableOpacity>
+
+               
+              
+                    
+                </ScrollView> 
+      </View>
+     
+
   );
 }

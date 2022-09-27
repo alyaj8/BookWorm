@@ -54,6 +54,8 @@ export default function Discovry({ navigation }) {
     );
   };
   const [books, setBooks] = useState([]);
+  const [allBooks, setAllBooks] = useState([]);
+  const [searchText, setSearchText] = useState('');
   const [url, setUrl] = useState("");
 
   useEffect(() => {
@@ -81,18 +83,31 @@ export default function Discovry({ navigation }) {
         myData.push({ ...doc.data() });
       });
       //store data in AsyncStorage
+      myData.sort((a, b) => a.title.localeCompare(b.title))
+      setAllBooks(myData);
       setBooks(myData);
     } catch (error) {
       console.log(error);
     }
   };
 
+  const searchBooks = (text) => {
+    console.log(text);
+    const filter = []
+    allBooks.forEach(e => {
+      if (e.title.toLowerCase().includes(text.toLowerCase()) || e.author.toLowerCase().includes(text.toLowerCase())) {
+        filter.push(e)
+      }
+    });
+    setBooks(filter);
+    console.log(books);
+  }
   /* const restUrl = (link1) => {
     setUrl(link1)  }*/
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <ImageBackground source={require("./111.jpg")} resizeMode="cover">
+      <ImageBackground style={{flex: 1}} source={require("./222.jpg")} resizeMode="cover">
         <View
           style={{
             backgroundColor: "#FFF",
@@ -113,6 +128,7 @@ export default function Discovry({ navigation }) {
           <TextInput
             placeholder="Search by title or for a user"
             placeholderTextColor="#b1e5d3"
+            onChangeText={text => searchBooks(text)}
             style={{
               fontWeight: "bold",
               fontSize: 18,
@@ -136,6 +152,8 @@ export default function Discovry({ navigation }) {
             marginBottom: 110,
           }}
         >
+          {books.length < 1?
+          <Text>Book not found!</Text>:
           <FlatList
             columnWrapperStyle={{ justifyContent: "space-between" }}
             numColumns={2}
@@ -210,6 +228,7 @@ export default function Discovry({ navigation }) {
               </View>
             )} //here i want my data
           />
+                      }
         </View>
       </ImageBackground>
     </SafeAreaView>
@@ -218,13 +237,13 @@ export default function Discovry({ navigation }) {
 
 const styles = StyleSheet.create({
   container: {
-    height: "73%",
-    width: "88%",
-    borderRadius: 4,
+    height: "70%",
+    width: "90%",
+    borderRadius: 1,
     resizeMode: "stretch",
     justifyContent: "center",
     shadowColor: "black",
-    shadowOpacity: 0.8,
+    shadowOpacity: 0.9,
     shadowOffset: {
       width: 2,
       height: 8,
@@ -236,21 +255,22 @@ const styles = StyleSheet.create({
   },
   oneBook: {
     //padding: 1,
-    height: 128,
+    height: 130,
     justifyContent: "center",
     width: 350,
     backgroundColor: "lightgrey",
     borderRadius: 25,
-    margin: 5,
+    margin: 50,
     alignItems: "center",
   },
   card: {
-    height: "95%",
+    height: "90%",
     backgroundColor: "#EDF5F0",
-    marginHorizontal: 2,
+    marginHorizontal: 10,
     borderRadius: 10,
-    marginBottom: 10,
-    padding: 15,
+    margin: 10,
+    marginBottom: 30,
+    padding: 10,
     borderColor: "#00a46c",
     borderWidth: 0.2,
   },
@@ -258,6 +278,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     margin: 10,
     justifyContent: "space-between",
+    flex: 1,
   },
   categoryText: { fontSize: 15, color: "grey", fontWeight: "bold" },
   categoryTextSelected: {

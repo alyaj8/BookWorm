@@ -1,0 +1,19 @@
+{
+  "name": "linear-gradient",
+  "version": "1.0.6",
+  "description": "Calculates the color representing a number based on the gradient supplied",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/karmadata/linear-gradient.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/karmadata/linear-gradient/issues"
+  },
+  "homepage": "https://github.com/karmadata/linear-gradient#readme"
+}
