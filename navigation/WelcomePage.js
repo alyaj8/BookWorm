@@ -81,6 +81,11 @@ const navSignUP = (val) =>{
       const docSnap = await getDoc(docRef);
       console.log("uid", user.uid);
       console.log("user", docSnap.data());
+      setValue({
+        email: "",
+        password: "",
+        error: "",
+      });
       if (docSnap.data().isAdmin) {
         navigation.navigate("Adminpage");
       } else {
