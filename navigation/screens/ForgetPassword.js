@@ -41,6 +41,9 @@ export default function ForgetPassword({navigation}) {
       }
   const [Email, setEmail] = useState('');////////varible wrong
   const [disabled, setDisabled] = useState(false);
+ const anotherFunc = (val) =>{
+  setEmail('');
+    }
   return (
       <SafeAreaView
       style={{flex: 1, justifyContent: "center", backgroundColor: "#ffff" , alignItems: "center"}}
@@ -89,6 +92,7 @@ export default function ForgetPassword({navigation}) {
             sendPasswordResetEmail(auth, Email)
                 .then(() => {
                   alert('Email sent, please check your email')
+                  anotherFunc(Email);
                   setDisabled(true);
                 })
                 .catch((er) => {
