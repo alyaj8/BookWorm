@@ -6,12 +6,16 @@ import {
   Button,
   View,
   Alert,
+  Image,
+  ScrollView,
   ActivityIndicator,
   date,
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import {collection, doc, getFirestore, setDoc} from "firebase/firestore";
+import { SafeAreaView } from "react-native-safe-area-context";
+
 
 function msg (error){
   switch (error.code){
@@ -78,7 +82,10 @@ export default function UserSignUp({ navigation }) {
   }
   return (
 
-    <View style={styles.container}>
+    <SafeAreaView
+    style={{flex: 1, justifyContent: "center", backgroundColor: "#ffff"}}
+    >
+      <ScrollView>
       <View
         style={{
           width: "100%",
@@ -93,6 +100,12 @@ export default function UserSignUp({ navigation }) {
               onPress={() => navigation.goBack()}
             />
       </View>
+      <View style={{alignItems: "center"}}>
+            <Image
+                style={{height: 150, width: 150}}
+                source={require("../BookWorm.jpg")}
+            />
+          </View>
       <Text style={[styles.title ]}>Create a new account</Text>
       <Text style={{ color: "red" }}>{value?.error}</Text>
 
@@ -149,23 +162,20 @@ export default function UserSignUp({ navigation }) {
           onPress={() => signUp()} //
         ></Button>
       </View>
-    </View>
+      </ScrollView>
+      </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 30, 
-  },
+  
   title: {
     alignItems: "left",
     justifyContent: "left",
     fontWeight: "bold",
     fontSize: 35,
     marginTop: 20,
+    paddingLeft:10, 
     marginBottom: 20,
   },
   body: {
@@ -183,7 +193,6 @@ const styles = StyleSheet.create({
     margin: 50,
     padding: 5,
     width: 250,
-    
     borderRadius: 10,
     backgroundColor: "#B1D8B7",
   },
