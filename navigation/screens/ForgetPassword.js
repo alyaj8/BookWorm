@@ -13,6 +13,7 @@ import {
 } from 'react-native';
 import Icon from "react-native-vector-icons/Ionicons";
 import {getAuth,sendPasswordResetEmail} from "firebase/auth";
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function ForgetPassword({navigation}) {
   function msg (error){
@@ -37,7 +38,9 @@ export default function ForgetPassword({navigation}) {
   const [Email, setEmail] = useState('');////////varible wrong
 
   return (
-      <View style={styles.container}>
+      <SafeAreaView
+      style={{flex: 1, justifyContent: "center", backgroundColor: "#ffff" , alignItems: "center"}}
+      >
         
         <View
         style={{
@@ -54,6 +57,8 @@ export default function ForgetPassword({navigation}) {
               onPress={() => navigation.goBack()}
             />
       </View>
+      
+      
 
         <Text style={styles.title}>Forget password </Text>
 
@@ -93,7 +98,7 @@ export default function ForgetPassword({navigation}) {
           </Button>
         </View>
 
-      </View>
+        </SafeAreaView>
   );
 
 
@@ -104,6 +109,7 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 10,
     justifyContent: 'center',
+    
     alignItems: 'center',
   },
   title: {
@@ -132,7 +138,7 @@ const styles = StyleSheet.create({
   },
   buttonCont: {
 
-    marginBottom: 180,
+    marginBottom: 160,
     padding: 5,
     width: 350,
     borderWidth: 1,
