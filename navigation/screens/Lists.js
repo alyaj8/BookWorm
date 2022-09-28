@@ -20,6 +20,7 @@ import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 
 export default function Lists({ navigation }) {
   let [BookList, setBookList] = useState([]);
+  let [numberOfBook,setNumberOfBook]= useState(0);
   let GetBookList = async () => {
     try {
       let list = [];
@@ -38,8 +39,9 @@ export default function Lists({ navigation }) {
             let book = doc.data();
             book.favourite = true;
             list.push(book);
-            // doc.data() is never undefined for query doc snapshots
+            
           });
+          setNumberOfBook(list.length);
           setBookList(list);
         }
       });
@@ -65,7 +67,7 @@ export default function Lists({ navigation }) {
       <View
         style={{
           backgroundColor: "#00a46c",
-          height: "15%",
+          height: "13%",
           borderBottomLeftRadius: 20,
           borderBottomRightRadius: 20,
           paddingHorizontal: 20,
@@ -83,12 +85,12 @@ export default function Lists({ navigation }) {
           <View style={{ width: "50%" }}>
             <Text
               style={{
-                fontSize: 22,
+                fontSize: 21,
                 color: "#FFF",
                 fontWeight: "bold",
               }}
             >
-              You read n books
+              You read {numberOfBook} books
             </Text>
           </View>
         </View>
@@ -141,7 +143,7 @@ export default function Lists({ navigation }) {
 
       <ScrollView
         horizontal
-        showsHorizontalScrollIndicator={false}
+        showsHorizontalScrollIndicator={true}
         style={{ height: 400 }}
       >
         <LinearGradient
