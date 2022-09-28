@@ -14,13 +14,18 @@ import {
   TouchableHighlight,
   TouchableOpacity,
   ScrollView,
+  Keyboard,
 } from "react-native";
 import { Entypo } from "@expo/vector-icons";
 import { Formik } from "formik";
 import * as ImagePicker from "expo-image-picker";
 import { getAuth, createUserWithEmailAndPassword} from "firebase/auth";
-import {collection, doc, getFirestore, setDoc} from "firebase/firestore";
+import {collection, doc, getFirestore, setDoc,firestore } from "firebase/firestore";
 import { AntDesign } from "@expo/vector-icons";
+
+
+import {db} from "../../config/firebase";
+import { async } from "@firebase/util";
 const options = {
     title: "select image",
     type: "library",
@@ -42,8 +47,8 @@ const options = {
   //remove image
   const removeImage = () => setImage(null);
 
-  const background_image = { uri: ".222.jpg" };
-function msg (error){
+  
+/*function msg (error){
   switch (error.code){
          case "auth/invalid-email":
           error.code = "Wrong email address";
@@ -62,10 +67,10 @@ function msg (error){
           return error.code;
         }
         return error.code;
-}
+}*/
 
 export default function AddBookTest({ navigation }) {
-const [image, setImage] = useState(null);
+/*const [image, setImage] = useState(null);
   const [value, setValue] = React.useState({
     title: "",
     Description: "",
@@ -75,8 +80,41 @@ const [image, setImage] = useState(null);
     poster:"",
     error: "",
   });
-  const auth = getAuth();
-  async function addBook() {
+  const auth = getAuth();*/
+
+///////////////////////////////new code 
+  const todoRef = db.firestore().collection('Book');
+  const [addDate , setAddData] = useState('');
+  //add a new data
+  async function addField() {
+    // check if we have new feilds data
+    if(addData && addDate.length>0){
+      //get the timestamp
+      const timestamp = db.firestore.FieldValue.serverTimestamp();
+      const data = {
+        title:value.title,
+        Description:value.Description,
+        category:value.category,
+        ISBN:value.ISBN,
+        author:value.author,
+        poster:value.poster,
+        
+      };
+      todoRef
+        .add(data)
+        .then(()=>{
+          //release the new field state 
+          setAddData('');
+          //releasr keyboard
+          Keyboard.dismiss();
+        })
+        .catch((error)=>{
+        alert(error);
+        })
+    }
+  }
+////////////////////////////////////end new code
+  /*async function addBook() {
 
     if ( value.title ==="" || value.Description === "" || value.category === ""||value.author === ""||value.ISBN === "" ){
       setValue({
@@ -109,7 +147,7 @@ const [image, setImage] = useState(null);
       });
       console.log(er);
     }
-  }
+  }*/
   
   return (
     <ImageBackground source={background_image} resizeMode="cover" >
@@ -173,7 +211,8 @@ const [image, setImage] = useState(null);
         <TextInput
           style={styles.body}
           //placeholder="First Name"
-          onChangeText={(text) => setValue({ ...value, title: text })}
+          onChangeText={(title) => setAddData(title)}
+          value={addDate}
           underlineColorAndroid="transparent"
         />
 
@@ -237,7 +276,7 @@ const [image, setImage] = useState(null);
         
           title="Add Book"
           color="#B1D8B7"
-          onPress={() => addBook()} //
+          onPress={() => addField()} //
         ></Button>
       </View>
       
