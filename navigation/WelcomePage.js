@@ -194,7 +194,7 @@ const navSignUP = (val) =>{
             <Text
               style={{
                 color: "#2F5233",
-                fontWeight: "700",
+                fontWeight: "800",
                 textDecorationLine: "underline",
               }}
             >
