@@ -26,7 +26,10 @@ const AccountName = "Account";
 const Tab = createBottomTabNavigator();
 //export default Maincontainer;
 
-export default function Maincontainer({ navigation }) {
+export default function Maincontainer({ route, navigation }) {
+  const book_uid = route.params;
+  console.log("uid===", book_uid);
+
   return (
     //for bottom navigation
 

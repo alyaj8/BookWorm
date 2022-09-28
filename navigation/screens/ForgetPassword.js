@@ -1,4 +1,4 @@
-import React, {Component, useState,useRef} from 'react';
+import React, {Component, useState} from 'react';
 import {
   StyleSheet,
   Text,
@@ -15,11 +15,7 @@ import Icon from "react-native-vector-icons/Ionicons";
 import {getAuth,sendPasswordResetEmail} from "firebase/auth";
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-
-
 export default function ForgetPassword({navigation}) {
-  
-
   function msg (error){
     switch (error.code){
            case "auth/invalid-email":
@@ -40,10 +36,7 @@ export default function ForgetPassword({navigation}) {
           return error.code;
       }
   const [Email, setEmail] = useState('');////////varible wrong
-  const [disabled, setDisabled] = useState(false);
- const anotherFunc = (val) =>{
-  setEmail('');
-    }
+
   return (
       <SafeAreaView
       style={{flex: 1, justifyContent: "center", backgroundColor: "#ffff" , alignItems: "center"}}
@@ -83,7 +76,7 @@ export default function ForgetPassword({navigation}) {
 
 
         <View style={styles.buttonCont}>
-          <Button  disabled={disabled} onPress={() => {
+          <Button onPress={() => {
             if (!Email) {
               alert('Please enter email')
               return;
@@ -92,17 +85,14 @@ export default function ForgetPassword({navigation}) {
             sendPasswordResetEmail(auth, Email)
                 .then(() => {
                   alert('Email sent, please check your email')
-                  anotherFunc(Email);
-                  setDisabled(true);
                 })
                 .catch((er) => {
                   er = msg(er);
                   alert(er);
               });
 
-          }}
-          title=' Reset Password ' fontSize='35' fontWeight='bold'
-                  color="#ffff" 
+          }} title=' Reset Password ' fontSize='35' fontWeight='bold'
+                  color="#ffff"
           >
 
           </Button>

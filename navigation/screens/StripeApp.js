@@ -11,15 +11,32 @@ import {
   TouchableOpacity,
   Image,
 } from "react-native";
+import {
+  collection,
+  query,
+  orderBy,
+  onSnapshot,
+  setDoc,
+  doc,
+  getDoc,
+  getDocs,
+  getFirestore,
+} from "firebase/firestore";
+import { getDatabase, ref, onValue, set } from "firebase/database";
+
 import { CardField, useConfirmPayment } from "@stripe/stripe-react-native";
 import { StripeProvider } from "@stripe/stripe-react-native";
 import { useStripe } from "@stripe/stripe-react-native";
 import Icon from "react-native-vector-icons/Ionicons";
-
+import AsyncStorage from "@react-native-async-storage/async-storage";
 //ADD localhost address of your server
 const API_URL = "http://localhost:19003";
 
-const StripeApp = ({ props, navigation }) => {
+const StripeApp = ({ route, navigation }) => {
+  const book1 = route.params;
+  console.log(book1);
+  let userID = "";
+
   const { confirmPayment } = useStripe();
   const [loading, setLoading] = useState(false);
   const [cardDetails, setCardDetails] = useState();
@@ -64,7 +81,9 @@ const StripeApp = ({ props, navigation }) => {
         } else if (paymentIntent) {
           setLoading(false);
           alert("Payment Successful");
-          navigation.navigate("Bookpdf");
+          //  getID();
+          navigation.navigate("Bookpdf", book1);
+
           console.log("Payment successful ", paymentIntent);
         }
       }
@@ -183,3 +202,37 @@ const styles = StyleSheet.create({
     alignSelf: "center",
   },
 });
+/* const getID = async () => {
+    console.log("getting user id");
+    try {
+      userID = await AsyncStorage.getItem("uid");
+      if (userID !== null) {
+        getData();
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+  const getData = async () => {
+    console.log("getting user data");
+    try {
+      const db = getDatabase();
+      const refe = ref(db, "users/" + userID);
+      onValue(refe, (snapshot) => {
+        console.log("reading firebase");
+        console.log(snapshot);
+        //const highscore = snapshot.val().highscore;
+        //console.log("New high score: " + highscore);
+      });
+      // const colRef = collection(db, "users/"+userID);
+      // const snapshot = await getDocs(colRef);
+      //const reference = ref(db, "users/" + userID);
+      set(refe, {
+        newValue: "AStiring",
+      });
+      //store the data in an array myData
+      console.log(refe);
+    } catch (error) {
+      console.log(error);
+    }
+  };*/

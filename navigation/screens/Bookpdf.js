@@ -22,22 +22,13 @@ import Icon from "react-native-vector-icons/Ionicons";
 import { WebView } from "react-native-webview";
 
 export default function Bookpdf({ route, navigation }) {
-  const book = route.params;
-
+  const book2 = route.params;
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <Icon
-        name="arrow-back-outline"
-        size={40}
-        style={{ color: "black", marginTop: 30, marginLeft: 10 }}
-        onPress={() => navigation.navigate("Home")}
-      />
-      <WebView
-        source={{
-          uri: "https://firebasestorage.googleapis.com/v0/b/group16-de98b.appspot.com/o/suzanne-collins-catching-fire.pdf?alt=media&token=80d4681c-4df3-4818-b85f-1d3a70bb0614",
-        }}
-      />
-    </SafeAreaView>
+    <WebView
+      source={{
+        uri: book2,
+      }}
+    />
   );
 }
 
@@ -51,8 +42,5 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     height: 40,
     width: 180,
-  },
-  pdf2: {
-    marginLeft: 10,
   },
 });

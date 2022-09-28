@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { doc, getDoc, getFirestore } from "firebase/firestore";
-
+import AsyncStorage from "@react-native-async-storage/async-storage";
 function msg(error) {
   switch (error.code) {
     case "auth/invalid-email":
@@ -42,25 +42,16 @@ export default function WelcomePage({ navigation }) {
     password: "",
     error: "",
   });
-  const navForgetPassword = (val) =>{
-    setValue({
-      email: "",
-      password: "",
-      error: "",
-    });
-    navigation.navigate("ForgetPassword")
-}
-const navSignUP = (val) =>{
-  setValue({
-    email: "",
-    password: "",
-    error: "",
-  });
-  navigation.navigate("UserSignUp")
-}
   // const UserSignUp = "UserSignUp";
   const auth = getAuth();
-
+  const storeData = async (value) => {
+    try {
+      await AsyncStorage.setItem("uid", value);
+      console.log("Data Stored");
+    } catch (e) {
+      console.log(e);
+    }
+  };
   async function signIn() {
     if (value.email === "" || value.password === "") {
       setValue({
@@ -80,16 +71,20 @@ const navSignUP = (val) =>{
       const docRef = doc(db, "users", user.uid);
       const docSnap = await getDoc(docRef);
       console.log("uid", user.uid);
+      storeData(user.uid);
       console.log("user", docSnap.data());
+<<<<<<< Updated upstream
       setValue({
         email: "",
         password:"",
         error: "",
       });
+=======
+>>>>>>> Stashed changes
       if (docSnap.data().isAdmin) {
         navigation.navigate("Adminpage");
       } else {
-        navigation.navigate("Maincontainer");
+        navigation.navigate("Maincontainer", user.uid);
       }
     } catch (er) {
       er = msg(er);
@@ -127,7 +122,7 @@ const navSignUP = (val) =>{
           <TextInput
             style={styles.body}
             placeholder="E-mail"
-            onChangeText={(text) => setValue({ ...value, email: text , error:"" })}
+            onChangeText={(text) => setValue({ ...value, email: text })}
             underlineColorAndroid="transparent"
             value={value.email}
           />
@@ -136,16 +131,15 @@ const navSignUP = (val) =>{
             style={styles.body}
             secureTextEntry={true}
             placeholder="Password"
-            onChangeText={(text) => setValue({ ...value, password: text, error:"" })}
+            onChangeText={(text) => setValue({ ...value, password: text })}
             underlineColorAndroid="transparent"
             value={value.password}
           />
         </View>
         <View>
           <TouchableOpacity
-            onPress={() => navForgetPassword(value) }
+            onPress={() => navigation.navigate("ForgetPassword")}
           >
-            
             <Text
               style={{
                 color: "#2F5233",
@@ -190,7 +184,7 @@ const navSignUP = (val) =>{
           }}
         >
           <Text>New to the app?</Text>
-          <TouchableOpacity onPress={() => navSignUP(value)}>
+          <TouchableOpacity onPress={() => navigation.navigate("UserSignUp")}>
             <Text
               style={{
                 color: "#2F5233",
