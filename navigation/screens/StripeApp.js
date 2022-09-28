@@ -19,7 +19,9 @@ import Icon from "react-native-vector-icons/Ionicons";
 //ADD localhost address of your server
 const API_URL = "http://localhost:19003";
 
-const StripeApp = ({ props, navigation }) => {
+const StripeApp = ({ route, navigation }) => {
+  const book = route.params;
+
   const { confirmPayment } = useStripe();
   const [loading, setLoading] = useState(false);
   const [cardDetails, setCardDetails] = useState();
@@ -64,7 +66,7 @@ const StripeApp = ({ props, navigation }) => {
         } else if (paymentIntent) {
           setLoading(false);
           alert("Payment Successful");
-          navigation.navigate("Bookpdf");
+          navigation.navigate("Bookpdf", book.pdf);
           console.log("Payment successful ", paymentIntent);
         }
       }
@@ -90,7 +92,9 @@ const StripeApp = ({ props, navigation }) => {
       />
       <Image source={require("./pay.png")} style={styles.picc}></Image>
       <View style={styles.dd}>
-        <Text style={{ fontWeight: "bold", fontSize: "28" }}>Total :100$</Text>
+        <Text style={{ fontWeight: "bold", fontSize: "28" }}>
+          Total :{book.price}$
+        </Text>
         <CardField
           postalCodeEnabled={true}
           cardStyle={styles.card}
