@@ -30,7 +30,13 @@ import Icon from "react-native-vector-icons/Ionicons";
 export default function Discovry({ navigation }) {
   const [catergoryIndex, setCategoryIndex] = useState(0);
   const categories = ["ALL", "ADULT", "ROMANCE"];
+  const [refreshing, setRefreshing] = useState(false);
 
+  const onRefresh = () => {
+    setRefreshing(true);
+    getData();
+    setRefreshing(false);
+  };
   const CategoryList = () => {
     return (
       <View style={styles.categoryContainer}>

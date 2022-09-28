@@ -7425,6 +7425,11 @@
     "querystringify" "^2.1.1"
     "requires-port" "^1.0.0"
 
+"use-debounce@^8.0.4":
+  "integrity" "sha512-fGqsYQzl8kLHF2QpQSgIwgOgJmnh6j5L6SIzQiHdLfwp3q1egUL3btq5Bg2SJysH6A0ILLgT2IqXZKoNJr0nFw=="
+  "resolved" "https://registry.npmjs.org/use-debounce/-/use-debounce-8.0.4.tgz"
+  "version" "8.0.4"
+
 "use-latest-callback@^0.1.5":
   "integrity" "sha512-HtHatS2U4/h32NlkhupDsPlrbiD27gSH5swBdtXbCAlc6pfOFzaj0FehW/FO12rx8j2Vy4/lJScCiJyM01E+bQ=="
   "resolved" "https://registry.npmjs.org/use-latest-callback/-/use-latest-callback-0.1.5.tgz"
