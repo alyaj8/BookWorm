@@ -210,7 +210,7 @@ export default function BookInfo({ route, navigation }) {
                 <TouchableOpacity
                   style={styles.fixToText}
                   onPress={() => {
-                    navigation.navigate("StripeApp", book.pdf);
+                    navigation.navigate("StripeApp", book);
                   }}
                 >
                   <Text>buy it here</Text>

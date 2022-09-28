@@ -66,7 +66,7 @@ const StripeApp = ({ route, navigation }) => {
         } else if (paymentIntent) {
           setLoading(false);
           alert("Payment Successful");
-          navigation.navigate("Bookpdf", book);
+          navigation.navigate("Bookpdf", book.pdf);
           console.log("Payment successful ", paymentIntent);
         }
       }
@@ -92,7 +92,9 @@ const StripeApp = ({ route, navigation }) => {
       />
       <Image source={require("./pay.png")} style={styles.picc}></Image>
       <View style={styles.dd}>
-        <Text style={{ fontWeight: "bold", fontSize: "28" }}>Total :100$</Text>
+        <Text style={{ fontWeight: "bold", fontSize: "28" }}>
+          Total: {book.price}$
+        </Text>
         <CardField
           postalCodeEnabled={true}
           cardStyle={styles.card}
