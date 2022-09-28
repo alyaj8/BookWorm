@@ -11,9 +11,9 @@ import ViewRequest from "./ViewRequest";
 import Discovery from "./Discovery";
 import AdminAccount from "./AdminAccount";
 import More from "./More";
-
+import AddBookTest from"./AddBookTest";
 //Screen names
-const ViewRequest1 = "Requests";
+const AddBookTest1= "Requests";
 
 const addbook1 = "AddBook";
 
@@ -38,7 +38,7 @@ export default function Maincontainer() {
               let rn = route.name;
 
               //check the location
-              if (rn === ViewRequest1) {
+              if (rn === AddBookTest1) {
                 iconName = focused ? "file-tray-full" : "file-tray-full-outline";
               } else if (rn === addbook1) {
                 iconName = focused ? "add-circle" : "add-circle-outline";
@@ -61,7 +61,7 @@ export default function Maincontainer() {
 
         <Tab.Screen name={addbook1} component={ViewRequest}/>
 
-        <Tab.Screen name={ViewRequest1} component={ViewRequest}/>
+        <Tab.Screen name={AddBookTest1} component={AddBookTest}/>
         <Tab.Screen name={AccountName2} component={AdminAccount}/>
       </Tab.Navigator>
 
