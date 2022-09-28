@@ -83,7 +83,7 @@ const navSignUP = (val) =>{
       console.log("user", docSnap.data());
       setValue({
         email: "",
-        password: "",
+        password:"",
         error: "",
       });
       if (docSnap.data().isAdmin) {
