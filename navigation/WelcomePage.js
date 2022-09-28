@@ -42,6 +42,22 @@ export default function WelcomePage({ navigation }) {
     password: "",
     error: "",
   });
+  const navForgetPassword = (val) =>{
+    setValue({
+      email: "",
+      password: "",
+      error: "",
+    });
+    navigation.navigate("ForgetPassword")
+}
+const navSignUP = (val) =>{
+  setValue({
+    email: "",
+    password: "",
+    error: "",
+  });
+  navigation.navigate("UserSignUp")
+}
   // const UserSignUp = "UserSignUp";
   const auth = getAuth();
 
@@ -65,6 +81,11 @@ export default function WelcomePage({ navigation }) {
       const docSnap = await getDoc(docRef);
       console.log("uid", user.uid);
       console.log("user", docSnap.data());
+      setValue({
+        email: "",
+        password: "",
+        error: "",
+      });
       if (docSnap.data().isAdmin) {
         navigation.navigate("Adminpage");
       } else {
@@ -106,7 +127,7 @@ export default function WelcomePage({ navigation }) {
           <TextInput
             style={styles.body}
             placeholder="E-mail"
-            onChangeText={(text) => setValue({ ...value, email: text })}
+            onChangeText={(text) => setValue({ ...value, email: text , error:"" })}
             underlineColorAndroid="transparent"
             value={value.email}
           />
@@ -115,15 +136,16 @@ export default function WelcomePage({ navigation }) {
             style={styles.body}
             secureTextEntry={true}
             placeholder="Password"
-            onChangeText={(text) => setValue({ ...value, password: text })}
+            onChangeText={(text) => setValue({ ...value, password: text, error:"" })}
             underlineColorAndroid="transparent"
             value={value.password}
           />
         </View>
         <View>
           <TouchableOpacity
-            onPress={() => navigation.navigate("ForgetPassword")}
+            onPress={() => navForgetPassword(value) }
           >
+            
             <Text
               style={{
                 color: "#2F5233",
@@ -168,7 +190,7 @@ export default function WelcomePage({ navigation }) {
           }}
         >
           <Text>New to the app?</Text>
-          <TouchableOpacity onPress={() => navigation.navigate("UserSignUp")}>
+          <TouchableOpacity onPress={() => navSignUP(value)}>
             <Text
               style={{
                 color: "#2F5233",
