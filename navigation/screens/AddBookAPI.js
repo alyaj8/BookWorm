@@ -53,25 +53,13 @@ export default function AddBookAPI(){
                 <Text style={{ color: "red" }}>{value?.error}</Text>
 
                 <View style={styles.InputContainer}>
-                <View style={{alignItems:'center'}}>
-                        <TouchableHighlight onPress={() => pickImage()}>
-                            <View style={{alignItems:"center"}} 
-                            onChangeText={(text) => setValue({ ...value, poster: URL })}>
-                            <Entypo name="images" size={24} color="#576F72" />
-                            
-                            <Text style={{ alignContent:'center'}} >the book's poster</Text>
-                            </View>
-                        </TouchableHighlight>
-
-                </View>
                 <View style={styles.InputContainer}>
-                    <Text style={styles.textD}>Description</Text>
+                    <Text style={styles.textD}>Search a Book</Text>
                     <TextInput
                     multiline = {true}
                     
                     style={styles.body}
-                    //placeholder="Last Name"
-                    onChangeText={(text) => setValue({ ...value, Description: text })}
+                    //onChangeText={}
                     underlineColorAndroid="transparent"
                     />
                 </View>
@@ -81,7 +69,7 @@ export default function AddBookAPI(){
                     
                     title="Add Book"
                     color="#B1D8B7"
-                    onPress={() => searchBook()} //
+                    //onPress={} //
                     ></Button>
                 </View>
                 
