@@ -19,7 +19,9 @@ import Icon from "react-native-vector-icons/Ionicons";
 //ADD localhost address of your server
 const API_URL = "http://localhost:19003";
 
-const StripeApp = ({ props, navigation }) => {
+const StripeApp = ({ route, navigation }) => {
+  const book = route.params;
+
   const { confirmPayment } = useStripe();
   const [loading, setLoading] = useState(false);
   const [cardDetails, setCardDetails] = useState();
@@ -64,7 +66,7 @@ const StripeApp = ({ props, navigation }) => {
         } else if (paymentIntent) {
           setLoading(false);
           alert("Payment Successful");
-          navigation.navigate("Bookpdf");
+          navigation.navigate("Bookpdf", book);
           console.log("Payment successful ", paymentIntent);
         }
       }

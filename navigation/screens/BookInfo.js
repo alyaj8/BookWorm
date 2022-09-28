@@ -125,8 +125,13 @@ export default function BookInfo({ route, navigation }) {
                 {book.category}
                 {"\n "}
               </Text>
+<<<<<<< Updated upstream
              
               <View
+=======
+
+              <TouchableOpacity
+>>>>>>> Stashed changes
                 style={{
                   flex: 1,
                   flexDirection: "row",
@@ -146,9 +151,14 @@ export default function BookInfo({ route, navigation }) {
                   {"ADD TO LIST"}
                   <Icon name="add" size={36} style={{ color: "white" }} />
                 </Text>
+<<<<<<< Updated upstream
                 </TouchableOpacity>
               </View>
              
+=======
+              </TouchableOpacity>
+
+>>>>>>> Stashed changes
               <Text>
                 {"\n"}
                 Review it
@@ -182,7 +192,9 @@ export default function BookInfo({ route, navigation }) {
               <View>
                 <TouchableOpacity
                   style={styles.fixToText}
-                  onPress={() => navigation.navigate("StripeApp")}
+                  onPress={() => {
+                    navigation.navigate("StripeApp", book.pdf);
+                  }}
                 >
                   <Text>buy it here</Text>
                 </TouchableOpacity>
