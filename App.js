@@ -4,6 +4,7 @@ import UserSignUp from "./navigation/screens/UserSignUp";
 import WelcomePage from "./navigation/WelcomePage";
 import Home from "./navigation/screens/Home";
 import Bookpdf from "./navigation/screens/Bookpdf";
+import Orders from "./navigation/screens/Orders";
 
 import { NavigationContainer, navigation } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -17,6 +18,7 @@ import ReadBookList from "./navigation/screens/ReadBookList";
 import StripeApp from "./navigation/screens/StripeApp";
 import { StripeProvider } from "@stripe/stripe-react-native";
 import { LogBox } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 const firebaseConfig = {
   apiKey: "AIzaSyCb8vT5-UmFZV-954feGAE2L0-T4Tgpqhs",
   authDomain: "group16-de98b.firebaseapp.com",
@@ -48,6 +50,7 @@ function App() {
           <Stack.Screen name="ReadBookList" component={ReadBookList} />
           <Stack.Screen name="StripeApp" component={StripeApp} />
           <Stack.Screen name="Bookpdf" component={Bookpdf} />
+          <Stack.Screen name="Orders" component={Orders} />
         </Stack.Navigator>
       </NavigationContainer>
     </StripeProvider>
