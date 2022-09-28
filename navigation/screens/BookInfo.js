@@ -152,8 +152,8 @@ export default function BookInfo({ route, navigation }) {
                 {book.category}
                 {"\n "}
               </Text>
-             
-             <TouchableOpacity
+
+              <TouchableOpacity
                 style={{
                   flex: 1,
                   flexDirection: "row",
@@ -175,7 +175,7 @@ export default function BookInfo({ route, navigation }) {
                   <Icon name="add" size={36} style={{ color: "white" }} />
                 </Text>
               </TouchableOpacity>
-             
+
               <Text>
                 {"\n"}
                 Review it
@@ -209,7 +209,9 @@ export default function BookInfo({ route, navigation }) {
               <View>
                 <TouchableOpacity
                   style={styles.fixToText}
-                  onPress={() => navigation.navigate("StripeApp")}
+                  onPress={() => {
+                    navigation.navigate("StripeApp", book);
+                  }}
                 >
                   <Text>buy it here</Text>
                 </TouchableOpacity>
