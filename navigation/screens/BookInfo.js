@@ -14,14 +14,41 @@ import {
 import Icon from "react-native-vector-icons/Ionicons";
 import StripeApp from "./StripeApp";
 import { StripeProvider } from "@stripe/stripe-react-native";
-import react from "react";
+import react, { useState } from "react";
 //import Map from './screens/Map';
 //import Fetch from './src/Fetch';
 //import {userSate,userEffect} from "react";
 //import{collection, query,orderBy,onSanpshot,setDoc,doc,getDoc,getDocs} from "firebase/firestore";
 //import{db} from "../../config/firebase";
+import {
+  collection,
+  doc,
+  getFirestore,
+  setDoc,
+  addDoc,
+} from "firebase/firestore";
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 export default function BookInfo({ route, navigation }) {
   const book = route.params;
+
+  let [update, setUpdate] = useState(false);
+
+  let AddInfo = async () => {
+    try {
+      const Auth = getAuth();
+      const uid = Auth?.currentUser?.uid;
+      const db = getFirestore();
+      const data = book;
+      data.favouriteUserId = uid;
+      await addDoc(collection(db, "readBookList"), data);
+      book.favourite = true;
+      setUpdate(true);
+      alert("This Book Is Added to Your Favourite Book List");
+    } catch (error) {
+      alert(error);
+    }
+  };
+
   return (
     <View>
       <SafeAreaView>
@@ -126,16 +153,17 @@ export default function BookInfo({ route, navigation }) {
                 {"\n "}
               </Text>
              
-              <View
+             <TouchableOpacity
                 style={{
                   flex: 1,
                   flexDirection: "row",
                   borderRadius: 25,
-                  backgroundColor: "#00a46c",
+                  backgroundColor: book.favourite ? "#aadecc" : "#00a46c",
                   paddingHorizontal: 20,
                 }}
+                onPress={() => AddInfo()}
+                disabled={book.favourite}
               >
-                <TouchableOpacity>
                 <Text
                   style={{
                     fontWeight: "bold",
@@ -143,11 +171,10 @@ export default function BookInfo({ route, navigation }) {
                     fontSize: 18,
                   }}
                 >
-                  {"ADD TO LIST"}
+                  {book.favourite ? "AlREADY ADDED TO LIST" : "ADD TO LIST"}
                   <Icon name="add" size={36} style={{ color: "white" }} />
                 </Text>
-                </TouchableOpacity>
-              </View>
+              </TouchableOpacity>
              
               <Text>
                 {"\n"}
