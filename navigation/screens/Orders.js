@@ -110,19 +110,7 @@ export default function Orders({ route, navigation }) {
           width: "100%",
           alignItems: "center",
         }}
-      >
-        <View style={{ width: "100%" }}>
-          <Text
-            style={{
-              fontWeight: "bold",
-              fontSize: 17,
-              color: "#585a61",
-            }}
-          >
-            All Orders
-          </Text>
-        </View>
-      </View>
+      ></View>
 
       <ScrollView
         // alignItems ="left"
@@ -184,12 +172,13 @@ export default function Orders({ route, navigation }) {
             style={{
               flex: 1,
               textAlign: "center",
-              marginTop: 50,
+              marginTop: 150,
               fontSize: 30,
               fontWeight: "bold",
+              color: "grey",
             }}
           >
-            Order List Is Empty
+            Order list is empty
           </Text>
         )}
       </ScrollView>
