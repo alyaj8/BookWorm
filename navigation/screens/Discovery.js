@@ -61,7 +61,7 @@ export default function Discovry({ navigation }) {
   };
   const [books, setBooks] = useState([]);
   const [allBooks, setAllBooks] = useState([]);
-  const [searchText, setSearchText] = useState('');
+  const [searchText, setSearchText] = useState("");
   const [url, setUrl] = useState("");
 
   useEffect(() => {
@@ -89,7 +89,7 @@ export default function Discovry({ navigation }) {
         myData.push({ ...doc.data() });
       });
       //store data in AsyncStorage
-      myData.sort((a, b) => a.title.localeCompare(b.title))
+      myData.sort((a, b) => a.title.localeCompare(b.title));
       setAllBooks(myData);
       setBooks(myData);
     } catch (error) {
@@ -99,21 +99,28 @@ export default function Discovry({ navigation }) {
 
   const searchBooks = (text) => {
     console.log(text);
-    const filter = []
-    allBooks.forEach(e => {
-      if (e.title.toLowerCase().includes(text.toLowerCase()) || e.author.toLowerCase().includes(text.toLowerCase())) {
-        filter.push(e)
+    const filter = [];
+    allBooks.forEach((e) => {
+      if (
+        e.title.toLowerCase().includes(text.toLowerCase()) ||
+        e.author.toLowerCase().includes(text.toLowerCase())
+      ) {
+        filter.push(e);
       }
     });
     setBooks(filter);
     console.log(books);
-  }
+  };
   /* const restUrl = (link1) => {
     setUrl(link1)  }*/
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <ImageBackground style={{flex: 1}} source={require("./222.jpg")} resizeMode="cover">
+      <ImageBackground
+        style={{ flex: 1 }}
+        source={require("./222.jpg")}
+        resizeMode="cover"
+      >
         <View
           style={{
             backgroundColor: "#FFF",
@@ -134,7 +141,7 @@ export default function Discovry({ navigation }) {
           <TextInput
             placeholder="Search by title or for a user"
             placeholderTextColor="#b1e5d3"
-            onChangeText={text => searchBooks(text)}
+            onChangeText={(text) => searchBooks(text)}
             style={{
               fontWeight: "bold",
               fontSize: 18,
@@ -158,83 +165,78 @@ export default function Discovry({ navigation }) {
             marginBottom: 110,
           }}
         >
-          {books.length < 1?
-          <Text>Book not found!</Text>:
-          <FlatList
-            columnWrapperStyle={{ justifyContent: "space-between" }}
-            numColumns={2}
-            data={books}
-            keyExtractor={(item) => item.title}
-            renderItem={({ item }) => (
-              //  restUrl(item.data.poster)
-              <View style={{ width: width1, height: hight1 }}>
-                <View style={styles.card}>
-                  <View style={{ alignItems: "flex-end" }}>
-                    <View
-                      style={{
-                        width: 19,
-                        height: 19,
-                        alignItems: "center",
-                        justifyContent: "center",
-                        borderRadius: 10,
-                        marginTop: -7,
-                        marginRight: -12,
-                      }}
-                    >
-                      <Icon
-                        name="bookmarks"
-                        size={16}
-                        style={{ color: "#00a46c" }}
-                      />
+          {books.length < 1 ? (
+            <Text>Book not found!</Text>
+          ) : (
+            <FlatList
+              columnWrapperStyle={{ justifyContent: "space-between" }}
+              numColumns={2}
+              data={books}
+              keyExtractor={(item) => item.title}
+              renderItem={({ item }) => (
+                //  restUrl(item.data.poster)
+                <View style={{ width: width1, height: hight1 }}>
+                  <View style={styles.card}>
+                    <View style={{ alignItems: "flex-end" }}>
+                      <View
+                        style={{
+                          width: 19,
+                          height: 19,
+                          alignItems: "center",
+                          justifyContent: "center",
+                          borderRadius: 10,
+                          marginTop: -12,
+                          marginRight: -12,
+                        }}
+                      ></View>
                     </View>
-                  </View>
-                  <TouchableOpacity
-                    onPress={() => navigation.navigate("BookInfo", item)}
-                  >
-                    <Image
-                      style={styles.container}
-                      source={{
-                        uri: item.poster,
-                      }}
-                    />
-                    <Text>
-                      <Text
-                        style={{
-                          textAlign: "center",
-                          fontWeight: "bold",
-                          fontSize: 12,
-                          //margin: 10,
+                    <TouchableOpacity
+                      onPress={() => navigation.navigate("BookInfo", item)}
+                    >
+                      <Image
+                        style={styles.container}
+                        source={{
+                          uri: item.poster,
                         }}
-                      >
-                        {Datacat(item.title, 11)}
-                        {"\n"}
-                      </Text>
-                      <Text
-                        style={{
-                          textAlign: "left",
-                          color: "grey",
-                          fontSize: 9,
-                        }}
-                      >
-                        By:
-                        {Datacat(item.author, 19)} {"\n"}{" "}
-                      </Text>
-                      <Icon name="star" size={16} style={{ color: "gold" }} />
-                      <Icon name="star" size={16} style={{ color: "gold" }} />
-                      <Icon name="star" size={16} style={{ color: "gold" }} />
-                      <Icon name="star" size={16} style={{ color: "gold" }} />
-                      <Icon
-                        name="star-half"
-                        size={16}
-                        style={{ color: "gold" }}
                       />
-                    </Text>
-                  </TouchableOpacity>
+                      <Text>
+                        <Text
+                          style={{
+                            textAlign: "center",
+                            fontWeight: "bold",
+                            fontSize: 12,
+                            //margin: 10,
+                          }}
+                        >
+                          {Datacat(item.title, 11)}
+                          {"\n"}
+                        </Text>
+                        <Text
+                          style={{
+                            textAlign: "left",
+                            color: "grey",
+                            fontSize: 9,
+                          }}
+                        >
+                          By:
+                          {Datacat(item.author, 19)} {"\n"}{" "}
+                        </Text>
+                        <Icon name="star" size={16} style={{ color: "gold" }} />
+                        <Icon name="star" size={16} style={{ color: "gold" }} />
+                        <Icon name="star" size={16} style={{ color: "gold" }} />
+                        <Icon name="star" size={16} style={{ color: "gold" }} />
+                        <Icon
+                          name="star-half"
+                          size={16}
+                          style={{ color: "gold" }}
+                        />
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
                 </View>
-              </View>
-            )} //here i want my data
-          />
-                      }
+              )} //here i want my data
+            />
+          )}
         </View>
       </ImageBackground>
     </SafeAreaView>
