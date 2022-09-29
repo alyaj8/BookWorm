@@ -245,8 +245,8 @@ export default function BookInfo({ route, navigation }) {
                 style={{
                   backgroundColor: "white",
                   alignSelf: "center",
-                  height: 70,
-                  width: 250,
+                  height: 100,
+                  width: 340,
                 }}
               >
                 <TextInput
@@ -269,7 +269,7 @@ export default function BookInfo({ route, navigation }) {
                   disabled={book.order}
                 >
                   <Text style={styles.buyit}>
-                    {book.order ? "Bought Already" : "Buy it here"}
+                    {book.order ? "Bought already" : "Buy it here"}
                   </Text>
                 </TouchableOpacity>
               </View>
@@ -286,7 +286,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   fixToText: {
-    width: 150,
+    width: 155,
     height: 50,
     justifyContent: "center",
     alignContent: "center",
@@ -302,7 +302,7 @@ const styles = StyleSheet.create({
     marginBottom: "67%",
   },
   buyit: {
-    fontSize: 19,
+    fontSize: 18,
     fontWeight: "bold",
     alignSelf: "center",
   },

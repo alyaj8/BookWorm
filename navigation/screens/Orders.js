@@ -98,7 +98,7 @@ export default function Orders({ route, navigation }) {
               alignSelf: "center",
             }}
           >
-            Your orders
+            My purchases
           </Text>
         </View>
       </View>
@@ -148,6 +148,7 @@ export default function Orders({ route, navigation }) {
               <Image
                 source={{ uri: val.poster }}
                 style={{ width: "100%", height: 200 }}
+                s
               />
               <View
                 style={{
@@ -161,8 +162,7 @@ export default function Orders({ route, navigation }) {
                     fontWeight: "bold",
                   }}
                 >
-                  {" "}
-                  order {val.title}
+                  {val.title}
                 </Text>
               </View>
             </TouchableOpacity>
@@ -178,7 +178,7 @@ export default function Orders({ route, navigation }) {
               color: "grey",
             }}
           >
-            Order list is empty
+            Purchased list is empty
           </Text>
         )}
       </ScrollView>

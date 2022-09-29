@@ -58,8 +58,7 @@ export default function Account({ navigation }) {
           <Text style={{ fontSize: 16, marginTop: 7 }}>My detailes</Text>
         </View>
         <TouchableOpacity
-         onPress = { () => navigation.navigate("Orders")}
-        
+          onPress={() => navigation.navigate("Orders")}
           style={{
             alignSelf: "center",
             flexDirection: "row",
@@ -79,8 +78,7 @@ export default function Account({ navigation }) {
             size={30}
             style={{ marginRight: 10 }}
           />
-          <Text style={{ fontSize: 16, marginTop: 7 }}>My orders </Text>
-        
+          <Text style={{ fontSize: 16, marginTop: 7 }}>My purchases </Text>
         </TouchableOpacity>
         <View
           style={{
