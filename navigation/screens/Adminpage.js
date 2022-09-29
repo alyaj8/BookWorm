@@ -11,6 +11,7 @@ import ViewRequest from "./ViewRequest";
 import Discovery from "./Discovery";
 import AdminAccount from "./AdminAccount";
 import More from "./More";
+import AddBookTest from "./AddBookTest";
 
 //Screen names
 const ViewRequest1 = "Requests";
@@ -59,7 +60,7 @@ export default function Maincontainer() {
         <Tab.Screen name={MoreName} component={More}/>
         <Tab.Screen name={DiscovryName2} component={Discovery}/>
 
-        <Tab.Screen name={addbook1} component={ViewRequest}/>
+        <Tab.Screen name={addbook1} component={AddBookTest}/>
 
         <Tab.Screen name={ViewRequest1} component={ViewRequest}/>
         <Tab.Screen name={AccountName2} component={AdminAccount}/>
