@@ -30,11 +30,11 @@ export default function Bookpdf({ route, navigation }) {
         name="arrow-back-outline"
         size={40}
         style={{ color: "black", marginTop: 30, marginLeft: 10 }}
-        onPress={() => navigation.navigate("Home")}
+        onPress={() => navigation.goBack()}
       />
       <WebView
         source={{
-          uri: "https://firebasestorage.googleapis.com/v0/b/group16-de98b.appspot.com/o/suzanne-collins-catching-fire.pdf?alt=media&token=80d4681c-4df3-4818-b85f-1d3a70bb0614",
+          uri: book,
         }}
       />
     </SafeAreaView>

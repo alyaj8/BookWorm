@@ -1,10 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import firebase from "firebase/compat/app"; ///////////////////////////
 import { getFirestore } from "firebase/firestore";
-import "firebase/compat/auth"; //////////////////
-import "firebase/compat/firestore"; ///////////////////////////////
-import { getStorage } from "firebase/storage";
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -20,14 +16,11 @@ const firebaseConfig = {
   appId: "1:19414542563:web:460d20dd6abdeabef47dd6",
   measurementId: "G-F5B7J7EDXR",
 };
-export const setPassword = (email) => {
-  return firebase.auth().sendPasswordResetEmail(email);
-};
+export const setPassword= (email) => {   return firebase.auth().sendPasswordResetEmail(email) }
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
-const storage = getStorage(app, "gs://my-custom-bucket");
 
 export { db };
 export default app;

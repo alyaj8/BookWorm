@@ -1,27 +1,103 @@
-import { StatusBar } from "expo-status-bar";
+import { useEffect, useState } from "react";
 import {
+  Image,
+  ImageBackground,
+  SafeAreaView,
+  ScrollView,
   StyleSheet,
   Text,
-  View,
-  Image,
-  ScrollView,
-  Button,
-  SafeAreaView,
-  ImageBackground,
   TextInput,
   TouchableOpacity,
+  View,
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
-import StripeApp from "./StripeApp";
-import { StripeProvider } from "@stripe/stripe-react-native";
-import react from "react";
 //import Map from './screens/Map';
 //import Fetch from './src/Fetch';
 //import {userSate,userEffect} from "react";
 //import{collection, query,orderBy,onSanpshot,setDoc,doc,getDoc,getDocs} from "firebase/firestore";
 //import{db} from "../../config/firebase";
+import { getAuth } from "firebase/auth";
+import {
+  addDoc,
+  collection,
+  getDocs,
+  getFirestore,
+  query,
+  where,
+} from "firebase/firestore";
 export default function BookInfo({ route, navigation }) {
   const book = route.params;
+
+  let [update, setUpdate] = useState(false);
+
+  let AddInfo = async () => {
+    book.listed = true;
+    setUpdate(true);
+
+    try {
+      const Auth = getAuth();
+      const uid = Auth?.currentUser?.uid;
+      const db = getFirestore();
+      const data = book;
+      data.favouriteUserId = uid;
+      await addDoc(collection(db, "readBookList"), data);
+      book.listed = true;
+      setUpdate(true);
+      alert("This Book Is Added to Your Favourite Book List");
+    } catch (error) {
+      book.listed = false;
+      setUpdate(true);
+      alert(error);
+    }
+  };
+
+  let CheckListed = () => {
+    const Auth = getAuth();
+    Auth.onAuthStateChanged(async (user) => {
+      try {
+        const db = getFirestore();
+        const q = query(
+          collection(db, "readBookList"),
+          where("favouriteUserId", "==", user.uid),
+          where("id", "==", book.id)
+        );
+        const querySnapshot = await getDocs(q);
+        if (!querySnapshot.empty) {
+          book.listed = true;
+          setUpdate(true);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    });
+  };
+
+  let CheckOrder = () => {
+    const Auth = getAuth();
+    Auth.onAuthStateChanged(async (user) => {
+      try {
+        const db = getFirestore();
+        const q = query(
+          collection(db, "orderBook"),
+          where("orderUserId", "==", user.uid),
+          where("id", "==", book.id)
+        );
+        const querySnapshot = await getDocs(q);
+        if (!querySnapshot.empty) {
+          book.order = true;
+          setUpdate(true);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    });
+  };
+
+  useEffect(() => {
+    CheckListed();
+    CheckOrder();
+  }, []);
+
   return (
     <View>
       <SafeAreaView>
@@ -79,7 +155,8 @@ export default function BookInfo({ route, navigation }) {
                   paddingTop: 20,
                   paddingLeft: 10,
                   paddingRight: 10,
-                  fontSize: "25%",
+                  // fontSize: "25%",
+                  fontSize: 25,
                   fontWeight: "bold",
                 }}
               >
@@ -93,7 +170,8 @@ export default function BookInfo({ route, navigation }) {
                   marginTop: 9,
                   paddingLeft: 10,
                   paddingRight: 10,
-                  fontSize: "15%",
+                  // fontSize: "15%",
+                  fontSize: 15,
                   fontWeight: "bold",
                   color: "grey",
                 }}
@@ -125,17 +203,18 @@ export default function BookInfo({ route, navigation }) {
                 {book.category}
                 {"\n "}
               </Text>
-             
-              <View
+
+              <TouchableOpacity
                 style={{
                   flex: 1,
                   flexDirection: "row",
                   borderRadius: 25,
-                  backgroundColor: "#00a46c",
+                  backgroundColor: book.listed ? "#aadecc" : "#00a46c",
                   paddingHorizontal: 20,
                 }}
+                onPress={() => AddInfo()}
+                disabled={book.listed}
               >
-                <TouchableOpacity>
                 <Text
                   style={{
                     fontWeight: "bold",
@@ -143,12 +222,11 @@ export default function BookInfo({ route, navigation }) {
                     fontSize: 18,
                   }}
                 >
-                  {"ADD TO LIST"}
+                  {book.listed ? "AlREADY ADDED TO LIST" : "ADD TO LIST"}
                   <Icon name="add" size={36} style={{ color: "white" }} />
                 </Text>
-                </TouchableOpacity>
-              </View>
-             
+              </TouchableOpacity>
+
               <Text>
                 {"\n"}
                 Review it
@@ -169,8 +247,8 @@ export default function BookInfo({ route, navigation }) {
                 style={{
                   backgroundColor: "white",
                   alignSelf: "center",
-                  height: 70,
-                  width: 250,
+                  height: 100,
+                  width: 340,
                 }}
               >
                 <TextInput
@@ -181,10 +259,20 @@ export default function BookInfo({ route, navigation }) {
               </View>
               <View>
                 <TouchableOpacity
-                  style={styles.fixToText}
-                  onPress={() => navigation.navigate("StripeApp")}
+                  style={[
+                    styles.fixToText,
+                    {
+                      backgroundColor: book.order ? "#aadecc" : "#00a46c",
+                    },
+                  ]}
+                  onPress={() => {
+                    navigation.navigate("StripeApp", book);
+                  }}
+                  disabled={book.order}
                 >
-                  <Text>buy it here</Text>
+                  <Text style={styles.buyit}>
+                    {book.order ? "Bought already" : "Buy it here"}
+                  </Text>
                 </TouchableOpacity>
               </View>
             </View>
@@ -200,7 +288,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   fixToText: {
-    width: 90,
+    width: 155,
     height: 50,
     justifyContent: "center",
     alignContent: "center",
@@ -214,6 +302,11 @@ const styles = StyleSheet.create({
     height: "100%",
     marginTop: "40%",
     marginBottom: "67%",
+  },
+  buyit: {
+    fontSize: 18,
+    fontWeight: "bold",
+    alignSelf: "center",
   },
 });
 /*<TouchableOpacity
