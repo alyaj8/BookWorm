@@ -86,7 +86,9 @@ export default function Discovry({ navigation }) {
       var myData = [];
       //store the data in an array myData
       snapshot.forEach((doc) => {
-        myData.push({ ...doc.data() });
+        let book = doc.data();
+        book.id = doc.id;
+        myData.push(book);
       });
       //store data in AsyncStorage
       myData.sort((a, b) => a.title.localeCompare(b.title));

@@ -44,7 +44,7 @@ export default function Maincontainer({ navigation }) {
           if (rn === HomeName) {
             iconName = focused ? "home" : "home-outline";
           } else if (rn === ListssName) {
-            iconName = focused ? "logo-buffer" : "logo-buffer";
+            iconName = focused ? "bookmarks" : "bookmarks-outline";
           } else if (rn === MoreName) {
             iconName = focused
               ? "ellipsis-horizontal-circle-sharp"

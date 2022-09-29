@@ -15,13 +15,14 @@ import { CardField, useConfirmPayment } from "@stripe/stripe-react-native";
 import { StripeProvider } from "@stripe/stripe-react-native";
 import { useStripe } from "@stripe/stripe-react-native";
 import Icon from "react-native-vector-icons/Ionicons";
+import { getAuth } from "firebase/auth";
+import { addDoc, collection, getFirestore } from "firebase/firestore";
 
 //ADD localhost address of your server
 const API_URL = "http://localhost:19003";
 
 const StripeApp = ({ route, navigation }) => {
   const book = route.params;
-
   const { confirmPayment } = useStripe();
   const [loading, setLoading] = useState(false);
   const [cardDetails, setCardDetails] = useState();
@@ -40,12 +41,11 @@ const StripeApp = ({ route, navigation }) => {
   };
 
   const handlePayPress = async () => {
-    //1.Gather the customer's billing information (e.g., email)
+    // 1.Gather the customer's billing information (e.g., email)
     if (!cardDetails?.complete) {
       setCardError(true);
       return;
     }
-
     //2.Fetch the intent client secret from the backend
     try {
       setLoading(true);
@@ -66,7 +66,15 @@ const StripeApp = ({ route, navigation }) => {
         } else if (paymentIntent) {
           setLoading(false);
           alert("Payment Successful");
+          const Auth = getAuth();
+          const uid = Auth?.currentUser?.uid;
+          const db = getFirestore();
+          const data = book;
+          data.orderUserId = uid;
+          await addDoc(collection(db, "orderBook"), data);
+
           navigation.navigate("Bookpdf", book.pdf);
+
           console.log("Payment successful ", paymentIntent);
         }
       }
@@ -74,7 +82,7 @@ const StripeApp = ({ route, navigation }) => {
       setLoading(false);
       console.log("errror", e.message);
     }
-    //3.Confirm the payment with the card details
+    // 3.Confirm the payment with the card details
   };
 
   return (
@@ -84,15 +92,27 @@ const StripeApp = ({ route, navigation }) => {
         flex: 1,
       }}
     >
-      <Icon
-        name="arrow-back-outline"
-        size={40}
-        style={{ color: "black", marginTop: 60, marginLeft: 10 }}
-        onPress={() => navigation.goBack()}
-      />
+      <View
+        style={{
+          backgroundColor: "#00a46c",
+          height: "13%",
+          borderBottomLeftRadius: 20,
+          borderBottomRightRadius: 20,
+          paddingHorizontal: 20,
+          marginBottom: 15,
+        }}
+      >
+        <Text style={styles.check}>Checkout</Text>
+        <Icon
+          name="arrow-back-outline"
+          size={40}
+          style={{ color: "black", marginTop: -44, marginLeft: -15 }}
+          onPress={() => navigation.goBack()}
+        />
+      </View>
       <Image source={require("./pay.png")} style={styles.picc}></Image>
       <View style={styles.dd}>
-        <Text style={{ fontWeight: "bold", fontSize: "28" }}>
+        <Text style={{ fontWeight: "bold", fontSize: 28 }}>
           Total :{book.price}$
         </Text>
         <CardField
@@ -185,5 +205,12 @@ const styles = StyleSheet.create({
     height: 300,
     width: 350,
     alignSelf: "center",
+  },
+  check: {
+    alignSelf: "center",
+    marginTop: 60,
+    fontSize: 30,
+    color: "white",
+    fontWeight: "bold",
   },
 });

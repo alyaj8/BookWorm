@@ -20,7 +20,7 @@ import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 
 export default function Lists({ navigation }) {
   let [BookList, setBookList] = useState([]);
-  let [numberOfBook,setNumberOfBook]= useState(0);
+  let [numberOfBook, setNumberOfBook] = useState(0);
   let GetBookList = async () => {
     try {
       let list = [];
@@ -37,9 +37,8 @@ export default function Lists({ navigation }) {
         if (!querySnapshot.empty) {
           querySnapshot.forEach((doc) => {
             let book = doc.data();
-            book.favourite = true;
+            book.listed = true;
             list.push(book);
-            
           });
           setNumberOfBook(list.length);
           setBookList(list);
