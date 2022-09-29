@@ -204,7 +204,7 @@ export default function Discovry({ navigation }) {
                       <Text>
                         <Text
                           style={{
-                            textAlign: "left",
+                            textAlign: "center",
                             fontWeight: "bold",
                             fontSize: 12,
                             //margin: 10,
