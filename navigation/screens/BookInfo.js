@@ -184,20 +184,23 @@ export default function BookInfo({ route, navigation }) {
                 <Icon name="star" size={30} style={{ color: "gold" }} />
                 <Icon name="star-half" size={30} style={{ color: "gold" }} />
               </View>
-              <Text style={{ fontWeight: "bold", alignSelf: "flex-start" }}>
+              <Text style={{ fontWeight: "bold", alignSelf: "flex-start", marginBottom: 15, }}>
                 {"\n"}
                 {"Book description: "}
               </Text>
-              <Text>{book.Description}</Text>
-              <Text style={{ fontWeight: "bold", alignSelf: "flex-start" }}>
+              
+              <Text style= {{textAlign:"justify",}}>{book.Description}</Text>
+              <Text style={{ fontWeight: "bold", alignSelf: "flex-start",marginBottom: 15,  }}>
                 {"\n"}
                 {"Book Details: "}
               </Text>
-              <Text style={{ alignSelf: "flex-start" }}>
+              <Text style={{ alignSelf: "flex-start", fontWeight:"bold", }}>
                 {"ISBN:"}
+                {"    "}
                 {book.ISBN}
-                {"\n"}
+                {"\n\n"}
                 {"CATEGORY:"}
+                {"    "}
                 {book.category}
                 {"\n "}
               </Text>
@@ -286,7 +289,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   fixToText: {
-    width: 155,
+    width: 190,
     height: 50,
     justifyContent: "center",
     alignContent: "center",
