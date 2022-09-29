@@ -73,7 +73,7 @@ const StripeApp = ({ route, navigation }) => {
           data.orderUserId = uid;
           await addDoc(collection(db, "orderBook"), data);
 
-          navigation.navigate("Bookpdf", book.pdf);
+          navigation.navigate("Orders", book.pdf);
 
           console.log("Payment successful ", paymentIntent);
         }

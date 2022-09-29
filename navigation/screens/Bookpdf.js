@@ -30,7 +30,7 @@ export default function Bookpdf({ route, navigation }) {
         name="arrow-back-outline"
         size={40}
         style={{ color: "black", marginTop: 30, marginLeft: 10 }}
-        onPress={() => navigation.navigate("Home")}
+        onPress={() => navigation.goBack()}
       />
       <WebView
         source={{

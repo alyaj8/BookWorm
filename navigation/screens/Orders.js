@@ -18,7 +18,9 @@ import {
   where,
 } from "firebase/firestore";
 
-export default function Orders({ navigation }) {
+export default function Orders({ route, navigation }) {
+  const book = route.params;
+
   let [OrderList, setOrderList] = useState([]);
   let [numberOfOrder, setNumberOfOrder] = useState(0);
 
@@ -76,7 +78,7 @@ export default function Orders({ navigation }) {
           name="arrow-back-outline"
           size={40}
           style={{ color: "black", marginTop: 70, marginLeft: -15 }}
-          onPress={() => navigation.goBack()}
+          onPress={() => navigation.navigate("Home")}
         />
         <View
           style={{
@@ -143,7 +145,7 @@ export default function Orders({ navigation }) {
           OrderList.map((val, ind) => (
             <TouchableOpacity
               key={ind}
-              onPress={() => navigation.navigate("Detail")}
+              onPress={() => navigation.navigate("Bookpdf", book)}
               style={{
                 height: 250,
                 elevation: 2,
