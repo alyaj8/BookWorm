@@ -43,7 +43,7 @@ export default function BookInfo({ route, navigation }) {
       await addDoc(collection(db, "readBookList"), data);
       book.favourite = true;
       setUpdate(true);
-      alert("This Book Is Added to Your Favourite Book List");
+      //alert("This Book Is Added to Your Read Book List");
     } catch (error) {
       alert(error);
     }
