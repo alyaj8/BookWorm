@@ -11,6 +11,8 @@ import {
   View,
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
+import { getAuth } from "firebase/auth";
+import { addDoc, collection, getFirestore } from "firebase/firestore";
 
 //ADD localhost address of your server
 const API_URL = "http://localhost:19003";
@@ -37,6 +39,7 @@ const StripeApp = ({ route, navigation }) => {
   const handlePayPress = async () => {
     // 1.Gather the customer's billing information (e.g., email)
     if (!cardDetails?.complete) {
+      console.log("---red", cardDetails);
       setCardError(true);
       return;
     }
@@ -111,8 +114,10 @@ const StripeApp = ({ route, navigation }) => {
         </Text>
         <CardField
           postalCodeEnabled={true}
-          cardStyle={styles.card}
-          style={cardError ? styles.cardContainer1 : styles.cardContainer}
+          cardStyle={{
+            placeholderColor: cardError ? "#ff0000" : "#0000",
+          }}
+          style={styles.cardContainer}
           onCardChange={(cardDetails) => {
             setCardError(false);
             setCardDetails(cardDetails);
@@ -157,12 +162,14 @@ const styles = StyleSheet.create({
   cardContainer: {
     height: 50,
     marginVertical: 30,
+    color: "green",
   },
   cardContainer1: {
     height: 50,
     marginVertical: 30,
     borderColor: "red",
     borderWidth: 2,
+    color: "red",
   },
   fixToText: {
     width: 120,

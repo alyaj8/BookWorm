@@ -11,20 +11,29 @@ import {
   View,
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
+
+import StripeApp from "./StripeApp";
+import { StripeProvider } from "@stripe/stripe-react-native";
+import react, { useEffect, useState } from "react";
+
 //import Map from './screens/Map';
 //import Fetch from './src/Fetch';
 //import {userSate,userEffect} from "react";
 //import{collection, query,orderBy,onSanpshot,setDoc,doc,getDoc,getDocs} from "firebase/firestore";
 //import{db} from "../../config/firebase";
-import { getAuth } from "firebase/auth";
+
 import {
-  addDoc,
   collection,
-  getDocs,
+  doc,
   getFirestore,
+  setDoc,
+  addDoc,
   query,
   where,
+  getDocs,
 } from "firebase/firestore";
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+
 export default function BookInfo({ route, navigation }) {
   const book = route.params;
 
@@ -54,6 +63,7 @@ export default function BookInfo({ route, navigation }) {
   let CheckListed = () => {
     const Auth = getAuth();
     Auth.onAuthStateChanged(async (user) => {
+
       try {
         const db = getFirestore();
         const q = query(
@@ -68,6 +78,7 @@ export default function BookInfo({ route, navigation }) {
         }
       } catch (error) {
         console.log(error);
+
       }
     });
   };
@@ -75,6 +86,7 @@ export default function BookInfo({ route, navigation }) {
   let CheckOrder = () => {
     const Auth = getAuth();
     Auth.onAuthStateChanged(async (user) => {
+
       try {
         const db = getFirestore();
         const q = query(
@@ -89,6 +101,7 @@ export default function BookInfo({ route, navigation }) {
         }
       } catch (error) {
         console.log(error);
+
       }
     });
   };
@@ -186,20 +199,23 @@ export default function BookInfo({ route, navigation }) {
                 <Icon name="star" size={30} style={{ color: "gold" }} />
                 <Icon name="star-half" size={30} style={{ color: "gold" }} />
               </View>
-              <Text style={{ fontWeight: "bold", alignSelf: "flex-start" }}>
+              <Text style={{ fontWeight: "bold", alignSelf: "flex-start", marginBottom: 15, }}>
                 {"\n"}
                 {"Book description: "}
               </Text>
-              <Text>{book.Description}</Text>
-              <Text style={{ fontWeight: "bold", alignSelf: "flex-start" }}>
+              
+              <Text style= {{textAlign:"justify",}}>{book.Description}</Text>
+              <Text style={{ fontWeight: "bold", alignSelf: "flex-start",marginBottom: 15,  }}>
                 {"\n"}
                 {"Book Details: "}
               </Text>
-              <Text style={{ alignSelf: "flex-start" }}>
+              <Text style={{ alignSelf: "flex-start", fontWeight:"bold", }}>
                 {"ISBN:"}
+                {"    "}
                 {book.ISBN}
-                {"\n"}
+                {"\n\n"}
                 {"CATEGORY:"}
+                {"    "}
                 {book.category}
                 {"\n "}
               </Text>
@@ -288,7 +304,9 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   fixToText: {
+
     width: 155,
+
     height: 50,
     justifyContent: "center",
     alignContent: "center",

@@ -1,6 +1,8 @@
+
 import { useState } from "react";
 import {
   ActivityIndicator,
+
   Dimensions,
   FlatList,
   Image,
@@ -10,19 +12,23 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
+
+  TouchableWithoutFeedback,
   View,
 } from "react-native";
 import Toast from "react-native-toast-message";
-
 import Icon from "react-native-vector-icons/Ionicons";
 //import BookInfo from "./BookInfo";
 import { addDoc, collection, doc, getDoc, getDocs } from "firebase/firestore";
+import { useDebounce } from "use-debounce";
+
 import { db } from "../../config/firebase";
 // import db from ".";
 export default function ViewRequest({ navigation }) {
   const [catergoryIndex, setCategoryIndex] = useState(0);
   const [books, setBooks] = useState([]);
   const [allBooks, setAllBooks] = useState([]);
+
   const [url, setUrl] = useState("");
   const booksRef = collection(db, "Book");
   const [loading, setLoading] = useState(false);
@@ -68,6 +74,7 @@ export default function ViewRequest({ navigation }) {
       })
       .catch((err) => console.log(err))
       .finally(() => setLoading(false));
+
   };
 
   const getBook = async (bookId) => {
@@ -80,6 +87,7 @@ export default function ViewRequest({ navigation }) {
       console.log("No such Book!");
     }
   };
+
 
   // check if book exists in db by title and author
   const checkBook = async (book) => {
@@ -120,6 +128,7 @@ export default function ViewRequest({ navigation }) {
         console.log("addBook > checkBook", err);
         showToast("error", "Error adding book ❌" + err);
         setAddingBook(false);
+
       });
   };
 
@@ -134,6 +143,7 @@ export default function ViewRequest({ navigation }) {
     }
     return str;
   };
+
 
   const showToast = (status = "success", subText) => {
     status == "success"
@@ -283,6 +293,7 @@ export default function ViewRequest({ navigation }) {
       </SafeAreaView>
       <Toast position="bottom" onPress={() => Toast.hide()} />
     </>
+
   );
 }
 
@@ -364,24 +375,29 @@ const styles = StyleSheet.create({
   },
   addButton: {
     flex: 1,
+
     flexDirection: "row",
     width: 100,
     height: 40,
+
     backgroundColor: "#00a46c",
     borderRadius: 5,
     alignItems: "center",
     justifyContent: "center",
     alignSelf: "center",
     padding: 10,
+
     marginTop: -5,
-  },
+
   addText: {
     color: "#fff",
     fontSize: 15,
     fontWeight: "bold",
   },
+
   flexRow: {
     flexDirection: "row",
     alignItems: "center",
   },
+
 });

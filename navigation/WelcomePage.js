@@ -42,22 +42,26 @@ export default function WelcomePage({ navigation }) {
     password: "123456",
     error: "",
   });
-  const navForgetPassword = (val) => {
+
+  const navForgetPassword = (val) =>{
+
     setValue({
       email: "",
       password: "",
       error: "",
     });
-    navigation.navigate("ForgetPassword");
-  };
-  const navSignUP = (val) => {
-    setValue({
-      email: "",
-      password: "",
-      error: "",
-    });
-    navigation.navigate("UserSignUp");
-  };
+
+    navigation.navigate("ForgetPassword")
+}
+const navSignUP = (val) =>{
+  setValue({
+    email: "",
+    password: "",
+    error: "",
+  });
+  navigation.navigate("UserSignUp")
+}
+
   // const UserSignUp = "UserSignUp";
   const auth = getAuth();
 
@@ -83,7 +87,9 @@ export default function WelcomePage({ navigation }) {
       console.log("user", docSnap.data());
       setValue({
         email: "",
-        password: "",
+
+        password:"",
+
         error: "",
       });
       if (docSnap.data().isAdmin) {
@@ -133,9 +139,9 @@ export default function WelcomePage({ navigation }) {
           <TextInput
             style={styles.body}
             placeholder="E-mail"
-            onChangeText={(text) =>
-              setValue({ ...value, email: text, error: "" })
-            }
+
+            onChangeText={(text) => setValue({ ...value, email: text , error:"" })}
+
             underlineColorAndroid="transparent"
             value={value.email}
           />
@@ -144,15 +150,20 @@ export default function WelcomePage({ navigation }) {
             style={styles.body}
             secureTextEntry={true}
             placeholder="Password"
-            onChangeText={(text) =>
-              setValue({ ...value, password: text, error: "" })
-            }
+
+            onChangeText={(text) => setValue({ ...value, password: text, error:"" })}
+
             underlineColorAndroid="transparent"
             value={value.password}
           />
         </View>
         <View>
-          <TouchableOpacity onPress={() => navForgetPassword(value)}>
+
+          <TouchableOpacity
+            onPress={() => navForgetPassword(value) }
+          >
+            
+
             <Text
               style={{
                 color: "#2F5233",
