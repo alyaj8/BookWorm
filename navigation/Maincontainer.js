@@ -1,8 +1,5 @@
-import * as React from "react";
-import { View, Text, SafeAreaView } from "react-native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { NavigationContainer } from "@react-navigation/native";
-import { Stack } from "../App";
+import * as React from "react";
 
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Ionicons from "react-native-vector-icons/Ionicons";
@@ -11,8 +8,8 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import Home from "./screens/Home";
 import Lists from "./screens/Lists";
 
-import Discovery from "./screens/Discovery";
 import Account from "./screens/Account";
+import Discovery from "./screens/Discovery";
 import More from "./screens/More";
 
 //Screen names
@@ -25,6 +22,7 @@ const AccountName = "Account";
 
 const Tab = createBottomTabNavigator();
 //export default Maincontainer;
+const Stack = createNativeStackNavigator();
 
 export default function Maincontainer({ navigation }) {
   return (

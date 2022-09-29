@@ -1,25 +1,27 @@
-import { StatusBar } from "expo-status-bar";
+import { useEffect, useState } from "react";
 import {
+  Image,
+  ImageBackground,
+  SafeAreaView,
+  ScrollView,
   StyleSheet,
   Text,
-  View,
-  Image,
-  ScrollView,
-  Button,
-  SafeAreaView,
-  ImageBackground,
   TextInput,
   TouchableOpacity,
+  View,
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
+
 import StripeApp from "./StripeApp";
 import { StripeProvider } from "@stripe/stripe-react-native";
 import react, { useEffect, useState } from "react";
+
 //import Map from './screens/Map';
 //import Fetch from './src/Fetch';
 //import {userSate,userEffect} from "react";
 //import{collection, query,orderBy,onSanpshot,setDoc,doc,getDoc,getDocs} from "firebase/firestore";
 //import{db} from "../../config/firebase";
+
 import {
   collection,
   doc,
@@ -31,6 +33,7 @@ import {
   getDocs,
 } from "firebase/firestore";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+
 export default function BookInfo({ route, navigation }) {
   const book = route.params;
 
@@ -60,16 +63,22 @@ export default function BookInfo({ route, navigation }) {
   let CheckListed = () => {
     const Auth = getAuth();
     Auth.onAuthStateChanged(async (user) => {
-      const db = getFirestore();
-      const q = query(
-        collection(db, "readBookList"),
-        where("favouriteUserId", "==", user.uid),
-        where("id", "==", book.id)
-      );
-      const querySnapshot = await getDocs(q);
-      if (!querySnapshot.empty) {
-        book.listed = true;
-        setUpdate(true);
+
+      try {
+        const db = getFirestore();
+        const q = query(
+          collection(db, "readBookList"),
+          where("favouriteUserId", "==", user.uid),
+          where("id", "==", book.id)
+        );
+        const querySnapshot = await getDocs(q);
+        if (!querySnapshot.empty) {
+          book.listed = true;
+          setUpdate(true);
+        }
+      } catch (error) {
+        console.log(error);
+
       }
     });
   };
@@ -77,16 +86,22 @@ export default function BookInfo({ route, navigation }) {
   let CheckOrder = () => {
     const Auth = getAuth();
     Auth.onAuthStateChanged(async (user) => {
-      const db = getFirestore();
-      const q = query(
-        collection(db, "orderBook"),
-        where("orderUserId", "==", user.uid),
-        where("id", "==", book.id)
-      );
-      const querySnapshot = await getDocs(q);
-      if (!querySnapshot.empty) {
-        book.order = true;
-        setUpdate(true);
+
+      try {
+        const db = getFirestore();
+        const q = query(
+          collection(db, "orderBook"),
+          where("orderUserId", "==", user.uid),
+          where("id", "==", book.id)
+        );
+        const querySnapshot = await getDocs(q);
+        if (!querySnapshot.empty) {
+          book.order = true;
+          setUpdate(true);
+        }
+      } catch (error) {
+        console.log(error);
+
       }
     });
   };
@@ -289,7 +304,9 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   fixToText: {
-    width: 190,
+
+    width: 155,
+
     height: 50,
     justifyContent: "center",
     alignContent: "center",

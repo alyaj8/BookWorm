@@ -1,16 +1,16 @@
-import React, { Component, useState } from "react";
-import {
-  Button,
-  StyleSheet,
-  View,
-  Image,
-  Text,
-  TextInput,
-  SafeAreaView,
-  TouchableOpacity,
-} from "react-native";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { doc, getDoc, getFirestore } from "firebase/firestore";
+import React, { useEffect } from "react";
+import {
+  Image,
+  LogBox,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
 function msg(error) {
   switch (error.code) {
@@ -38,16 +38,19 @@ function msg(error) {
 
 export default function WelcomePage({ navigation }) {
   const [value, setValue] = React.useState({
-    email: "",
-    password: "",
+    email: "Admin@gmail.com",
+    password: "123456",
     error: "",
   });
+
   const navForgetPassword = (val) =>{
+
     setValue({
       email: "",
       password: "",
       error: "",
     });
+
     navigation.navigate("ForgetPassword")
 }
 const navSignUP = (val) =>{
@@ -58,6 +61,7 @@ const navSignUP = (val) =>{
   });
   navigation.navigate("UserSignUp")
 }
+
   // const UserSignUp = "UserSignUp";
   const auth = getAuth();
 
@@ -83,7 +87,9 @@ const navSignUP = (val) =>{
       console.log("user", docSnap.data());
       setValue({
         email: "",
+
         password:"",
+
         error: "",
       });
       if (docSnap.data().isAdmin) {
@@ -99,6 +105,12 @@ const navSignUP = (val) =>{
       });
     }
   }
+
+  useEffect(() => {
+    LogBox.ignoreLogs([
+      "Warning: Async Storage has been extracted from react-native core",
+    ]);
+  }, []);
 
   return (
     <SafeAreaView
@@ -127,7 +139,9 @@ const navSignUP = (val) =>{
           <TextInput
             style={styles.body}
             placeholder="E-mail"
+
             onChangeText={(text) => setValue({ ...value, email: text , error:"" })}
+
             underlineColorAndroid="transparent"
             value={value.email}
           />
@@ -136,16 +150,20 @@ const navSignUP = (val) =>{
             style={styles.body}
             secureTextEntry={true}
             placeholder="Password"
+
             onChangeText={(text) => setValue({ ...value, password: text, error:"" })}
+
             underlineColorAndroid="transparent"
             value={value.password}
           />
         </View>
         <View>
+
           <TouchableOpacity
             onPress={() => navForgetPassword(value) }
           >
             
+
             <Text
               style={{
                 color: "#2F5233",

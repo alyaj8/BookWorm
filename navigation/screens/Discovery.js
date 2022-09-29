@@ -1,30 +1,20 @@
+
+import { collection, getDocs } from "firebase/firestore";
+import { useEffect, useState } from "react";
 import {
-  View,
+  Dimensions,
+  FlatList,
+  Image,
+  ImageBackground,
+  SafeAreaView,
+  StyleSheet,
   Text,
   TextInput,
-  StyleSheet,
-  Button,
-  FlatList,
-  ScrollView,
-  SafeAreaView,
   TouchableOpacity,
-  Image,
-  Dimensions,
-  ImageBackground,
+  View,
 } from "react-native";
-import { useState, useEffect } from "react";
-import {
-  collection,
-  query,
-  orderBy,
-  onSnapshot,
-  setDoc,
-  doc,
-  getDoc,
-  getDocs,
-} from "firebase/firestore";
-import { db } from "../../config/firebase";
 import Icon from "react-native-vector-icons/Ionicons";
+import { db } from "../../config/firebase";
 //import BookInfo from "./BookInfo";
 
 export default function Discovry({ navigation }) {
@@ -90,6 +80,12 @@ export default function Discovry({ navigation }) {
         book.id = doc.id;
         myData.push(book);
       });
+      // Remove duplicate books by title
+      myData = myData.filter(
+        (book, index, self) =>
+          index === self.findIndex((t) => t.title === book.title)
+      );
+
       //store data in AsyncStorage
       myData.sort((a, b) => a.title.localeCompare(b.title));
       setAllBooks(myData);
@@ -174,7 +170,9 @@ export default function Discovry({ navigation }) {
               columnWrapperStyle={{ justifyContent: "space-between" }}
               numColumns={2}
               data={books}
-              keyExtractor={(item) => item.title}
+              refreshing={refreshing}
+              onRefresh={onRefresh}
+              keyExtractor={(item) => item.id}
               renderItem={({ item }) => (
                 //  restUrl(item.data.poster)
                 <View style={{ width: width1, height: hight1 }}>
@@ -357,3 +355,4 @@ const [books1, setBooks1] = useState([]);
       );
     });
   });*/
+

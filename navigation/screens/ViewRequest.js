@@ -1,5 +1,8 @@
-import { useEffect, useState } from "react";
+
+import { useState } from "react";
 import {
+  ActivityIndicator,
+
   Dimensions,
   FlatList,
   Image,
@@ -9,63 +12,69 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
+
   TouchableWithoutFeedback,
   View,
 } from "react-native";
+import Toast from "react-native-toast-message";
 import Icon from "react-native-vector-icons/Ionicons";
 //import BookInfo from "./BookInfo";
-import { addDoc, collection, doc, getDoc } from "firebase/firestore";
+import { addDoc, collection, doc, getDoc, getDocs } from "firebase/firestore";
 import { useDebounce } from "use-debounce";
+
 import { db } from "../../config/firebase";
 // import db from ".";
 export default function ViewRequest({ navigation }) {
   const [catergoryIndex, setCategoryIndex] = useState(0);
   const [books, setBooks] = useState([]);
   const [allBooks, setAllBooks] = useState([]);
-  const [searchText, setSearchText] = useState("");
+
   const [url, setUrl] = useState("");
-  const [value] = useDebounce(searchText, 1000);
   const booksRef = collection(db, "Book");
-  const [refreshing, setRefreshing] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const onRefresh = () => {
-    setRefreshing(true);
-    searchBooks(value);
-    setRefreshing(false);
-  };
+  const [search, setSearch] = useState("");
+  const [addingBook, setAddingBook] = useState(false);
 
-  useEffect(() => {
-    searchBooks(searchText);
-  }, [searchText]);
-
-  const searchBooks = async (bookName) => {
+  const searchBooks = (bookName) => {
+    setSearch(bookName);
     console.log(bookName);
-    const response = await fetch(
+    setBooks([]);
+    setLoading(true);
+    const response = fetch(
       `https://www.googleapis.com/books/v1/volumes?q=${bookName}`
-    );
-    const data = await response.json();
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        const books = data.items
+          ? data.items.map((book) => {
+              return {
+                id: book.id,
+                title: book.volumeInfo.title || "No title",
+                author: book.volumeInfo.authors
+                  ? book.volumeInfo.authors[0]
+                  : "No Author",
+                Description: book.volumeInfo.description || "No description",
+                poster: book.volumeInfo.imageLinks
+                  ? book.volumeInfo.imageLinks.thumbnail
+                  : "",
+                category: book.volumeInfo.categories
+                  ? book.volumeInfo.categories[0]
+                  : "No category",
 
-    const books = data.items.map((book) => {
-      return {
-        title: book.volumeInfo.title || "No title",
-        author: book.volumeInfo.authors[0] || "No Author",
-        Description: book.volumeInfo.description || "No description",
-        poster: book.volumeInfo.imageLinks.thumbnail || "",
-        category: book.volumeInfo.categories[0] || "No category",
+                previewLink: book.volumeInfo.previewLink
+                  ? book.volumeInfo.previewLink
+                  : "",
+              };
+            })
+          : [];
 
-        previewLink: book.volumeInfo.previewLink || "",
-      };
-    });
+        // console.log(data);
+        setBooks(books);
+      })
+      .catch((err) => console.log(err))
+      .finally(() => setLoading(false));
 
-    if (bookName === "") {
-      setBooks([]);
-      setAllBooks([]);
-    } else {
-      setAllBooks(books);
-      setBooks(books);
-    }
-
-    // console.log("🚀 ~ data", books);
   };
 
   const getBook = async (bookId) => {
@@ -79,15 +88,47 @@ export default function ViewRequest({ navigation }) {
     }
   };
 
+
+  // check if book exists in db by title and author
+  const checkBook = async (book) => {
+    const bookRef = collection(db, "Book");
+    const bookSnap = await getDocs(bookRef);
+    const books = bookSnap.docs.map((doc) => doc.data());
+    const bookExists = books.find(
+      (b) => b.title === book.title && b.author === book.author
+    );
+    return bookExists;
+  };
+
   const addBook = async (book) => {
-    console.log("🚀 ~ book", book);
-    addDoc(booksRef, book)
-      .then((docRef) => {
-        console.log("Document has been added successfully");
-        getBook(docRef.id);
+    setAddingBook(true);
+    // console.log("🚀 ~ book", book);
+
+    checkBook(book)
+      .then((bookExists) => {
+        if (bookExists) {
+          showToast("error", book.title + " already exists ❌");
+          setAddingBook(false);
+        } else {
+          const bookRef = collection(db, "Book");
+          addDoc(bookRef, book)
+            .then((docRef) => {
+              console.log("Document written with ID: ", docRef.id);
+              showToast("success", book.title + " added successfully ✅");
+              getBook(docRef.id);
+            })
+            .catch((error) => {
+              console.error("Error adding document: ", error);
+              showToast("error", "Error adding book ❌" + error);
+            })
+            .finally(() => setAddingBook(false));
+        }
       })
-      .catch((error) => {
-        console.log(error);
+      .catch((err) => {
+        console.log("addBook > checkBook", err);
+        showToast("error", "Error adding book ❌" + err);
+        setAddingBook(false);
+
       });
   };
 
@@ -102,133 +143,157 @@ export default function ViewRequest({ navigation }) {
     }
     return str;
   };
-  const CategoryList = () => {
-    return (
-      <View style={styles.categoryContainer}>
-        {categories.map((item, index) => (
-          <TouchableOpacity
-            key={index}
-            activeOpacity={0.8}
-            onPress={() => setCategoryIndex(index)}
-          >
-            <Text
-              style={[
-                styles.categoryText,
-                catergoryIndex === index && styles.categoryTextSelected,
-              ]}
-            >
-              {item}
-            </Text>
-          </TouchableOpacity>
-        ))}
-      </View>
-    );
-  };
-  return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <ImageBackground
-        style={{ flex: 1 }}
-        source={require("./222.jpg")}
-        resizeMode="cover"
-      >
-        <View style={styles.searchContainer}>
-          <Icon name="ios-search" size={20} style={{ marginRight: 10 }} />
-          <TextInput
-            placeholder="Search book by title"
-            placeholderTextColor="#b1e5d3"
-            onChangeText={(text) => setSearchText(text)}
-            style={{
-              fontWeight: "bold",
-              fontSize: 18,
-              width: 260,
-            }}
-          />
-        </View>
 
-        <View style={styles.booksContainer}>
-          {books.length < 1 ? (
-            <Text>
-              {value.length > 0
-                ? "No books found"
-                : "Find books from google books API"}
-            </Text>
-          ) : (
-            <FlatList
-              columnWrapperStyle={{ justifyContent: "space-between" }}
-              numColumns={2}
-              data={books}
-              refreshing={refreshing}
-              onRefresh={onRefresh}
-              keyExtractor={(item) => item.title}
-              renderItem={({ item }) => {
-                // console.log("🚀 ~ item", item);
-                return (
-                  //  restUrl(item.data.poster)
-                  <View
-                    style={{
-                      width: width1,
-                      height: hight1,
-                      margin: 1,
-                      marginBottom: 10,
-                    }}
-                  >
-                    <View style={styles.card}>
-                      <TouchableOpacity
-                        onPress={() => navigation.navigate("BookInfo", item)}
-                      >
-                        <Image
-                          style={styles.container}
-                          source={
-                            item.poster
-                              ? { uri: item.poster }
-                              : require("./222.jpg")
-                          }
-                        />
-                        <Text>
-                          <Text
-                            style={{
-                              textAlign: "center",
-                              fontWeight: "bold",
-                              fontSize: 12,
-                              //margin: 10,
-                            }}
-                          >
-                            {Datacat(item?.title, 17)}
-                            {"\n"}
-                          </Text>
-                          <Text
-                            style={{
-                              textAlign: "left",
-                              color: "grey",
-                              fontSize: 9,
-                            }}
-                          >
-                            By:
-                            {Datacat(item?.author, 19)} {"\n"}{" "}
-                          </Text>
-                        </Text>
-                      </TouchableOpacity>
-                      <TouchableWithoutFeedback onPress={() => addBook(item)}>
-                        <View style={styles.addButton}>
-                          <Icon
-                            name="add"
-                            size={20}
-                            style={{
-                              color: "#fff",
-                            }}
-                          />
-                          <Text style={styles.addText}>Add</Text>
-                        </View>
-                      </TouchableWithoutFeedback>
-                    </View>
-                  </View>
-                );
-              }} //here i want my data
+
+  const showToast = (status = "success", subText) => {
+    status == "success"
+      ? Toast.show({
+          type: "success",
+          text1: "Success",
+          text2: subText ? subText : "Book has been added successfully ✅",
+        })
+      : Toast.show({
+          type: "error",
+          text1: "Error",
+          text2: subText ? subText : "Book has not been added ❌",
+        });
+  };
+
+  return (
+    <>
+      <SafeAreaView style={{ flex: 1 }}>
+        <ImageBackground
+          style={{ flex: 1 }}
+          source={require("./222.jpg")}
+          resizeMode="cover"
+        >
+          <View style={styles.searchContainer}>
+            <Icon name="ios-search" size={20} style={{ marginRight: 10 }} />
+            <TextInput
+              placeholder="Search book by title"
+              placeholderTextColor="#b1e5d3"
+              onChangeText={(text) => searchBooks(text)}
+              style={{
+                fontWeight: "bold",
+                fontSize: 18,
+                width: 260,
+              }}
             />
-          )}
-        </View>
-      </ImageBackground>
-    </SafeAreaView>
+          </View>
+
+          <View style={styles.booksContainer}>
+            {books.length < 1 ? (
+              loading ? (
+                <Text>Loading...</Text>
+              ) : (
+                <Text>
+                  No books found! {"\n"}
+                  Please, Type a word to search books by title{"\n"}
+                  From google books API
+                </Text>
+              )
+            ) : (
+              <>
+                {search ? (
+                  <FlatList
+                    columnWrapperStyle={{ justifyContent: "space-between" }}
+                    numColumns={2}
+                    data={books}
+                    keyExtractor={(item) => item.title}
+                    renderItem={({ item }) => {
+                      // console.log("🚀 ~ item", item);
+                      return (
+                        //  restUrl(item.data.poster)
+                        <View
+                          style={{
+                            width: width1,
+                            height: hight1,
+                            margin: 1,
+                            marginBottom: 10,
+                          }}
+                        >
+                          <View style={styles.card}>
+                            <TouchableOpacity
+                              onPress={() =>
+                                navigation.navigate("BookInfo", item)
+                              }
+                            >
+                              <Image
+                                style={styles.container}
+                                source={
+                                  item.poster
+                                    ? { uri: item.poster }
+                                    : require("./222.jpg")
+                                }
+                              />
+                              <Text>
+                                <Text
+                                  style={{
+                                    textAlign: "center",
+                                    fontWeight: "bold",
+                                    fontSize: 12,
+                                    //margin: 10,
+                                  }}
+                                >
+                                  {Datacat(item?.title, 17)}
+                                  {"\n"}
+                                </Text>
+                                <Text
+                                  style={{
+                                    textAlign: "left",
+                                    color: "grey",
+                                    fontSize: 9,
+                                  }}
+                                >
+                                  By:
+                                  {Datacat(item?.author, 19)} {"\n"}{" "}
+                                </Text>
+                              </Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                              style={styles.flexRow}
+                              onPress={addingBook ? null : () => addBook(item)}
+                            >
+                              <View style={styles.addButton}>
+                                {addingBook ? (
+                                  <ActivityIndicator
+                                    size="small"
+                                    color="#fff"
+                                  />
+                                ) : (
+                                  <>
+                                    <Icon
+                                      name="add"
+                                      size={20}
+                                      style={{
+                                        color: "#fff",
+                                      }}
+                                    />
+                                    <Text style={styles.addText}>Add</Text>
+                                  </>
+                                )}
+                              </View>
+                            </TouchableOpacity>
+                          </View>
+                        </View>
+                      );
+                    }} //here i want my data
+                  />
+                ) : (
+                  <Text>
+                    No books found! {"\n"}
+                    Please, Type a word to search books by title{"\n"}
+                    From google books API
+                  </Text>
+                )}
+              </>
+            )}
+          </View>
+        </ImageBackground>
+      </SafeAreaView>
+      <Toast position="bottom" onPress={() => Toast.hide()} />
+    </>
+
   );
 }
 
@@ -310,20 +375,29 @@ const styles = StyleSheet.create({
   },
   addButton: {
     flex: 1,
-    width: 100,
-    height: 10,
+
     flexDirection: "row",
+    width: 100,
+    height: 40,
+
     backgroundColor: "#00a46c",
     borderRadius: 5,
     alignItems: "center",
     justifyContent: "center",
     alignSelf: "center",
     padding: 10,
-    marginTop: -15,
-  },
+
+    marginTop: -5,
+
   addText: {
     color: "#fff",
     fontSize: 15,
     fontWeight: "bold",
   },
+
+  flexRow: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+
 });

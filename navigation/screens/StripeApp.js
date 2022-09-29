@@ -1,19 +1,15 @@
+import { CardField, useStripe } from "@stripe/stripe-react-native";
+import { getAuth } from "firebase/auth";
+import { addDoc, collection, getFirestore } from "firebase/firestore";
 import React, { useState } from "react";
 import {
-  View,
-  Text,
-  StyleSheet,
-  TextInput,
-  Button,
-  Alert,
   ActivityIndicator,
-  ImageBackground,
-  TouchableOpacity,
   Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from "react-native";
-import { CardField, useConfirmPayment } from "@stripe/stripe-react-native";
-import { StripeProvider } from "@stripe/stripe-react-native";
-import { useStripe } from "@stripe/stripe-react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import { getAuth } from "firebase/auth";
 import { addDoc, collection, getFirestore } from "firebase/firestore";
@@ -131,12 +127,13 @@ const StripeApp = ({ route, navigation }) => {
           <ActivityIndicator size={"large"} color="green" />
         ) : (
           <View style={styles.fixToText}>
-            <Button
+            <TouchableOpacity
               onPress={handlePayPress}
-              title="Pay now"
               style={styles.fixToText}
               color="white"
-            />
+            >
+              <Text style={styles.text}>Pay now</Text>
+            </TouchableOpacity>
           </View>
         )}
       </View>
@@ -184,6 +181,12 @@ const styles = StyleSheet.create({
     marginTop: 30,
     alignSelf: "center",
     color: "#FFF",
+  },
+  text: {
+    color: "#FFF",
+    fontSize: 20,
+    fontWeight: "bold",
+    alignSelf: "center",
   },
   dd: {
     //  backgroundColor: "green",
