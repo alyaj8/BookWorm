@@ -14,7 +14,7 @@ import {
 import Icon from "react-native-vector-icons/Ionicons";
 import StripeApp from "./StripeApp";
 import { StripeProvider } from "@stripe/stripe-react-native";
-import react, { useState } from "react";
+import react, { useEffect, useState } from "react";
 //import Map from './screens/Map';
 //import Fetch from './src/Fetch';
 //import {userSate,userEffect} from "react";
@@ -26,6 +26,9 @@ import {
   getFirestore,
   setDoc,
   addDoc,
+  query,
+  where,
+  getDocs,
 } from "firebase/firestore";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 export default function BookInfo({ route, navigation }) {
@@ -34,6 +37,9 @@ export default function BookInfo({ route, navigation }) {
   let [update, setUpdate] = useState(false);
 
   let AddInfo = async () => {
+    book.listed = true;
+    setUpdate(true);
+
     try {
       const Auth = getAuth();
       const uid = Auth?.currentUser?.uid;
@@ -41,13 +47,54 @@ export default function BookInfo({ route, navigation }) {
       const data = book;
       data.favouriteUserId = uid;
       await addDoc(collection(db, "readBookList"), data);
-      book.favourite = true;
+      book.listed = true;
       setUpdate(true);
-      //alert("This Book Is Added to Your Read Book List");
+      alert("This Book Is Added to Your Favourite Book List");
     } catch (error) {
+      book.listed = false;
+      setUpdate(true);
       alert(error);
     }
   };
+
+  let CheckListed = () => {
+    const Auth = getAuth();
+    Auth.onAuthStateChanged(async (user) => {
+      const db = getFirestore();
+      const q = query(
+        collection(db, "readBookList"),
+        where("favouriteUserId", "==", user.uid),
+        where("id", "==", book.id)
+      );
+      const querySnapshot = await getDocs(q);
+      if (!querySnapshot.empty) {
+        book.listed = true;
+        setUpdate(true);
+      }
+    });
+  };
+
+  let CheckOrder = () => {
+    const Auth = getAuth();
+    Auth.onAuthStateChanged(async (user) => {
+      const db = getFirestore();
+      const q = query(
+        collection(db, "orderBook"),
+        where("orderUserId", "==", user.uid),
+        where("id", "==", book.id)
+      );
+      const querySnapshot = await getDocs(q);
+      if (!querySnapshot.empty) {
+        book.order = true;
+        setUpdate(true);
+      }
+    });
+  };
+
+  useEffect(() => {
+    CheckListed();
+    CheckOrder();
+  }, []);
 
   return (
     <View>
@@ -106,7 +153,8 @@ export default function BookInfo({ route, navigation }) {
                   paddingTop: 20,
                   paddingLeft: 10,
                   paddingRight: 10,
-                  fontSize: "25%",
+                  // fontSize: "25%",
+                  fontSize: 25,
                   fontWeight: "bold",
                 }}
               >
@@ -120,7 +168,8 @@ export default function BookInfo({ route, navigation }) {
                   marginTop: 9,
                   paddingLeft: 10,
                   paddingRight: 10,
-                  fontSize: "15%",
+                  // fontSize: "15%",
+                  fontSize: 15,
                   fontWeight: "bold",
                   color: "grey",
                 }}
@@ -158,11 +207,11 @@ export default function BookInfo({ route, navigation }) {
                   flex: 1,
                   flexDirection: "row",
                   borderRadius: 25,
-                  backgroundColor: book.favourite ? "#aadecc" : "#00a46c",
+                  backgroundColor: book.listed ? "#aadecc" : "#00a46c",
                   paddingHorizontal: 20,
                 }}
                 onPress={() => AddInfo()}
-                disabled={book.favourite}
+                disabled={book.listed}
               >
                 <Text
                   style={{
@@ -171,7 +220,7 @@ export default function BookInfo({ route, navigation }) {
                     fontSize: 18,
                   }}
                 >
-                  {book.favourite ? "AlREADY ADDED TO LIST" : "ADD TO LIST"}
+                  {book.listed ? "AlREADY ADDED TO LIST" : "ADD TO LIST"}
                   <Icon name="add" size={36} style={{ color: "white" }} />
                 </Text>
               </TouchableOpacity>
@@ -208,12 +257,20 @@ export default function BookInfo({ route, navigation }) {
               </View>
               <View>
                 <TouchableOpacity
-                  style={styles.fixToText}
+                  style={[
+                    styles.fixToText,
+                    {
+                      backgroundColor: book.order ? "#aadecc" : "#00a46c",
+                    },
+                  ]}
                   onPress={() => {
                     navigation.navigate("StripeApp", book);
                   }}
+                  disabled={book.order}
                 >
-                  <Text>buy it here</Text>
+                  <Text style={styles.buyit}>
+                    {book.order ? "Bought Already" : "Buy it here"}
+                  </Text>
                 </TouchableOpacity>
               </View>
             </View>
@@ -229,7 +286,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   fixToText: {
-    width: 90,
+    width: 150,
     height: 50,
     justifyContent: "center",
     alignContent: "center",
@@ -243,6 +300,11 @@ const styles = StyleSheet.create({
     height: "100%",
     marginTop: "40%",
     marginBottom: "67%",
+  },
+  buyit: {
+    fontSize: 19,
+    fontWeight: "bold",
+    alignSelf: "center",
   },
 });
 /*<TouchableOpacity

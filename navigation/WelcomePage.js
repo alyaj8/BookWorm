@@ -30,10 +30,6 @@ function msg(error) {
       error.code = "You have exceeded the attempts limit, try again later";
       break;
 
-      case "auth/network-request-failed":
-        error.code = "Unstable Wifi connection!! please check your connection";
-        break;
-
     default:
       return error.code;
   }
