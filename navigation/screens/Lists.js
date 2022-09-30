@@ -56,7 +56,7 @@ export default function Lists({ navigation }) {
   }, []);
   console.log(BookList, "========>bookList");
   return (
-    <View
+    <ScrollView
       style={{
         backgroundColor: "#FFF",
         flex: 1,
@@ -65,7 +65,7 @@ export default function Lists({ navigation }) {
       <View
         style={{
           backgroundColor: "#00a46c",
-          height: "13%",
+          height: "7%",
           borderBottomLeftRadius: 20,
           borderBottomRightRadius: 20,
           paddingHorizontal: 20,
@@ -80,7 +80,7 @@ export default function Lists({ navigation }) {
             width: "100%",
           }}
         >
-          <View style={{ width: "50%" }}>
+          <View style={{ width: "70%" }}>
             <Text
               style={{
                 fontSize: 21,
@@ -88,7 +88,7 @@ export default function Lists({ navigation }) {
                 fontWeight: "bold",
               }}
             >
-              You read {numberOfBook} books
+              You have read {numberOfBook} books
             </Text>
           </View>
         </View>
@@ -142,7 +142,7 @@ export default function Lists({ navigation }) {
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={true}
-        style={{ height: 400 }}
+        style={{ height: 320 }}
       >
         <LinearGradient
           colors={["rgba(0,164,109,0.09)", "transparent"]}
@@ -197,15 +197,168 @@ export default function Lists({ navigation }) {
             style={{
               flex: 1,
               textAlign: "center",
-              marginTop: 50,
-              fontSize: 30,
+              marginTop: 120,
+              fontSize: 15,
               fontWeight: "bold",
+              color: "grey",
             }}
           >
             Book List Is Empty
           </Text>
         )}
       </ScrollView>
-    </View>
+      
+
+      <View
+        style={{
+          flexDirection: "row",
+          paddingHorizontal: 20,
+          width: "100%",
+          alignItems: "center",
+        }}
+      >
+        <View style={{ width: "50%" }}>
+          <Text
+            style={{
+              fontWeight: "bold",
+              fontSize: 17,
+              color: "#585a61",
+            }}
+          >
+            Favorite Books
+          </Text>
+        </View>
+        <View style={{ width: "50%", alignItems: "flex-end" }}>
+          <TouchableOpacity
+          >
+            <View
+              style={{
+                backgroundColor: "#00a46c",
+                paddingHorizontal: 20,
+                paddingVertical: 5,
+                borderRadius: 15,
+              }}
+            >
+              <Text
+                style={{
+                  fontWeight: "bold",
+                  fontSize: 13,
+                  color: "#FFF",
+                }}
+              >
+                View all
+              </Text>
+            </View>
+          </TouchableOpacity>
+        </View>
+      </View>
+
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={true}
+        style={{ height: 320 }}
+      >
+        <LinearGradient
+          colors={["rgba(0,164,109,0.09)", "transparent"]}
+          style={{
+            position: "absolute",
+            left: 0,
+            right: 0,
+            height: 100,
+            marginTop: 220,
+            top: 0,
+          }}
+        />
+          <Text
+            style={{
+              flex: 1,
+              textAlign: "center",
+              marginTop: 120,
+              fontSize: 15,
+              fontWeight: "bold",
+              color: "grey",
+            }}
+          >
+            Book List Is Empty
+          </Text>
+      </ScrollView>
+
+
+
+      <View
+        style={{
+          flexDirection: "row",
+          paddingHorizontal: 20,
+          width: "100%",
+          alignItems: "center",
+        }}
+      >
+        <View style={{ width: "50%" }}>
+          <Text
+            style={{
+              fontWeight: "bold",
+              fontSize: 17,
+              color: "#585a61",
+            }}
+          >
+            Wish Books
+          </Text>
+        </View>
+        <View style={{ width: "50%", alignItems: "flex-end" }}>
+          <TouchableOpacity
+          >
+            <View
+              style={{
+                backgroundColor: "#00a46c",
+                paddingHorizontal: 20,
+                paddingVertical: 5,
+                borderRadius: 15,
+              }}
+            >
+              <Text
+                style={{
+                  fontWeight: "bold",
+                  fontSize: 13,
+                  color: "#FFF",
+                }}
+              >
+                View all
+              </Text>
+            </View>
+          </TouchableOpacity>
+        </View>
+      </View>
+
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={true}
+        style={{ height: 320 }}
+      >
+        <LinearGradient
+          colors={["rgba(0,164,109,0.09)", "transparent"]}
+          style={{
+            position: "absolute",
+            left: 0,
+            right: 0,
+            height: 100,
+            marginTop: 220,
+            top: 0,
+          }}
+        />
+          <Text
+            style={{
+              flex: 1,
+              textAlign: "center",
+              marginTop: 120,
+              fontSize: 15,
+              fontWeight: "bold",
+              color: "grey",
+            }}
+          >
+            Book List Is Empty
+          </Text>
+      </ScrollView>
+
+    </ScrollView>//for all the page
   );
 }

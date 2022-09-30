@@ -31,7 +31,8 @@ export default function ReadBookList({ navigation, route }) {
           style={{ color: "black", marginTop: 30, marginLeft: 10 }}
           onPress={() => navigation.goBack()}
         />
-        <ScrollView>
+        <ScrollView
+        showsVerticalScrollIndicator={true}>
           <View
             style={{
               flex: 1,
@@ -48,7 +49,7 @@ export default function ReadBookList({ navigation, route }) {
                   style={{
                     height: 250,
                     elevation: 2,
-                    backgroundColor: "#FFF",
+                    backgroundColor: "#EFF3EF",
                     marginLeft: "2%",
                     marginRight: "2%",
                     marginTop: 20,
