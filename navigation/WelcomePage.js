@@ -38,8 +38,8 @@ function msg(error) {
 
 export default function WelcomePage({ navigation }) {
   const [value, setValue] = React.useState({
-    email: "Admin@gmail.com",
-    password: "123456",
+    email: "",
+    password: "",
     error: "",
   });
 

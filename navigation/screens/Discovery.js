@@ -15,7 +15,7 @@ import {
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import { db } from "../../config/firebase";
-//import BookInfo from "./BookInfo";
+
 
 export default function Discovry({ navigation }) {
   const [catergoryIndex, setCategoryIndex] = useState(0);
