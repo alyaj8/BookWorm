@@ -40,9 +40,6 @@ export default function BookInfo({ route, navigation }) {
   let [update, setUpdate] = useState(false);
 
   let AddInfo = async () => {
-    book.listed = true;
-    setUpdate(true);
-
     try {
       const Auth = getAuth();
       const uid = Auth?.currentUser?.uid;
@@ -54,8 +51,6 @@ export default function BookInfo({ route, navigation }) {
       setUpdate(true);
       alert("This Book Is Added to Your Favourite Book List");
     } catch (error) {
-      book.listed = false;
-      setUpdate(true);
       alert(error);
     }
   };
@@ -63,25 +58,20 @@ export default function BookInfo({ route, navigation }) {
   let CheckListed = () => {
     const Auth = getAuth();
     Auth.onAuthStateChanged(async (user) => {
-
-      try {
-        const db = getFirestore();
-        const q = query(
-          collection(db, "readBookList"),
-          where("favouriteUserId", "==", user.uid),
-          where("id", "==", book.id)
-        );
-        const querySnapshot = await getDocs(q);
-        if (!querySnapshot.empty) {
-          book.listed = true;
-          setUpdate(true);
-        }
-      } catch (error) {
-        console.log(error);
-
+      const db = getFirestore();
+      const q = query(
+        collection(db, "readBookList"),
+        where("favouriteUserId", "==", user.uid),
+        where("id", "==", book.id)
+      );
+      const querySnapshot = await getDocs(q);
+      if (!querySnapshot.empty) {
+        book.listed = true;
+        setUpdate(true);
       }
     });
   };
+  useEffect(() => CheckListed(), []);
 
   let CheckOrder = () => {
     const Auth = getAuth();

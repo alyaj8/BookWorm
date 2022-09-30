@@ -40,7 +40,6 @@ export default function Lists({ navigation }) {
             book.listed = true;
             list.push(book);
           });
-          setNumberOfBook(list.length);
           setBookList(list);
         }
       });
@@ -54,7 +53,6 @@ export default function Lists({ navigation }) {
       GetBookList();
     });
   }, []);
-
   console.log(BookList, "========>bookList");
   return (
     <View
