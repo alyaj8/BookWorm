@@ -11,8 +11,8 @@ import {
   View,
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
-import { getAuth } from "firebase/auth";
-import { addDoc, collection, getFirestore } from "firebase/firestore";
+
+
 
 //ADD localhost address of your server
 const API_URL = "http://localhost:19003";

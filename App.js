@@ -1,18 +1,19 @@
 import * as React from "react";
-import { LogBox } from "react-native";
-import Bookpdf from "./navigation/screens/Bookpdf";
+
+
 import Orders from "./navigation/screens/Orders";
+import BookInfo from "./navigation/screens/BookInfo";
 import UserSignUp from "./navigation/screens/UserSignUp";
 import WelcomePage from "./navigation/WelcomePage";
-
+import ForgetPassword from "./navigation/screens/ForgetPassword";
 import Home from "./navigation/screens/Home";
 import Bookpdf from "./navigation/screens/Bookpdf";
-import Orders from "./navigation/screens/Orders";
+
 
 
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { StripeProvider } from "@stripe/stripe-react-native";
+
 import { initializeApp } from "firebase/app";
 import "firebase/auth";
 import Maincontainer from "./navigation/Maincontainer";

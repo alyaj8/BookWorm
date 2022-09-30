@@ -16,7 +16,7 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
-import Toast from "react-native-toast-message";
+//import Toast from "react-native-toast-message";
 import Icon from "react-native-vector-icons/Ionicons";
 //import BookInfo from "./BookInfo";
 import { addDoc, collection, doc, getDoc, getDocs } from "firebase/firestore";
@@ -291,7 +291,7 @@ export default function ViewRequest({ navigation }) {
           </View>
         </ImageBackground>
       </SafeAreaView>
-      <Toast position="bottom" onPress={() => Toast.hide()} />
+    
     </>
 
   );
@@ -400,4 +400,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
 
+} 
 });
+
