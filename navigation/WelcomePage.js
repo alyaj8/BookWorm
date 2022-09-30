@@ -175,7 +175,7 @@ export default function WelcomePage({ navigation }) {
           <TouchableOpacity
             onPress={signIn}
             style={{
-              backgroundColor: "#B1D8B7",
+              backgroundColor: "#00a46c",
               padding: 20,
               borderRadius: 10,
               marginBottom: 30,

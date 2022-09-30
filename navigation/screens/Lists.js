@@ -40,6 +40,7 @@ export default function Lists({ navigation }) {
             book.listed = true;
             list.push(book);
           });
+          setNumberOfBook(list.length);
           setBookList(list);
         }
       });

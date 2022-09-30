@@ -164,7 +164,8 @@ export default function UserSignUp({ navigation }) {
         <View style={styles.buttonCont}>
           <Button
             title="SignUp"
-            color="black"
+            color="#ffff"
+          
             onPress={() => signUp()} //
           ></Button>
         </View>
@@ -198,6 +199,6 @@ const styles = StyleSheet.create({
     padding: 5,
     width: 250,
     borderRadius: 10,
-    backgroundColor: "#B1D8B7",
+    backgroundColor: "#00a46c",
   },
 });
