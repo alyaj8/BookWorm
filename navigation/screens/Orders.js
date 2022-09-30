@@ -133,7 +133,7 @@ export default function Orders({ route, navigation }) {
           OrderList.map((val, ind) => (
             <TouchableOpacity
               key={ind}
-              onPress={() => navigation.navigate("Bookpdf", book)}
+              onPress={() => navigation.navigate("Bookpdf", val.pdf)}
               style={{
                 height: 250,
                 elevation: 2,
