@@ -1,8 +1,6 @@
-
 import { useState } from "react";
 import {
   ActivityIndicator,
-
   Dimensions,
   FlatList,
   Image,
@@ -11,12 +9,12 @@ import {
   StyleSheet,
   Text,
   TextInput,
+  TouchableNativeFeedback,
   TouchableOpacity,
-
   TouchableWithoutFeedback,
   View,
 } from "react-native";
-//import Toast from "react-native-toast-message";
+import Toast from "react-native-toast-message";
 import Icon from "react-native-vector-icons/Ionicons";
 //import BookInfo from "./BookInfo";
 import { addDoc, collection, doc, getDoc, getDocs } from "firebase/firestore";
@@ -38,7 +36,7 @@ export default function ViewRequest({ navigation }) {
 
   const searchBooks = (bookName) => {
     setSearch(bookName);
-    console.log(bookName);
+    //console.log(bookName);
     setBooks([]);
     setLoading(true);
     const response = fetch(
@@ -62,7 +60,7 @@ export default function ViewRequest({ navigation }) {
                   ? book.volumeInfo.categories[0]
                   : "No category",
 
-                previewLink: book.volumeInfo.previewLink
+                pdf: book.volumeInfo.previewLink
                   ? book.volumeInfo.previewLink
                   : "",
               };
@@ -74,20 +72,18 @@ export default function ViewRequest({ navigation }) {
       })
       .catch((err) => console.log(err))
       .finally(() => setLoading(false));
-
   };
 
   const getBook = async (bookId) => {
     const docRef = doc(booksRef, bookId);
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
-      console.log("Book data:", docSnap.data());
+      //console.log("Book data:", docSnap.data());
     } else {
       // doc.data() will be undefined in this case
       console.log("No such Book!");
     }
   };
-
 
   // check if book exists in db by title and author
   const checkBook = async (book) => {
@@ -107,14 +103,15 @@ export default function ViewRequest({ navigation }) {
     checkBook(book)
       .then((bookExists) => {
         if (bookExists) {
-          showToast("error", book.title + " already exists ❌");
+          showToast("error", Datacat(book.title, 35) + " already exists ❌");
+          console.log("already");
           setAddingBook(false);
         } else {
           const bookRef = collection(db, "Book");
           addDoc(bookRef, book)
             .then((docRef) => {
               console.log("Document written with ID: ", docRef.id);
-              showToast("success", book.title + " added successfully ✅");
+              showToast("success", Datacat(book.title, 35) + " added successfully ✅");
               getBook(docRef.id);
             })
             .catch((error) => {
@@ -128,7 +125,6 @@ export default function ViewRequest({ navigation }) {
         console.log("addBook > checkBook", err);
         showToast("error", "Error adding book ❌" + err);
         setAddingBook(false);
-
       });
   };
 
@@ -143,7 +139,6 @@ export default function ViewRequest({ navigation }) {
     }
     return str;
   };
-
 
   const showToast = (status = "success", subText) => {
     status == "success"
@@ -250,7 +245,7 @@ export default function ViewRequest({ navigation }) {
                                 </Text>
                               </Text>
                             </TouchableOpacity>
-                            <TouchableOpacity
+                            <TouchableNativeFeedback
                               style={styles.flexRow}
                               onPress={addingBook ? null : () => addBook(item)}
                             >
@@ -273,7 +268,7 @@ export default function ViewRequest({ navigation }) {
                                   </>
                                 )}
                               </View>
-                            </TouchableOpacity>
+                            </TouchableNativeFeedback>
                           </View>
                         </View>
                       );
@@ -291,9 +286,9 @@ export default function ViewRequest({ navigation }) {
           </View>
         </ImageBackground>
       </SafeAreaView>
-    
-    </>
 
+      <Toast position="bottom" onPress={() => Toast.hide()} />
+    </>
   );
 }
 
@@ -389,17 +384,15 @@ const styles = StyleSheet.create({
 
     marginTop: -5,
 
-  addText: {
-    color: "#fff",
-    fontSize: 15,
-    fontWeight: "bold",
-  },
+    addText: {
+      color: "#fff",
+      fontSize: 15,
+      fontWeight: "bold",
+    },
 
-  flexRow: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexRow: {
+      flexDirection: "row",
+      alignItems: "center",
+    },
   },
-
-} 
 });
-

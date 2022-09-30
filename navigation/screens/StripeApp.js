@@ -1,21 +1,25 @@
-import { CardField, useStripe } from "@stripe/stripe-react-native";
-import { getAuth } from "firebase/auth";
-import { addDoc, collection, getFirestore } from "firebase/firestore";
 import React, { useState } from "react";
 import {
-  ActivityIndicator,
-  Image,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
   View,
+  Text,
+  StyleSheet,
+  TextInput,
+  Button,
+  Alert,
+  ActivityIndicator,
+  ImageBackground,
+  TouchableOpacity,
+  Image,
 } from "react-native";
+import { CardField, useConfirmPayment } from "@stripe/stripe-react-native";
+import { StripeProvider } from "@stripe/stripe-react-native";
+import { useStripe } from "@stripe/stripe-react-native";
 import Icon from "react-native-vector-icons/Ionicons";
-
-
+import { getAuth } from "firebase/auth";
+import { addDoc, collection, getFirestore } from "firebase/firestore";
 
 //ADD localhost address of your server
-const API_URL = "http://localhost:19003";
+const API_URL = "http://192.168.100.44:19003";
 
 const StripeApp = ({ route, navigation }) => {
   const book = route.params;
@@ -115,7 +119,10 @@ const StripeApp = ({ route, navigation }) => {
         <CardField
           postalCodeEnabled={true}
           cardStyle={{
-            placeholderColor: cardError ? "#ff0000" : "#0000",
+            placeholderColor:
+             cardError
+                ? "#ff0000"
+                : "#0000",
           }}
           style={styles.cardContainer}
           onCardChange={(cardDetails) => {
@@ -127,13 +134,12 @@ const StripeApp = ({ route, navigation }) => {
           <ActivityIndicator size={"large"} color="green" />
         ) : (
           <View style={styles.fixToText}>
-            <TouchableOpacity
+            <Button
               onPress={handlePayPress}
+              title="Pay now"
               style={styles.fixToText}
               color="white"
-            >
-              <Text style={styles.text}>Pay now</Text>
-            </TouchableOpacity>
+            />
           </View>
         )}
       </View>
@@ -181,12 +187,6 @@ const styles = StyleSheet.create({
     marginTop: 30,
     alignSelf: "center",
     color: "#FFF",
-  },
-  text: {
-    color: "#FFF",
-    fontSize: 20,
-    fontWeight: "bold",
-    alignSelf: "center",
   },
   dd: {
     //  backgroundColor: "green",

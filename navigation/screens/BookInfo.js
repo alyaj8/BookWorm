@@ -141,7 +141,7 @@ export default function BookInfo({ route, navigation }) {
               }}
             >
               <Image
-                source={{ uri: book.poster }}
+                source={book.poster?{ uri: book.poster }: require("./222.jpg")}
                 resizeMode="stretch"
                 style={styles.imagePoster}
               />

@@ -38,29 +38,28 @@ function msg(error) {
 
 export default function WelcomePage({ navigation }) {
   const [value, setValue] = React.useState({
-    email: "",
-    password: "",
+    email: "admin@gmail.com",
+    password: "123456",
     error: "",
   });
 
-  const navForgetPassword = (val) =>{
-
+  const navForgetPassword = (val) => {
     setValue({
       email: "",
       password: "",
       error: "",
     });
 
-    navigation.navigate("ForgetPassword")
-}
-const navSignUP = (val) =>{
-  setValue({
-    email: "",
-    password: "",
-    error: "",
-  });
-  navigation.navigate("UserSignUp")
-}
+    navigation.navigate("ForgetPassword");
+  };
+  const navSignUP = (val) => {
+    setValue({
+      email: "",
+      password: "",
+      error: "",
+    });
+    navigation.navigate("UserSignUp");
+  };
 
   // const UserSignUp = "UserSignUp";
   const auth = getAuth();
@@ -88,7 +87,7 @@ const navSignUP = (val) =>{
       setValue({
         email: "",
 
-        password:"",
+        password: "",
 
         error: "",
       });
@@ -139,9 +138,9 @@ const navSignUP = (val) =>{
           <TextInput
             style={styles.body}
             placeholder="E-mail"
-
-            onChangeText={(text) => setValue({ ...value, email: text , error:"" })}
-
+            onChangeText={(text) =>
+              setValue({ ...value, email: text, error: "" })
+            }
             underlineColorAndroid="transparent"
             value={value.email}
           />
@@ -150,20 +149,15 @@ const navSignUP = (val) =>{
             style={styles.body}
             secureTextEntry={true}
             placeholder="Password"
-
-            onChangeText={(text) => setValue({ ...value, password: text, error:"" })}
-
+            onChangeText={(text) =>
+              setValue({ ...value, password: text, error: "" })
+            }
             underlineColorAndroid="transparent"
             value={value.password}
           />
         </View>
         <View>
-
-          <TouchableOpacity
-            onPress={() => navForgetPassword(value) }
-          >
-            
-
+          <TouchableOpacity onPress={() => navForgetPassword(value)}>
             <Text
               style={{
                 color: "#2F5233",

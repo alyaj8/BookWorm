@@ -5,10 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.facebook.react.bridge.Promise
 import com.facebook.react.bridge.ReactApplicationContext
-import com.reactnativestripesdk.utils.removeFragment
 import com.stripe.android.googlepaylauncher.GooglePayEnvironment
 import com.stripe.android.googlepaylauncher.GooglePayPaymentMethodLauncher
 
@@ -37,13 +37,9 @@ class GooglePayPaymentMethodLauncherFragment(
       ),
       readyCallback = {
         promise.resolve(it)
-        removeFragment(context)
+        (context.currentActivity as? AppCompatActivity)?.supportFragmentManager?.beginTransaction()?.remove(this)?.commitAllowingStateLoss()
       },
       resultCallback = {}
     )
-  }
-
-  companion object {
-    const val TAG = "google_pay_support_fragment"
   }
 }
