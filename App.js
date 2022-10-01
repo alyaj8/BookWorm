@@ -24,6 +24,7 @@ import StripeApp from "./navigation/screens/StripeApp";
 import { StripeProvider } from "@stripe/stripe-react-native";
 import { LogBox } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { UserProvider } from "./config/UserContext";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCb8vT5-UmFZV-954feGAE2L0-T4Tgpqhs",
@@ -48,6 +49,7 @@ function App() {
     ]);
   }, []);
   return (
+    <UserProvider>
     <StripeProvider publishableKey="pk_test_51Ll5efFetd1JSL8vQ1WpbGvxBewQSJi8ZUzB6WD0i19CUUkzdnaHAQzja4LNFMZpUWAZKUPTdSklL2KZSI1k9Qfy00MZ31WOSr">
       <NavigationContainer>
         <Stack.Navigator
@@ -67,6 +69,7 @@ function App() {
         </Stack.Navigator>
       </NavigationContainer>
     </StripeProvider>
+    </UserProvider>
   );
 }
 /*const styles = StyleSheet.create({
