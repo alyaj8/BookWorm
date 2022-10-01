@@ -137,7 +137,7 @@ export default function Discovry({ navigation }) {
         >
           <Icon name="ios-search" size={20} style={{ marginRight: 10 }} />
           <TextInput
-            placeholder="Search by title or for a user"
+            placeholder="Search by title /author or user"
             placeholderTextColor="#b1e5d3"
             onChangeText={(text) => searchBooks(text)}
             style={{
@@ -149,7 +149,7 @@ export default function Discovry({ navigation }) {
         </View>
         <View
           style={{
-            backgroundColor: "#fff",
+            
             paddingVertical: 10,
             paddingHorizontal: 10,
             marginLeft: 20,
@@ -159,12 +159,11 @@ export default function Discovry({ navigation }) {
             flexDirection: "row",
             alignItems: "center",
             borderColor: "#00a46c",
-            borderWidth: 0.6,
-            marginBottom: 110,
+            marginBottom: 40,
           }}
         >
           {books.length < 1 ? (
-            <Text>Book not found!</Text>
+            <Text style= {{marginTop:200, fontSize:30,color:"grey",fontWeight:"bold", alignItems:"center" }}>Book not found!</Text>
           ) : (
             <FlatList
               columnWrapperStyle={{ justifyContent: "space-between" }}
