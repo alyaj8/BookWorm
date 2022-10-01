@@ -11,18 +11,18 @@ import {
   TextInput,
   TouchableNativeFeedback,
   TouchableOpacity,
-  TouchableWithoutFeedback,
   View,
 } from "react-native";
 import Toast from "react-native-toast-message";
 import Icon from "react-native-vector-icons/Ionicons";
 //import BookInfo from "./BookInfo";
 import { addDoc, collection, doc, getDoc, getDocs } from "firebase/firestore";
-import { useDebounce } from "use-debounce";
 
 import { db } from "../../config/firebase";
+import { withUser } from "../../config/UserContext";
 // import db from ".";
-export default function ViewRequest({ navigation }) {
+function ViewRequest({ navigation, isAdmin }) {
+  console.log("🚀 ~ isAdmin", isAdmin);
   const [catergoryIndex, setCategoryIndex] = useState(0);
   const [books, setBooks] = useState([]);
   const [allBooks, setAllBooks] = useState([]);
@@ -111,7 +111,10 @@ export default function ViewRequest({ navigation }) {
           addDoc(bookRef, book)
             .then((docRef) => {
               console.log("Document written with ID: ", docRef.id);
-              showToast("success", Datacat(book.title, 35) + " added successfully ✅");
+              showToast(
+                "success",
+                Datacat(book.title, 35) + " added successfully ✅"
+              );
               getBook(docRef.id);
             })
             .catch((error) => {
@@ -176,20 +179,28 @@ export default function ViewRequest({ navigation }) {
             />
           </View>
 
-          <View style={styles.booksContainer}>
+          <View>
             {books.length < 1 ? (
               loading ? (
                 <Text>Loading...</Text>
               ) : (
-                <Text>
+                <View>
+                <Text style ={{ marginTop: 200,
+                fontSize: 30,
+                color: "grey",
+                fontWeight: "bold",
+                alignItems: "center",}}>
                   No books found! {"\n"}
                   Please, Type a word to search books by title{"\n"}
                   From google books API
                 </Text>
+                </View>
               )
             ) : (
               <>
+              
                 {search ? (
+                  <View style={styles.booksContainer}>
                   <FlatList
                     columnWrapperStyle={{ justifyContent: "space-between" }}
                     numColumns={2}
@@ -210,7 +221,10 @@ export default function ViewRequest({ navigation }) {
                           <View style={styles.card}>
                             <TouchableOpacity
                               onPress={() =>
-                                navigation.navigate("BookInfo", item)
+                                navigation.navigate(
+                                  isAdmin ? "BookInfoApi" : "BookInfo",
+                                  item
+                                )
                               }
                             >
                               <Image
@@ -271,15 +285,23 @@ export default function ViewRequest({ navigation }) {
                             </TouchableNativeFeedback>
                           </View>
                         </View>
+                        
                       );
                     }} //here i want my data
                   />
+                  </View>
                 ) : (
-                  <Text>
+                  <View>
+                  <Text  style ={{ marginTop: 200,
+                fontSize: 30,
+                color: "grey",
+                fontWeight: "bold",
+                alignItems: "center",}}>
                     No books found! {"\n"}
                     Please, Type a word to search books by title{"\n"}
                     From google books API
                   </Text>
+                  </View>
                 )}
               </>
             )}
@@ -291,6 +313,8 @@ export default function ViewRequest({ navigation }) {
     </>
   );
 }
+
+export default withUser(ViewRequest);
 
 const styles = StyleSheet.create({
   container: {
