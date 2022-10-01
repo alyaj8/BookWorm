@@ -1,4 +1,3 @@
-
 import { collection, getDocs } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import {
@@ -15,12 +14,14 @@ import {
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import { db } from "../../config/firebase";
+import { withUser } from "../../config/UserContext";
 
-
-export default function Discovry({ navigation }) {
+function Discovry({ navigation, isAdmin }) {
   const [catergoryIndex, setCategoryIndex] = useState(0);
   const categories = ["ALL", "ADULT", "ROMANCE"];
   const [refreshing, setRefreshing] = useState(false);
+
+  console.log("isAdmin", isAdmin);
 
   const onRefresh = () => {
     setRefreshing(true);
@@ -149,7 +150,6 @@ export default function Discovry({ navigation }) {
         </View>
         <View
           style={{
-            
             paddingVertical: 10,
             paddingHorizontal: 10,
             marginLeft: 20,
@@ -163,7 +163,17 @@ export default function Discovry({ navigation }) {
           }}
         >
           {books.length < 1 ? (
-            <Text style= {{marginTop:200, fontSize:30,color:"grey",fontWeight:"bold", alignItems:"center" }}>Book not found!</Text>
+            <Text
+              style={{
+                marginTop: 200,
+                fontSize: 30,
+                color: "grey",
+                fontWeight: "bold",
+                alignItems: "center",
+              }}
+            >
+              Book not found!
+            </Text>
           ) : (
             <FlatList
               columnWrapperStyle={{ justifyContent: "space-between" }}
@@ -190,7 +200,12 @@ export default function Discovry({ navigation }) {
                       ></View>
                     </View>
                     <TouchableOpacity
-                      onPress={() => navigation.navigate("BookInfo", item)}
+                      onPress={() =>
+                        navigation.navigate(
+                          isAdmin ? "BookInfoApi" : "BookInfo",
+                          item
+                        )
+                      }
                     >
                       <Image
                         style={styles.container}
@@ -241,6 +256,8 @@ export default function Discovry({ navigation }) {
     </SafeAreaView>
   );
 }
+
+export default withUser(Discovry);
 
 const styles = StyleSheet.create({
   container: {
@@ -354,4 +371,3 @@ const [books1, setBooks1] = useState([]);
       );
     });
   });*/
-
