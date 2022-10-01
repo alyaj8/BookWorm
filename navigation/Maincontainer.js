@@ -53,7 +53,7 @@ export default function Maincontainer({ navigation }) {
             iconName = focused ? "compass" : "compass-outline";
           }
           // You can return any component that you like here!
-          return <Ionicons name={iconName} size={28} color={"black"} />; //
+          return <Ionicons name={iconName} size={30} color={"black"} />; //
         },
       })}
     >

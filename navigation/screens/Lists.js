@@ -54,7 +54,7 @@ export default function Lists({ navigation }) {
       GetBookList();
     });
   }, []);
-  console.log(BookList, "========>bookList");
+  //console.log(BookList, "========>bookList");
   return (
     <ScrollView
       style={{
@@ -100,7 +100,7 @@ export default function Lists({ navigation }) {
           paddingHorizontal: 20,
           width: "100%",
           alignItems: "center",
-        }}
+         }}
       >
         <View style={{ width: "50%" }}>
           <Text
@@ -113,7 +113,7 @@ export default function Lists({ navigation }) {
             Read Books
           </Text>
         </View>
-        <View style={{ width: "50%", alignItems: "flex-end" }}>
+        <View style={{ width: "50%", alignItems: "flex-end", }}>
           <TouchableOpacity
             onPress={() => navigation.navigate("ReadBookList", BookList)}
           >
@@ -138,8 +138,7 @@ export default function Lists({ navigation }) {
           </TouchableOpacity>
         </View>
       </View>
-
-      <ScrollView
+   <ScrollView
         horizontal
         showsHorizontalScrollIndicator={true}
         style={{ height: 320 }}
@@ -153,6 +152,8 @@ export default function Lists({ navigation }) {
             height: 100,
             marginTop: 220,
             top: 0,
+            width:9999,
+
           }}
         />
         {BookList.length > 0 ? (
@@ -195,15 +196,18 @@ export default function Lists({ navigation }) {
         ) : (
           <Text
             style={{
-              flex: 1,
-              textAlign: "center",
-              marginTop: 120,
+            //  flex: 1,
+              //textAlign: "center",
+             marginTop: -10,////////////////////////////////////////
+             marginLeft:130,////////////////////////////////////////
               fontSize: 15,
               fontWeight: "bold",
               color: "grey",
+              alignSelf:"center"
             }}
           >
-            Book List Is Empty
+                   Book List Is Empty   
+ 
           </Text>
         )}
       </ScrollView>
@@ -215,6 +219,8 @@ export default function Lists({ navigation }) {
           paddingHorizontal: 20,
           width: "100%",
           alignItems: "center",
+          backgroundColor:"white"
+
         }}
       >
         <View style={{ width: "50%" }}>
@@ -267,16 +273,19 @@ export default function Lists({ navigation }) {
             height: 100,
             marginTop: 220,
             top: 0,
+            width:9999,
+
           }}
         />
           <Text
             style={{
               flex: 1,
               textAlign: "center",
-              marginTop: 120,
-              fontSize: 15,
+               fontSize: 15,
               fontWeight: "bold",
               color: "grey",
+              marginTop: 140,///////////////////////////////////////////////
+             marginLeft:130,///////////////////////////////////////////////
             }}
           >
             Book List Is Empty
@@ -332,7 +341,7 @@ export default function Lists({ navigation }) {
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={true}
-        style={{ height: 320 }}
+        style={{ height: 320,backgroundColor:"white" }}/////////////////
       >
         <LinearGradient
           colors={["rgba(0,164,109,0.09)", "transparent"]}
@@ -343,16 +352,20 @@ export default function Lists({ navigation }) {
             height: 100,
             marginTop: 220,
             top: 0,
+                backgroundColor: "#FFF",
+            width:9999,
+
           }}
         />
           <Text
             style={{
               flex: 1,
               textAlign: "center",
-              marginTop: 120,
-              fontSize: 15,
+               fontSize: 15,
               fontWeight: "bold",
               color: "grey",
+              marginTop: 140,///////////////////////////////////////////////
+             marginLeft:130,///////////////////////////////////////////////
             }}
           >
             Book List Is Empty

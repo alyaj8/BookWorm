@@ -98,13 +98,13 @@ export default function BookInfo({ route, navigation }) {
   }, []);
 
   return (
-    <View>
+    <SafeAreaView>
       <ImageBackground source={require("./222.jpg")} resizeMode="cover">
         <ScrollView>
           <Icon
             name="arrow-back-outline"
-            size={40}
-            style={{ color: "black", marginTop: 60, marginLeft: 10 }}
+            size={45}
+            style={{ color: "black", marginTop: 50, marginLeft: 10 }}
             onPress={() => navigation.goBack()}
           />
           <View
@@ -302,7 +302,7 @@ export default function BookInfo({ route, navigation }) {
           </View>
         </ScrollView>
       </ImageBackground>
-    </View>
+    </SafeAreaView>
   );
 }
 
