@@ -87,6 +87,7 @@ export default function ReadBookList({ navigation, route }) {
                   marginTop: 50,
                   fontSize: 30,
                   fontWeight: "bold",
+                  color: "grey",
                 }}
               >
                 Book List Is Empty

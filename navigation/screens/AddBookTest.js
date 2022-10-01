@@ -590,8 +590,8 @@ export default function AddBookTest({ navigation }) {
               }}
               onPress={() => addField()}
             >
-              <Text style={{ color: "white", fontWeight: "bold" }}>
-                ADD BUTTON
+              <Text style={{ color: "white", fontWeight: "bold",fontSize:18 }}>
+                Add Book
               </Text>
             </TouchableOpacity>
           </View>
