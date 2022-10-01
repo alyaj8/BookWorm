@@ -1,4 +1,3 @@
-
 import {
   Image,
   ImageBackground,
@@ -75,7 +74,6 @@ export default function BookInfo({ route, navigation }) {
   let CheckOrder = () => {
     const Auth = getAuth();
     Auth.onAuthStateChanged(async (user) => {
-
       try {
         const db = getFirestore();
         const q = query(
@@ -90,7 +88,6 @@ export default function BookInfo({ route, navigation }) {
         }
       } catch (error) {
         console.log(error);
-
       }
     });
   };
@@ -102,188 +99,209 @@ export default function BookInfo({ route, navigation }) {
 
   return (
     <View>
-      <SafeAreaView>
+      <ImageBackground source={require("./222.jpg")} resizeMode="cover">
         <ScrollView>
-          <ImageBackground source={require("./222.jpg")} resizeMode="cover">
-            <Icon
-              name="arrow-back-outline"
-              size={40}
-              style={{ color: "black", marginTop: 30, marginLeft: 10 }}
-              onPress={() => navigation.goBack()}
+          <Icon
+            name="arrow-back-outline"
+            size={40}
+            style={{ color: "black", marginTop: 60, marginLeft: 10 }}
+            onPress={() => navigation.goBack()}
+          />
+          <View
+            style={{
+              //poster area
+              // backgroundColor: "grey",
+              alignItems: "center",
+              alignSelf: "center",
+              height: 360,
+              width: 200,
+              justifyContent: "center",
+              margin: "5%",
+              shadowColor: "black",
+              shadowOpacity: 0.6,
+              shadowOffset: {
+                width: 2,
+                height: 8,
+              },
+            }}
+          >
+            <Image
+              source={book.poster ? { uri: book.poster } : require("./222.jpg")}
+              resizeMode="stretch"
+              style={styles.imagePoster}
             />
-            <View
+          </View>
+
+          <View
+            style={{
+              padding: 10,
+              justifyContent: "center",
+              alignItems: "center",
+              backgroundColor: "#EDF5F0",
+
+              borderTopRightRadius: 50,
+              borderTopLeftRadius: 50,
+              borderColor: "#00a46c",
+              borderWidth: 0.7,
+            }}
+          >
+            <Text
               style={{
-                //poster area
-                // backgroundColor: "grey",
+                flew: 1,
                 alignItems: "center",
-                alignSelf: "center",
-                height: 360,
-                width: 200,
                 justifyContent: "center",
-                margin: "5%",
-                shadowColor: "black",
-                shadowOpacity: 0.6,
-                shadowOffset: {
-                  width: 2,
-                  height: 8,
-                },
+                paddingTop: 20,
+                paddingLeft: 10,
+                paddingRight: 10,
+                // fontSize: "25%",
+                fontSize: 25,
+                fontWeight: "bold",
               }}
             >
-              <Image
-                source={book.poster?{ uri: book.poster }: require("./222.jpg")}
-                resizeMode="stretch"
-                style={styles.imagePoster}
+              {book.title}
+            </Text>
+            <Text
+              style={{
+                flew: 1,
+                alignItems: "center",
+                justifyContent: "center",
+                marginTop: 9,
+                paddingLeft: 10,
+                paddingRight: 10,
+                // fontSize: "15%",
+                fontSize: 15,
+                fontWeight: "bold",
+                color: "grey",
+              }}
+            >
+              by {book.author}
+            </Text>
+
+            <View style={{ flex: 1, flexDirection: "row", paddingTop: 10 }}>
+              <Icon name="star" size={30} style={{ color: "gold" }} />
+              <Icon name="star" size={30} style={{ color: "gold" }} />
+              <Icon name="star" size={30} style={{ color: "gold" }} />
+              <Icon name="star" size={30} style={{ color: "gold" }} />
+              <Icon name="star-half" size={30} style={{ color: "gold" }} />
+            </View>
+            <Text
+              style={{
+                fontWeight: "bold",
+                alignSelf: "flex-start",
+                marginBottom: 15,
+                fontSize: 16,
+              }}
+            >
+              {"\n"}
+              {"\n"}
+              {"Book description: "}
+            </Text>
+
+            <Text style={{ textAlign: "justify" }}>{book.Description}</Text>
+            <Text
+              style={{
+                fontWeight: "bold",
+                alignSelf: "flex-start",
+                marginBottom: 15,
+                fontSize: 16,
+              }}
+            >
+              {"\n"}
+              {"\n"}
+              {"Book Details: "}
+            </Text>
+            <Text style={{ alignSelf: "flex-start", fontWeight: "bold" }}>
+              {"ISBN:"}
+              {"    "}
+              {book.ISBN}
+              {"\n\n"}
+              {"CATEGORY:"}
+              {"    "}
+              {book.category}
+              {"\n"} {"\n"}
+            </Text>
+
+            <TouchableOpacity
+              style={{
+                flex: 1,
+                flexDirection: "row",
+                borderRadius: 25,
+                backgroundColor: book.listed ? "#aadecc" : "#00a46c",
+                paddingHorizontal: 20,
+              }}
+              onPress={() => AddInfo()}
+              disabled={book.listed}
+            >
+              <Text
+                style={{
+                  fontWeight: "bold",
+                  paddingBottom: 10,
+                  fontSize: 18,
+                }}
+              >
+                {book.listed ? "AlREADY ADDED TO LIST" : "ADD TO LIST"}
+                <Icon name="add" size={36} style={{ color: "white" }} />
+              </Text>
+            </TouchableOpacity>
+
+            <Text   style={{
+                fontWeight: "bold",
+                alignSelf:"center",
+                 fontSize: 16,
+              }}>
+              {"\n"}
+              Review it
+            </Text>
+            <View style={{ flex: 1, flexDirection: "row", paddingTop: 10 }}>
+              <Icon name="star-outline" size={36} style={{ color: "gold" }} />
+              <Icon name="star-outline" size={36} style={{ color: "gold" }} />
+              <Icon name="star-outline" size={36} style={{ color: "gold" }} />
+              <Icon name="star-outline" size={36} style={{ color: "gold" }} />
+              <Icon name="star-outline" size={36} style={{ color: "gold" }} />
+            </View>
+
+            <Text style={{ fontWeight: "bold", alignSelf: "flex-start" ,  fontWeight: "bold",
+                  fontSize: 16,}}>
+              {"\n"}              {"\n"}
+
+              Leave your comments and read other’s: {"\n"}
+            </Text>
+            <View
+              style={{
+                backgroundColor: "white",
+                alignSelf: "center",
+                height: 130,
+                width: 340,
+              }}
+            >
+              <TextInput
+                placeholder="comment"
+                 underlineColorAndroid="transparent"
+                scrollEnabled
               />
             </View>
-
-            <View
-              style={{
-                padding: 10,
-                justifyContent: "center",
-                alignItems: "center",
-                backgroundColor: "#EDF5F0",
-
-                borderTopRightRadius: 50,
-                borderTopLeftRadius: 50,
-                borderColor: "#00a46c",
-                borderWidth: 0.7,
-              }}
-            >
-              <Text
-                style={{
-                  flew: 1,
-                  alignItems: "center",
-                  justifyContent: "center",
-                  paddingTop: 20,
-                  paddingLeft: 10,
-                  paddingRight: 10,
-                  // fontSize: "25%",
-                  fontSize: 25,
-                  fontWeight: "bold",
-                }}
-              >
-                {book.title}
-              </Text>
-              <Text
-                style={{
-                  flew: 1,
-                  alignItems: "center",
-                  justifyContent: "center",
-                  marginTop: 9,
-                  paddingLeft: 10,
-                  paddingRight: 10,
-                  // fontSize: "15%",
-                  fontSize: 15,
-                  fontWeight: "bold",
-                  color: "grey",
-                }}
-              >
-                by {book.author}
-              </Text>
-
-              <View style={{ flex: 1, flexDirection: "row", paddingTop: 10 }}>
-                <Icon name="star" size={30} style={{ color: "gold" }} />
-                <Icon name="star" size={30} style={{ color: "gold" }} />
-                <Icon name="star" size={30} style={{ color: "gold" }} />
-                <Icon name="star" size={30} style={{ color: "gold" }} />
-                <Icon name="star-half" size={30} style={{ color: "gold" }} />
-              </View>
-              <Text style={{ fontWeight: "bold", alignSelf: "flex-start", marginBottom: 15, }}>
-                {"\n"}
-                {"Book description: "}
-              </Text>
-              
-              <Text style= {{textAlign:"justify",}}>{book.Description}</Text>
-              <Text style={{ fontWeight: "bold", alignSelf: "flex-start",marginBottom: 15,  }}>
-                {"\n"}
-                {"Book Details: "}
-              </Text>
-              <Text style={{ alignSelf: "flex-start", fontWeight:"bold", }}>
-                {"ISBN:"}
-                {"    "}
-                {book.ISBN}
-                {"\n\n"}
-                {"CATEGORY:"}
-                {"    "}
-                {book.category}
-                {"\n "}
-              </Text>
-
+            <View>
               <TouchableOpacity
-                style={{
-                  flex: 1,
-                  flexDirection: "row",
-                  borderRadius: 25,
-                  backgroundColor: book.listed ? "#aadecc" : "#00a46c",
-                  paddingHorizontal: 20,
+                style={[
+                  styles.fixToText,
+                  {
+                    backgroundColor: book.order ? "#aadecc" : "#00a46c",
+                  },
+                ]}
+                onPress={() => {
+                  navigation.navigate("StripeApp", book);
                 }}
-                onPress={() => AddInfo()}
-                disabled={book.listed}
+                disabled={book.order}
               >
-                <Text
-                  style={{
-                    fontWeight: "bold",
-                    paddingBottom: 10,
-                    fontSize: 18,
-                  }}
-                >
-                  {book.listed ? "AlREADY ADDED TO LIST" : "ADD TO LIST"}
-                  <Icon name="add" size={36} style={{ color: "white" }} />
+                <Text style={styles.buyit}>
+                  {book.order ? "BOUGHT ALREADY" : "BUY IT HERE"}
+ 
                 </Text>
               </TouchableOpacity>
-
-              <Text>
-                {"\n"}
-                Review it
-              </Text>
-              <View style={{ flex: 1, flexDirection: "row", paddingTop: 10 }}>
-                <Icon name="star-outline" size={36} style={{ color: "gold" }} />
-                <Icon name="star-outline" size={36} style={{ color: "gold" }} />
-                <Icon name="star-outline" size={36} style={{ color: "gold" }} />
-                <Icon name="star-outline" size={36} style={{ color: "gold" }} />
-                <Icon name="star-outline" size={36} style={{ color: "gold" }} />
-              </View>
-
-              <Text style={{ fontWeight: "bold", alignSelf: "flex-start" }}>
-                {"\n"}
-                Leave your comments and read other’s: {"\n"}
-              </Text>
-              <View
-                style={{
-                  backgroundColor: "white",
-                  alignSelf: "center",
-                  height: 100,
-                  width: 340,
-                }}
-              >
-                <TextInput
-                  placeholder="comment"
-                  underlineColorAndroid="transparent"
-                  scrollEnabled
-                />
-              </View>
-              <View>
-                <TouchableOpacity
-                  style={[
-                    styles.fixToText,
-                    {
-                      backgroundColor: book.order ? "#aadecc" : "#00a46c",
-                    },
-                  ]}
-                  onPress={() => {
-                    navigation.navigate("StripeApp", book);
-                  }}
-                  disabled={book.order}
-                >
-                  <Text style={styles.buyit}>
-                    {book.order ? "Bought already" : "Buy it here"}
-                  </Text>
-                </TouchableOpacity>
-              </View>
             </View>
-          </ImageBackground>
+          </View>
         </ScrollView>
-      </SafeAreaView>
+      </ImageBackground>
     </View>
   );
 }
@@ -293,8 +311,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   fixToText: {
-
-    width: 155,
+    width: 180,
 
     height: 50,
     justifyContent: "center",
@@ -303,6 +320,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#00a46c",
     marginTop: 40,
     paddingLeft: 10,
+     marginBottom:10
   },
   imagePoster: {
     width: "100%",
@@ -314,7 +332,10 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
     alignSelf: "center",
-  },
+   marginTop:10,
+   marginBottom:10,
+    marginRight:18,
+   },
 });
 /*<TouchableOpacity
 onPress={() => navigation.navigate("StripeApp")}
