@@ -13,7 +13,7 @@ import AdminAccount from "./AdminAccount";
 import More from "./More";
 import AddBookTest from"./AddBookTest";
 //Screen names
-const AddBookTest1= "Requests";
+const AddBookTest1= "AddManually";
 
 const addbook1 = "AddBook";
 
@@ -39,7 +39,7 @@ export default function Maincontainer() {
 
               //check the location
               if (rn === AddBookTest1) {
-                iconName = focused ? "file-tray-full" : "file-tray-full-outline";
+                iconName = focused ? "create":"add-circle-outline";
               } else if (rn === addbook1) {
                 iconName = focused ? "add-circle" : "add-circle-outline";
               } else if (rn === MoreName) {
