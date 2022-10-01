@@ -68,7 +68,7 @@ export default function Orders({ route, navigation }) {
       <View
         style={{
           backgroundColor: "#00a46c",
-          height: "16%",
+          height: "15%",
           borderBottomLeftRadius: 20,
           borderBottomRightRadius: 20,
           paddingHorizontal: 20,
