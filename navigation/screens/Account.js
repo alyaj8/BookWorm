@@ -7,13 +7,13 @@ import { getAuth, signOut } from "firebase/auth";
 
 export default function Account({ navigation }) {
   return (
-    <View>
+    <View style={{backgroundColor:"#EDF5F0"}}>
       <ScrollView>
         <View style={{ padding: 10, width: "100%", height: 150 }}>
           <TouchableOpacity>
             <Image
               source={require("./profile2.jpg")}
-              style={{ width: 400, height: 140 }}
+              style={{ width: 400, height: 170 ,marginTop:-9,marginLeft:-9}}
             ></Image>
             <View></View>
             <View></View>
@@ -116,6 +116,7 @@ export default function Account({ navigation }) {
             shadowOpacity: 0.3,
             elevation: 15,
             marginTop: 20,
+            marginBottom:9
           }}
         >
           <Icon name="log-out-outline" size={30} style={{ marginRight: 10 }} />
