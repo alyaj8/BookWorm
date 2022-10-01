@@ -11,6 +11,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { withUser } from "../config/UserContext";
 
 function msg(error) {
   switch (error.code) {
@@ -36,10 +37,10 @@ function msg(error) {
   return error.code;
 }
 
-export default function WelcomePage({ navigation }) {
+function WelcomePage({ navigation, isAdmin, setIsAdmin }) {
   const [value, setValue] = React.useState({
-    email: "",
-    password: "",
+    email: "demo@gmail.com",
+    password: "Demo123",
     error: "",
   });
 
@@ -92,8 +93,10 @@ export default function WelcomePage({ navigation }) {
         error: "",
       });
       if (docSnap.data().isAdmin) {
+        setIsAdmin(true);
         navigation.navigate("Adminpage");
       } else {
+        setIsAdmin(false);
         navigation.navigate("Maincontainer");
       }
     } catch (er) {
@@ -219,6 +222,8 @@ export default function WelcomePage({ navigation }) {
     </SafeAreaView>
   );
 }
+
+export default withUser(WelcomePage);
 
 const styles = StyleSheet.create({
   body: {
