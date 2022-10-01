@@ -939,14 +939,10 @@ export default function AddBookTest({ navigation }) {
   // showToast();
 
   return (
-    <ImageBackground source={background_image} resizeMode="cover">
-      <ScrollView>
-        <Image
-          style={{ height: "100%", width: "100%", position: "absolute" }}
-          source={require("../screens/222.jpg")}
-        />
-
-        <View style={styles.container}>
+    <ImageBackground source={require("./222.jpg")} resizeMode="cover">
+    <ScrollView>
+       
+         <View style={styles.container}>
           <View
             style={{
               width: "100%",
@@ -1027,7 +1023,7 @@ export default function AddBookTest({ navigation }) {
             <TextInput
               style={[
                 styles.body,
-                { borderColor: !Error.title ? "red" : "black" },
+                { borderColor: !Error.title ? "red" : "black",backgroundColor:"#FFF" },
               ]}
               //placeholder="First Name"
               onChangeText={(text) => setValue({ ...value, title: text })}
@@ -1052,7 +1048,7 @@ export default function AddBookTest({ navigation }) {
               multiline={true}
               style={[
                 styles.bodyX,
-                { borderColor: !Error.Description ? "red" : "black" },
+                { borderColor: !Error.Description ? "red" : "black" ,backgroundColor:"#FFF"},
               ]}
               //placeholder="Last Name"
               value={value.Description}
@@ -1076,7 +1072,7 @@ export default function AddBookTest({ navigation }) {
             <TextInput
               style={[
                 styles.body,
-                { borderColor: !Error.category ? "red" : "black" },
+                { borderColor: !Error.category ? "red" : "black" ,backgroundColor:"#FFF"},
               ]}
               value={value.category}
               // placeholder="Username"
@@ -1102,7 +1098,7 @@ export default function AddBookTest({ navigation }) {
             <TextInput
               style={[
                 styles.body,
-                { borderColor: !Error.ISBN ? "red" : "black" },
+                { borderColor: !Error.ISBN ? "red" : "black",backgroundColor:"#FFF" },
               ]} //placeholder="E-mail"
               value={value.ISBN}
               onChangeText={(text) => setValue({ ...value, ISBN: text })}
@@ -1125,7 +1121,7 @@ export default function AddBookTest({ navigation }) {
             <TextInput
               style={[
                 styles.body,
-                { borderColor: !Error.author ? "red" : "black" },
+                { borderColor: !Error.author ? "red" : "black",backgroundColor:"#FFF" },
               ]} //secureTextEntry={true}
               //placeholder="Password"
               value={value.author}
@@ -1148,7 +1144,7 @@ export default function AddBookTest({ navigation }) {
             <TextInput
               style={[
                 styles.body,
-                { borderColor: !Error.virsion ? "red" : "black" },
+                { borderColor: !Error.virsion ? "red" : "black" ,backgroundColor:"#FFF"},
               ]} //secureTextEntry={true}
               //placeholder="Password"
               value={value.virsion}
@@ -1172,7 +1168,7 @@ export default function AddBookTest({ navigation }) {
             <TextInput
               style={[
                 styles.body,
-                { borderColor: !Error.pric ? "red" : "black" },
+                { borderColor: !Error.pric ? "red" : "black" ,   backgroundColor:"#FFF"},
               ]} //secureTextEntry={true}
               //placeholder="Password"
               value={value.pric}
@@ -1211,6 +1207,9 @@ const styles = StyleSheet.create({
     flex: 1,
     //justifyContent: "center",
     //alignItems: "center",
+   // backgroundColor:"#FFF",
+   // borderRadius: 50,
+
   },
   title: {
     fontWeight: "bold",
