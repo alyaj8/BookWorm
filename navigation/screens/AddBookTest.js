@@ -338,11 +338,6 @@ export default function AddBookTest({ navigation }) {
   return (
     <ImageBackground source={background_image} resizeMode="cover">
       <ScrollView>
-        <Image
-          style={{ height: "100%", width: "100%", position: "absolute" }}
-          source={require("../screens/222.jpg")}
-        />
-
         <View style={styles.container}>
           <View
             style={{
@@ -424,7 +419,10 @@ export default function AddBookTest({ navigation }) {
             <TextInput
               style={[
                 styles.body,
-                { borderColor: !Error.title ? "red" : "black" },
+                {
+                  borderColor: !Error.title ? "red" : "black",
+                  backgroundColor: "white",
+                },
               ]}
               //placeholder="First Name"
               onChangeText={(text) => setValue({ ...value, title: text })}
@@ -449,7 +447,10 @@ export default function AddBookTest({ navigation }) {
               multiline={true}
               style={[
                 styles.bodyX,
-                { borderColor: !Error.Description ? "red" : "black" },
+                {
+                  borderColor: !Error.Description ? "red" : "black",
+                  backgroundColor: "white",
+                },
               ]}
               //placeholder="Last Name"
               value={value.Description}
@@ -473,7 +474,10 @@ export default function AddBookTest({ navigation }) {
             <TextInput
               style={[
                 styles.body,
-                { borderColor: !Error.category ? "red" : "black" },
+                {
+                  borderColor: !Error.category ? "red" : "black",
+                  backgroundColor: "white",
+                },
               ]}
               value={value.category}
               // placeholder="Username"
@@ -499,7 +503,10 @@ export default function AddBookTest({ navigation }) {
             <TextInput
               style={[
                 styles.body,
-                { borderColor: !Error.ISBN ? "red" : "black" },
+                {
+                  borderColor: !Error.ISBN ? "red" : "black",
+                  backgroundColor: "white",
+                },
               ]} //placeholder="E-mail"
               value={value.ISBN}
               onChangeText={(text) => setValue({ ...value, ISBN: text })}
@@ -522,7 +529,10 @@ export default function AddBookTest({ navigation }) {
             <TextInput
               style={[
                 styles.body,
-                { borderColor: !Error.author ? "red" : "black" },
+                {
+                  borderColor: !Error.author ? "red" : "black",
+                  backgroundColor: "white",
+                },
               ]} //secureTextEntry={true}
               //placeholder="Password"
               value={value.author}
@@ -545,7 +555,10 @@ export default function AddBookTest({ navigation }) {
             <TextInput
               style={[
                 styles.body,
-                { borderColor: !Error.virsion ? "red" : "black" },
+                {
+                  borderColor: !Error.virsion ? "red" : "black",
+                  backgroundColor: "white",
+                },
               ]} //secureTextEntry={true}
               //placeholder="Password"
               value={value.virsion}
@@ -569,7 +582,10 @@ export default function AddBookTest({ navigation }) {
             <TextInput
               style={[
                 styles.body,
-                { borderColor: !Error.pric ? "red" : "black" },
+                {
+                  borderColor: !Error.pric ? "red" : "black",
+                  backgroundColor: "white",
+                },
               ]} //secureTextEntry={true}
               //placeholder="Password"
               value={value.pric}
@@ -590,7 +606,9 @@ export default function AddBookTest({ navigation }) {
               }}
               onPress={() => addField()}
             >
-              <Text style={{ color: "white", fontWeight: "bold",fontSize:18 }}>
+              <Text
+                style={{ color: "white", fontWeight: "bold", fontSize: 18 }}
+              >
                 Add Book
               </Text>
             </TouchableOpacity>

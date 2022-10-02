@@ -167,9 +167,11 @@ function Discovry({ navigation, isAdmin }) {
               style={{
                 marginTop: 200,
                 fontSize: 30,
+                marginLeft: 57,
                 color: "grey",
                 fontWeight: "bold",
-                alignItems: "center",
+                //alignItems: "center",
+                alignSelf: "center",
               }}
             >
               Book not found!

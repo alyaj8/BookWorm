@@ -39,8 +39,8 @@ function msg(error) {
 
 function WelcomePage({ navigation, isAdmin, setIsAdmin }) {
   const [value, setValue] = React.useState({
-    email: "demo@gmail.com",
-    password: "Demo123",
+    email: "",
+    password: "",
     error: "",
   });
 
@@ -83,8 +83,8 @@ function WelcomePage({ navigation, isAdmin, setIsAdmin }) {
       const db = getFirestore();
       const docRef = doc(db, "users", user.uid);
       const docSnap = await getDoc(docRef);
-      console.log("uid", user.uid);
-      console.log("user", docSnap.data());
+      // console.log("uid", user.uid);
+      // console.log("user", docSnap.data());
       setValue({
         email: "",
 

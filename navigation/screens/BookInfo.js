@@ -294,7 +294,7 @@ export default function BookInfo({ route, navigation }) {
                 disabled={book.order}
               >
                 <Text style={styles.buyit}>
-                  {book.order ? "BOUGHT ALREADY" : "BUY IT HERE"}
+                  {book.order ? "BOUGHT " : "BUY IT HERE"}
  
                 </Text>
               </TouchableOpacity>

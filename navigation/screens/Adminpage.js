@@ -69,7 +69,7 @@ export default function Maincontainer() {
 
           //check the location
           if (rn === AddBookTest1) {
-            iconName = focused ? "create":"add-circle-outline";
+            iconName = focused ? "create" : "create-outline";
           } else if (rn === addbook1) {
             iconName = focused ? "add-circle" : "add-circle-outline";
           } else if (rn === MoreName) {
@@ -82,7 +82,7 @@ export default function Maincontainer() {
             iconName = focused ? "compass" : "compass-outline";
           }
           // You can return any component that you like here!
-          return <Ionicons name={iconName} size={28} color={"black"} />; //
+          return <Ionicons name={iconName} size={32} color={"black"} />; //
         },
       })}
     >
