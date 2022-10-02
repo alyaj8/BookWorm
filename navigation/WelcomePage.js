@@ -39,8 +39,8 @@ function msg(error) {
 
 function WelcomePage({ navigation, isAdmin, setIsAdmin }) {
   const [value, setValue] = React.useState({
-    email: "demo@gmail.com",
-    password: "Demo123",
+    email: "",
+    password: "",
     error: "",
   });
 
