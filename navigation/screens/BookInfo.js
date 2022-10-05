@@ -239,7 +239,7 @@ export default function BookInfo({ route, navigation }) {
                   fontSize: 18,
                 }}
               >
-                {book.listed ? "AlREADY ADDED TO LIST" : "ADD TO LIST"}
+                {book.listed ? "ADDED TO LIST" : "ADD TO LIST"}
                 <Icon name="add" size={36} style={{ color: "white" }} />
               </Text>
             </TouchableOpacity>

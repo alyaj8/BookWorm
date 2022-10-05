@@ -21,6 +21,12 @@ import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 export default function Lists({ navigation }) {
   let [BookList, setBookList] = useState([]);
   let [numberOfBook, setNumberOfBook] = useState(0);
+  const Datacat = (str, num) => {
+    if (str.length > num) {
+      return str.substring(0, num) + "...";
+    }
+    return str;
+  };
   let GetBookList = async () => {
     try {
       let list = [];
@@ -188,7 +194,8 @@ export default function Lists({ navigation }) {
                     fontWeight: "bold",
                   }}
                 >
-                  {val.title}{" "}
+                  {Datacat(val.title, 29)}
+                          {"\n"}
                 </Text>
               </View>
             </TouchableOpacity>
