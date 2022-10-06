@@ -1,8 +1,6 @@
-
 import { useState } from "react";
 import {
   ActivityIndicator,
-
   Dimensions,
   FlatList,
   Image,
@@ -11,20 +9,20 @@ import {
   StyleSheet,
   Text,
   TextInput,
+  TouchableNativeFeedback,
   TouchableOpacity,
-
-  TouchableWithoutFeedback,
   View,
 } from "react-native";
-//import Toast from "react-native-toast-message";
+import Toast from "react-native-toast-message";
 import Icon from "react-native-vector-icons/Ionicons";
 //import BookInfo from "./BookInfo";
 import { addDoc, collection, doc, getDoc, getDocs } from "firebase/firestore";
-import { useDebounce } from "use-debounce";
 
 import { db } from "../../config/firebase";
+import { withUser } from "../../config/UserContext";
 // import db from ".";
-export default function ViewRequest({ navigation }) {
+function ViewRequest({ navigation, isAdmin }) {
+  console.log("🚀 ~ isAdmin", isAdmin);
   const [catergoryIndex, setCategoryIndex] = useState(0);
   const [books, setBooks] = useState([]);
   const [allBooks, setAllBooks] = useState([]);
@@ -38,7 +36,7 @@ export default function ViewRequest({ navigation }) {
 
   const searchBooks = (bookName) => {
     setSearch(bookName);
-    console.log(bookName);
+    //console.log(bookName);
     setBooks([]);
     setLoading(true);
     const response = fetch(
@@ -62,7 +60,7 @@ export default function ViewRequest({ navigation }) {
                   ? book.volumeInfo.categories[0]
                   : "No category",
 
-                previewLink: book.volumeInfo.previewLink
+                pdf: book.volumeInfo.previewLink
                   ? book.volumeInfo.previewLink
                   : "",
               };
@@ -74,20 +72,18 @@ export default function ViewRequest({ navigation }) {
       })
       .catch((err) => console.log(err))
       .finally(() => setLoading(false));
-
   };
 
   const getBook = async (bookId) => {
     const docRef = doc(booksRef, bookId);
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
-      console.log("Book data:", docSnap.data());
+      //console.log("Book data:", docSnap.data());
     } else {
       // doc.data() will be undefined in this case
       console.log("No such Book!");
     }
   };
-
 
   // check if book exists in db by title and author
   const checkBook = async (book) => {
@@ -107,14 +103,18 @@ export default function ViewRequest({ navigation }) {
     checkBook(book)
       .then((bookExists) => {
         if (bookExists) {
-          showToast("error", book.title + " already exists ❌");
+          showToast("error", Datacat(book.title, 35) + " already exists ❌");
+          console.log("already");
           setAddingBook(false);
         } else {
           const bookRef = collection(db, "Book");
           addDoc(bookRef, book)
             .then((docRef) => {
               console.log("Document written with ID: ", docRef.id);
-              showToast("success", book.title + " added successfully ✅");
+              showToast(
+                "success",
+                Datacat(book.title, 35) + " added successfully ✅"
+              );
               getBook(docRef.id);
             })
             .catch((error) => {
@@ -128,7 +128,6 @@ export default function ViewRequest({ navigation }) {
         console.log("addBook > checkBook", err);
         showToast("error", "Error adding book ❌" + err);
         setAddingBook(false);
-
       });
   };
 
@@ -143,7 +142,6 @@ export default function ViewRequest({ navigation }) {
     }
     return str;
   };
-
 
   const showToast = (status = "success", subText) => {
     status == "success"
@@ -181,121 +179,151 @@ export default function ViewRequest({ navigation }) {
             />
           </View>
 
-          <View style={styles.booksContainer}>
+          <View>
             {books.length < 1 ? (
               loading ? (
                 <Text>Loading...</Text>
               ) : (
-                <Text>
-                  No books found! {"\n"}
-                  Please, Type a word to search books by title{"\n"}
-                  From google books API
-                </Text>
-              )
-            ) : (
-              <>
-                {search ? (
-                  <FlatList
-                    columnWrapperStyle={{ justifyContent: "space-between" }}
-                    numColumns={2}
-                    data={books}
-                    keyExtractor={(item) => item.title}
-                    renderItem={({ item }) => {
-                      // console.log("🚀 ~ item", item);
-                      return (
-                        //  restUrl(item.data.poster)
-                        <View
-                          style={{
-                            width: width1,
-                            height: hight1,
-                            margin: 1,
-                            marginBottom: 10,
-                          }}
-                        >
-                          <View style={styles.card}>
-                            <TouchableOpacity
-                              onPress={() =>
-                                navigation.navigate("BookInfo", item)
-                              }
-                            >
-                              <Image
-                                style={styles.container}
-                                source={
-                                  item.poster
-                                    ? { uri: item.poster }
-                                    : require("./222.jpg")
-                                }
-                              />
-                              <Text>
-                                <Text
-                                  style={{
-                                    textAlign: "center",
-                                    fontWeight: "bold",
-                                    fontSize: 12,
-                                    //margin: 10,
-                                  }}
-                                >
-                                  {Datacat(item?.title, 17)}
-                                  {"\n"}
-                                </Text>
-                                <Text
-                                  style={{
-                                    textAlign: "left",
-                                    color: "grey",
-                                    fontSize: 9,
-                                  }}
-                                >
-                                  By:
-                                  {Datacat(item?.author, 19)} {"\n"}{" "}
-                                </Text>
-                              </Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity
-                              style={styles.flexRow}
-                              onPress={addingBook ? null : () => addBook(item)}
-                            >
-                              <View style={styles.addButton}>
-                                {addingBook ? (
-                                  <ActivityIndicator
-                                    size="small"
-                                    color="#fff"
-                                  />
-                                ) : (
-                                  <>
-                                    <Icon
-                                      name="add"
-                                      size={20}
-                                      style={{
-                                        color: "#fff",
-                                      }}
-                                    />
-                                    <Text style={styles.addText}>Add</Text>
-                                  </>
-                                )}
-                              </View>
-                            </TouchableOpacity>
-                          </View>
-                        </View>
-                      );
-                    }} //here i want my data
-                  />
-                ) : (
-                  <Text>
+                <View>
+                  <Text
+                    style={{
+                      marginTop: 200,
+                      fontSize: 30,
+                      color: "grey",
+                      fontWeight: "bold",
+                      alignItems: "center",
+                    }}
+                  >
                     No books found! {"\n"}
                     Please, Type a word to search books by title{"\n"}
                     From google books API
                   </Text>
+                </View>
+              )
+            ) : (
+              <>
+                {search ? (
+                  <View style={styles.booksContainer}>
+                    <FlatList
+                      columnWrapperStyle={{ justifyContent: "space-between" }}
+                      numColumns={2}
+                      data={books}
+                      keyExtractor={(item) => item.title}
+                      renderItem={({ item }) => {
+                        // console.log("🚀 ~ item", item);
+                        return (
+                          //  restUrl(item.data.poster)
+                          <View
+                            style={{
+                              width: width1,
+                              height: hight1,
+                              margin: 1,
+                              marginBottom: 10,
+                            }}
+                          >
+                            <View style={styles.card}>
+                              <TouchableOpacity
+                                onPress={() =>
+                                  navigation.navigate(
+                                    isAdmin ? "BookInfoApi" : "BookInfo",
+                                    item
+                                  )
+                                }
+                              >
+                                <Image
+                                  style={styles.container}
+                                  source={
+                                    item.poster
+                                      ? { uri: item.poster }
+                                      : require("./222.jpg")
+                                  }
+                                />
+                                <Text>
+                                  <Text
+                                    style={{
+                                      textAlign: "center",
+                                      fontWeight: "bold",
+                                      fontSize: 12,
+                                      //margin: 10,
+                                    }}
+                                  >
+                                    {Datacat(item?.title, 17)}
+                                    {"\n"}
+                                  </Text>
+                                  <Text
+                                    style={{
+                                      textAlign: "left",
+                                      color: "grey",
+                                      fontSize: 9,
+                                    }}
+                                  >
+                                    By:
+                                    {Datacat(item?.author, 19)} {"\n"}{" "}
+                                  </Text>
+                                </Text>
+                              </TouchableOpacity>
+                              <TouchableNativeFeedback
+                                style={styles.flexRow}
+                                onPress={
+                                  addingBook ? null : () => addBook(item)
+                                }
+                              >
+                                <View style={styles.addButton}>
+                                  {addingBook ? (
+                                    <ActivityIndicator
+                                      size="small"
+                                      color="#fff"
+                                    />
+                                  ) : (
+                                    <>
+                                      <Icon
+                                        name="add"
+                                        size={20}
+                                        style={{
+                                          color: "#fff",
+                                        }}
+                                      />
+                                      <Text style={styles.addText}>Add</Text>
+                                    </>
+                                  )}
+                                </View>
+                              </TouchableNativeFeedback>
+                            </View>
+                          </View>
+                        );
+                      }} //here i want my data
+                    />
+                  </View>
+                ) : (
+                  <View>
+                    <Text
+                      style={{
+                        marginTop: 200,
+                        fontSize: 30,
+                        color: "grey",
+                        fontWeight: "bold",
+                        //  marginLeft: 120,
+                        alignItems: "center",
+                      }}
+                    >
+                      No books found! {"\n"}
+                      Please, Type a word to search books by title{"\n"}
+                      From google books API
+                    </Text>
+                  </View>
                 )}
               </>
             )}
           </View>
         </ImageBackground>
       </SafeAreaView>
-    
-    </>
 
+      <Toast position="bottom" onPress={() => Toast.hide()} />
+    </>
   );
 }
+
+export default withUser(ViewRequest);
 
 const styles = StyleSheet.create({
   container: {
@@ -389,17 +417,15 @@ const styles = StyleSheet.create({
 
     marginTop: -5,
 
-  addText: {
-    color: "#fff",
-    fontSize: 15,
-    fontWeight: "bold",
-  },
+    addText: {
+      color: "#fff",
+      fontSize: 15,
+      fontWeight: "bold",
+    },
 
-  flexRow: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexRow: {
+      flexDirection: "row",
+      alignItems: "center",
+    },
   },
-
-} 
 });
-

@@ -11,6 +11,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { withUser } from "../config/UserContext";
 
 function msg(error) {
   switch (error.code) {
@@ -36,31 +37,30 @@ function msg(error) {
   return error.code;
 }
 
-export default function WelcomePage({ navigation }) {
+function WelcomePage({ navigation, isAdmin, setIsAdmin }) {
   const [value, setValue] = React.useState({
     email: "",
     password: "",
     error: "",
   });
 
-  const navForgetPassword = (val) =>{
-
+  const navForgetPassword = (val) => {
     setValue({
       email: "",
       password: "",
       error: "",
     });
 
-    navigation.navigate("ForgetPassword")
-}
-const navSignUP = (val) =>{
-  setValue({
-    email: "",
-    password: "",
-    error: "",
-  });
-  navigation.navigate("UserSignUp")
-}
+    navigation.navigate("ForgetPassword");
+  };
+  const navSignUP = (val) => {
+    setValue({
+      email: "",
+      password: "",
+      error: "",
+    });
+    navigation.navigate("UserSignUp");
+  };
 
   // const UserSignUp = "UserSignUp";
   const auth = getAuth();
@@ -83,18 +83,20 @@ const navSignUP = (val) =>{
       const db = getFirestore();
       const docRef = doc(db, "users", user.uid);
       const docSnap = await getDoc(docRef);
-      console.log("uid", user.uid);
-      console.log("user", docSnap.data());
+      // console.log("uid", user.uid);
+      // console.log("user", docSnap.data());
       setValue({
         email: "",
 
-        password:"",
+        password: "",
 
         error: "",
       });
       if (docSnap.data().isAdmin) {
+        setIsAdmin(true);
         navigation.navigate("Adminpage");
       } else {
+        setIsAdmin(false);
         navigation.navigate("Maincontainer");
       }
     } catch (er) {
@@ -126,7 +128,8 @@ const navSignUP = (val) =>{
 
         <Text
           style={{
-            fontSize: 28,
+            fontSize: 35,
+            
             fontWeight: "500",
             color: "#333",
             marginBottom: 15,
@@ -139,9 +142,9 @@ const navSignUP = (val) =>{
           <TextInput
             style={styles.body}
             placeholder="E-mail"
-
-            onChangeText={(text) => setValue({ ...value, email: text , error:"" })}
-
+            onChangeText={(text) =>
+              setValue({ ...value, email: text, error: "" })
+            }
             underlineColorAndroid="transparent"
             value={value.email}
           />
@@ -150,20 +153,15 @@ const navSignUP = (val) =>{
             style={styles.body}
             secureTextEntry={true}
             placeholder="Password"
-
-            onChangeText={(text) => setValue({ ...value, password: text, error:"" })}
-
+            onChangeText={(text) =>
+              setValue({ ...value, password: text, error: "" })
+            }
             underlineColorAndroid="transparent"
             value={value.password}
           />
         </View>
         <View>
-
-          <TouchableOpacity
-            onPress={() => navForgetPassword(value) }
-          >
-            
-
+          <TouchableOpacity onPress={() => navForgetPassword(value)}>
             <Text
               style={{
                 color: "#2F5233",
@@ -181,7 +179,7 @@ const navSignUP = (val) =>{
           <TouchableOpacity
             onPress={signIn}
             style={{
-              backgroundColor: "#B1D8B7",
+              backgroundColor: "#00a46c",
               padding: 20,
               borderRadius: 10,
               marginBottom: 30,
@@ -225,6 +223,8 @@ const navSignUP = (val) =>{
     </SafeAreaView>
   );
 }
+
+export default withUser(WelcomePage);
 
 const styles = StyleSheet.create({
   body: {

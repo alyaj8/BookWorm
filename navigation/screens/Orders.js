@@ -17,6 +17,7 @@ import {
   query,
   where,
 } from "firebase/firestore";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function Orders({ route, navigation }) {
   const book = route.params;
@@ -56,9 +57,9 @@ export default function Orders({ route, navigation }) {
     });
   }, []);
 
-  console.log(OrderList);
+  //console.log(OrderList);
   return (
-    <View
+    <SafeAreaView
       style={{
         backgroundColor: "#FFF",
         flex: 1,
@@ -67,7 +68,7 @@ export default function Orders({ route, navigation }) {
       <View
         style={{
           backgroundColor: "#00a46c",
-          height: "18%",
+          height: "15%",
           borderBottomLeftRadius: 20,
           borderBottomRightRadius: 20,
           paddingHorizontal: 20,
@@ -76,22 +77,22 @@ export default function Orders({ route, navigation }) {
       >
         <Icon
           name="arrow-back-outline"
-          size={40}
-          style={{ color: "black", marginTop: 70, marginLeft: -15 }}
+          size={45}
+          style={{ color: "black", marginTop: 50, marginLeft: -15 }}
           onPress={() => navigation.navigate("Home")}
         />
         <View
           style={{
             flexDirection: "row",
             alignItems: "center",
-            marginTop: 15,
+            marginTop: -10,
             width: "100%",
           }}
         >
           <Text
             style={{
               marginLeft: 79,
-              marginTop: -28,
+              marginTop: -29,
               fontSize: 29,
               color: "#FFF",
               fontWeight: "bold",
@@ -172,8 +173,8 @@ export default function Orders({ route, navigation }) {
             style={{
               flex: 1,
               textAlign: "center",
-              marginTop: 150,
-              fontSize: 30,
+              marginTop: 159,
+              fontSize: 26,
               fontWeight: "bold",
               color: "grey",
             }}
@@ -182,6 +183,6 @@ export default function Orders({ route, navigation }) {
           </Text>
         )}
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 }

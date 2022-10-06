@@ -1,6 +1,5 @@
 import * as React from "react";
 
-
 import Orders from "./navigation/screens/Orders";
 import BookInfo from "./navigation/screens/BookInfo";
 import UserSignUp from "./navigation/screens/UserSignUp";
@@ -8,8 +7,7 @@ import WelcomePage from "./navigation/WelcomePage";
 import ForgetPassword from "./navigation/screens/ForgetPassword";
 import Home from "./navigation/screens/Home";
 import Bookpdf from "./navigation/screens/Bookpdf";
-
-
+import Acc from "./navigation/screens/Acc";
 
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -24,6 +22,7 @@ import StripeApp from "./navigation/screens/StripeApp";
 import { StripeProvider } from "@stripe/stripe-react-native";
 import { LogBox } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { UserProvider } from "./config/UserContext";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCb8vT5-UmFZV-954feGAE2L0-T4Tgpqhs",
@@ -48,25 +47,28 @@ function App() {
     ]);
   }, []);
   return (
-    <StripeProvider publishableKey="pk_test_51Ll5efFetd1JSL8vQ1WpbGvxBewQSJi8ZUzB6WD0i19CUUkzdnaHAQzja4LNFMZpUWAZKUPTdSklL2KZSI1k9Qfy00MZ31WOSr">
-      <NavigationContainer>
-        <Stack.Navigator
-          screenOptions={{ headerShown: false }}
-          initialRouteName="WelcomePage"
-        >
-          <Stack.Screen name="WelcomePage" component={WelcomePage} />
-          <Stack.Screen name="Maincontainer" component={Maincontainer} />
-          <Stack.Screen name="ForgetPassword" component={ForgetPassword} />
-          <Stack.Screen name="UserSignUp" component={UserSignUp} />
-          <Stack.Screen name="BookInfo" component={BookInfo} />
-          <Stack.Screen name="Adminpage" component={Adminpage} />
-          <Stack.Screen name="ReadBookList" component={ReadBookList} />
-          <Stack.Screen name="StripeApp" component={StripeApp} />
-          <Stack.Screen name="Bookpdf" component={Bookpdf} />
-          <Stack.Screen name="Orders" component={Orders} />
-        </Stack.Navigator>
-      </NavigationContainer>
-    </StripeProvider>
+    <UserProvider>
+      <StripeProvider publishableKey="pk_test_51Ll5efFetd1JSL8vQ1WpbGvxBewQSJi8ZUzB6WD0i19CUUkzdnaHAQzja4LNFMZpUWAZKUPTdSklL2KZSI1k9Qfy00MZ31WOSr">
+        <NavigationContainer>
+          <Stack.Navigator
+            screenOptions={{ headerShown: false }}
+            initialRouteName="WelcomePage"
+          >
+            <Stack.Screen name="WelcomePage" component={WelcomePage} />
+            <Stack.Screen name="Maincontainer" component={Maincontainer} />
+            <Stack.Screen name="ForgetPassword" component={ForgetPassword} />
+            <Stack.Screen name="UserSignUp" component={UserSignUp} />
+            <Stack.Screen name="BookInfo" component={BookInfo} />
+            <Stack.Screen name="Adminpage" component={Adminpage} />
+            <Stack.Screen name="ReadBookList" component={ReadBookList} />
+            <Stack.Screen name="StripeApp" component={StripeApp} />
+            <Stack.Screen name="Bookpdf" component={Bookpdf} />
+            <Stack.Screen name="Orders" component={Orders} />
+            <Stack.Screen name="Acc" component={Acc} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </StripeProvider>
+    </UserProvider>
   );
 }
 /*const styles = StyleSheet.create({

@@ -58,6 +58,7 @@ import background_image from "./222.jpg";
 
 export default function AddBookTest({ navigation }) {
   const [image, setImage] = useState(null);
+  const [update, setupdate] = useState(true);
   const [value, setValue] = React.useState({
     title: "",
     Description: "",
@@ -66,6 +67,7 @@ export default function AddBookTest({ navigation }) {
     author: "",
     poster: "",
     virsion: "",
+    pric: "",
     error: "",
   });
   const [Error, setError] = useState({
@@ -76,6 +78,7 @@ export default function AddBookTest({ navigation }) {
     author: true,
     poster: true,
     virsion: true,
+    pric: true,
   });
 
   /// AddImage
@@ -119,130 +122,149 @@ export default function AddBookTest({ navigation }) {
 
   //add a new data
   async function addField() {
-    if (value.title === "") {
-      setError({
-        ...Error,
-        title: false,
-        virsion: true,
-        author: true,
-        ISBN: true,
-        category: true,
-        Description: true,
-        title: true,
-      });
-      return;
-    }
+    if (
+      image === null ||
+      value.title === "" ||
+      value.Description === "" ||
+      value.ISBN === "" ||
+      value.author === "" ||
+      value.virsion === "" ||
+      value.pric === ""
+    ) {
+      console.log(value.title);
 
-    if (value.Description === "") {
-      setError({
-        ...Error,
-        Description: false,
-        title: true,
-        virsion: true,
-        author: true,
-        ISBN: true,
-        category: true,
-      });
-      return;
-    }
-    if (value.category === "") {
-      setError({
-        ...Error,
-        Description: true,
-        title: true,
-        virsion: true,
-        author: true,
-        ISBN: true,
-        category: false,
-      });
-      return;
-    }
-    if (value.ISBN === "") {
-      setError({
-        ...Error,
-        Description: true,
-        title: true,
-        virsion: true,
-        author: true,
-        ISBN: false,
-        category: true,
-      });
-      return;
-    }
-    if (value.author === "") {
-      setError({
-        ...Error,
-        Description: true,
-        title: true,
-        virsion: true,
-        author: false,
-        ISBN: true,
-        category: true,
-      });
-      return;
-    }
+      if (image === null) {
+        Error.poster = false;
+        setError(Error);
+        setupdate(!update);
+      }
+      if (image !== null) {
+        Error.poster = true;
+        setError(Error);
+        setupdate(!update);
+      }
+      if (value.title === "") {
+        Error.title = false;
+        setError(Error);
 
-    if (value.virsion === "") {
-      setError({
-        ...Error,
-        virsion: false,
-        author: true,
-        ISBN: true,
-        category: true,
-        Description: true,
-        title: true,
-      });
-      return;
-    }
+        setupdate(!update);
+      }
+      if (value.title !== "") {
+        Error.title = true;
+        setError(Error);
 
-    if (image === "") {
-      setError({
-        ...Error,
-        poster: false,
-      });
-      return;
-    }
+        setupdate(!update);
+      }
 
-    try {
-      const db = getFirestore();
-      // check if we have new feilds data
-      //get the timestamp
-      const data = {
-        title: value.title,
-        Description: value.Description,
-        category: value.category,
-        ISBN: value.ISBN,
-        author: value.author,
-        poster: image,
-      };
-      await addDoc(collection(db, "Book"), data);
-      showToast();
-      setError({
-        ...Error,
-        virsion: true,
-        author: true,
-        ISBN: true,
-        category: true,
-        Description: true,
-        title: true,
-      });
-      setValue({
-        title: "",
-        Description: "",
-        category: "",
-        ISBN: "",
-        author: "",
-        poster: "",
-        virsion: "",
-        error: "",
-      });
-      setImage(null);
-    } catch (error) {
-      setValue({
-        ...value,
-        error: error,
-      });
-      console.log(error);
+      if (value.Description === "") {
+        Error.Description = false;
+        setError(Error);
+
+        setupdate(!update);
+      }
+      if (value.Description !== "") {
+        Error.Description = true;
+        setError(Error);
+        setupdate(!update);
+      }
+      if (value.category === "") {
+        Error.category = false;
+        setError(Error);
+        setupdate(!update);
+      }
+
+      if (value.category !== "") {
+        Error.category = true;
+        setError(Error);
+        setupdate(!update);
+      }
+
+      if (value.ISBN === "") {
+        Error.ISBN = false;
+        setError(Error);
+        setupdate(!update);
+      }
+      if (value.ISBN !== "") {
+        Error.ISBN = true;
+        setError(Error);
+        setupdate(!update);
+      }
+      if (value.author === "") {
+        Error.author = false;
+        setError(Error);
+        setupdate(!update);
+      }
+      if (value.author !== "") {
+        Error.author = true;
+        setError(Error);
+        setupdate(!update);
+      }
+
+      if (value.virsion === "") {
+        Error.virsion = false;
+        setError(Error);
+        setupdate(!update);
+      }
+      if (value.virsion !== "") {
+        Error.virsion = true;
+        setError(Error);
+        setupdate(!update);
+      }
+
+      if (value.pric === "") {
+        Error.pric = false;
+        setError(Error);
+        setupdate(!update);
+      }
+      if (value.pric !== "") {
+        Error.pric = true;
+        setError(Error);
+        setupdate(!update);
+      }
+      console.log(Error);
+    } else {
+      try {
+        const db = getFirestore();
+        // check if we have new feilds data
+        //get the timestamp
+        const data = {
+          title: value.title,
+          Description: value.Description,
+          category: value.category,
+          ISBN: value.ISBN,
+          author: value.author,
+          poster: image,
+        };
+        await addDoc(collection(db, "Book"), data);
+        showToast();
+        setError({
+          ...Error,
+          virsion: true,
+          author: true,
+          ISBN: true,
+          category: true,
+          Description: true,
+          title: true,
+          poster: true,
+        });
+        setValue({
+          title: "",
+          Description: "",
+          category: "",
+          ISBN: "",
+          author: "",
+          poster: "",
+          virsion: "",
+          error: "",
+        });
+        setImage(null);
+      } catch (error) {
+        setValue({
+          ...value,
+          error: error,
+        });
+        console.log(error);
+      }
     }
   }
   ////////////////////////////////////end new code
@@ -295,10 +317,9 @@ export default function AddBookTest({ navigation }) {
         }}
       />
     ),
-    /*
-      Overwrite 'error' type,
-      by modifying the existing `ErrorToast` component
-    */
+
+    // Overwrite 'error' type,
+    // by modifying the existing `ErrorToast` component
   };
 
   const showToast = () => {
@@ -317,11 +338,6 @@ export default function AddBookTest({ navigation }) {
   return (
     <ImageBackground source={background_image} resizeMode="cover">
       <ScrollView>
-        <Image
-          style={{ height: "100%", width: "100%", position: "absolute" }}
-          source={require("../screens/222.jpg")}
-        />
-
         <View style={styles.container}>
           <View
             style={{
@@ -329,11 +345,7 @@ export default function AddBookTest({ navigation }) {
               height: 40,
               paddingHorizontal: 20,
             }}
-          >
-            <Text style={{ fontSize: 22 }} onPress={() => navigation.goBack()}>
-              Back
-            </Text>
-          </View>
+          ></View>
           <Text style={[styles.title, styles.leftTitle]}>Add new Book</Text>
           <Text
             style={{
@@ -354,9 +366,18 @@ export default function AddBookTest({ navigation }) {
                   onChangeText={(text) => setValue({ ...value, poster: URL })}
                 >
                   <Entypo name="images" size={24} color="#576F72" />
-
+                  {!Error.poster && (
+                    <Text
+                      style={{
+                        color: "red",
+                        marginLeft: 10,
+                      }}
+                    >
+                      Image Field is mandatory
+                    </Text>
+                  )}
                   <Text style={{ alignContent: "center" }}>
-                    the book's poster
+                    select the book's poster
                   </Text>
                 </View>
               </TouchableHighlight>
@@ -396,7 +417,13 @@ export default function AddBookTest({ navigation }) {
               </Text>
             )}
             <TextInput
-              style={styles.body}
+              style={[
+                styles.body,
+                {
+                  borderColor: !Error.title ? "red" : "black",
+                  backgroundColor: "white",
+                },
+              ]}
               //placeholder="First Name"
               onChangeText={(text) => setValue({ ...value, title: text })}
               underlineColorAndroid="transparent"
@@ -418,7 +445,13 @@ export default function AddBookTest({ navigation }) {
             )}
             <TextInput
               multiline={true}
-              style={styles.body}
+              style={[
+                styles.bodyX,
+                {
+                  borderColor: !Error.Description ? "red" : "black",
+                  backgroundColor: "white",
+                },
+              ]}
               //placeholder="Last Name"
               value={value.Description}
               onChangeText={(text) => setValue({ ...value, Description: text })}
@@ -439,7 +472,13 @@ export default function AddBookTest({ navigation }) {
               </Text>
             )}
             <TextInput
-              style={styles.body}
+              style={[
+                styles.body,
+                {
+                  borderColor: !Error.category ? "red" : "black",
+                  backgroundColor: "white",
+                },
+              ]}
               value={value.category}
               // placeholder="Username"
               onChangeText={(text) => setValue({ ...value, category: text })}
@@ -462,8 +501,13 @@ export default function AddBookTest({ navigation }) {
               </Text>
             )}
             <TextInput
-              style={styles.body}
-              //placeholder="E-mail"
+              style={[
+                styles.body,
+                {
+                  borderColor: !Error.ISBN ? "red" : "black",
+                  backgroundColor: "white",
+                },
+              ]} //placeholder="E-mail"
               value={value.ISBN}
               onChangeText={(text) => setValue({ ...value, ISBN: text })}
               underlineColorAndroid="transparent"
@@ -483,8 +527,13 @@ export default function AddBookTest({ navigation }) {
               </Text>
             )}
             <TextInput
-              style={styles.body}
-              //secureTextEntry={true}
+              style={[
+                styles.body,
+                {
+                  borderColor: !Error.author ? "red" : "black",
+                  backgroundColor: "white",
+                },
+              ]} //secureTextEntry={true}
               //placeholder="Password"
               value={value.author}
               onChangeText={(text) => setValue({ ...value, author: text })}
@@ -492,7 +541,7 @@ export default function AddBookTest({ navigation }) {
             />
           </View>
           <View>
-            <Text style={styles.textD}>the book's electronic virsion</Text>
+            <Text style={styles.textD}>The book's electronic virsion</Text>
             {!Error.virsion && (
               <Text
                 style={{
@@ -504,11 +553,43 @@ export default function AddBookTest({ navigation }) {
               </Text>
             )}
             <TextInput
-              style={styles.body}
-              //secureTextEntry={true}
+              style={[
+                styles.body,
+                {
+                  borderColor: !Error.virsion ? "red" : "black",
+                  backgroundColor: "white",
+                },
+              ]} //secureTextEntry={true}
               //placeholder="Password"
               value={value.virsion}
               onChangeText={(text) => setValue({ ...value, virsion: text })}
+              underlineColorAndroid="transparent"
+            />
+          </View>
+
+          <View>
+            <Text style={styles.textD}>The book's price</Text>
+            {!Error.pric && (
+              <Text
+                style={{
+                  color: "red",
+                  marginLeft: 10,
+                }}
+              >
+                This Field is mandatory
+              </Text>
+            )}
+            <TextInput
+              style={[
+                styles.body,
+                {
+                  borderColor: !Error.pric ? "red" : "black",
+                  backgroundColor: "white",
+                },
+              ]} //secureTextEntry={true}
+              //placeholder="Password"
+              value={value.pric}
+              onChangeText={(text) => setValue({ ...value, pric: text })}
               underlineColorAndroid="transparent"
             />
           </View>
@@ -517,7 +598,7 @@ export default function AddBookTest({ navigation }) {
             <TouchableOpacity
               style={{
                 width: "100%",
-                backgroundColor: "#B1D8B7",
+                backgroundColor: "#00a46c",
                 height: 40,
                 borderRadius: 10,
                 justifyContent: "center",
@@ -525,8 +606,10 @@ export default function AddBookTest({ navigation }) {
               }}
               onPress={() => addField()}
             >
-              <Text style={{ color: "white", fontWeight: "bold" }}>
-                ADD BUTTON
+              <Text
+                style={{ color: "white", fontWeight: "bold", fontSize: 18 }}
+              >
+                Add Book
               </Text>
             </TouchableOpacity>
           </View>
@@ -535,6 +618,7 @@ export default function AddBookTest({ navigation }) {
       <Toast config={toastConfig} />
     </ImageBackground>
   );
+  // </ImageBackground> */
 }
 
 const styles = StyleSheet.create({
@@ -566,13 +650,29 @@ const styles = StyleSheet.create({
     padding: 5,
     width: 250,
     alignSelf: "center",
-    borderRadius: 50,
-    //backgroundColor: "#B1D8B7",
+    borderRadius: 100,
+    backgroundColor: "#00a46c",
   },
   InputContainer: {
     fontSize: 50,
   },
   textD: {
     marginLeft: 40,
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+  bodyX: {
+    borderWidth: 1,
+    borderRadius: 30,
+    padding: 10,
+    margin: 12,
+    width: 350,
+    height: 140,
+    paddingLeft: 20,
+    paddingRight: 20,
+    alignSelf: "center",
   },
 });
+/*<Text style={{ fontSize: 22 }} onPress={() => navigation.goBack()}>
+    Back
+  </Text> */

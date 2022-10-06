@@ -18,8 +18,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 
 export default function ForgetPassword({navigation}) {
-  
-
+ 
   function msg (error){
     switch (error.code){
            case "auth/invalid-email":
@@ -39,6 +38,7 @@ export default function ForgetPassword({navigation}) {
           }
           return error.code;
       }
+  const [errorM , setErrorM]= useState("");
   const [Email, setEmail] = useState('');////////varible wrong
   const [disabled, setDisabled] = useState(false);
  const anotherFunc = (val) =>{
@@ -48,7 +48,6 @@ export default function ForgetPassword({navigation}) {
       <SafeAreaView
       style={{flex: 1, justifyContent: "center", backgroundColor: "#ffff" , alignItems: "center"}}
       >
-        
         <View
         style={{
           width: "100%",
@@ -64,12 +63,21 @@ export default function ForgetPassword({navigation}) {
               onPress={() => navigation.goBack()}
             />
       </View>
-      
-      
 
+      <View style={{ alignItems: "center" }}>
+          <Image
+            style={{ height: 200, width: 200 }}
+            source={require("../BookWorm.jpg")}
+          />
+        </View>
+      
+        
         <Text style={styles.title}>Forget password </Text>
 
+        
+
         <View style={styles.container}>
+        <Text style={{ color: "red" }}>{errorM}</Text>
           <TextInput
               style={styles.body}
 
@@ -85,7 +93,7 @@ export default function ForgetPassword({navigation}) {
         <View style={styles.buttonCont}>
           <Button  disabled={disabled} onPress={() => {
             if (!Email) {
-              alert('Please enter email')
+              setErrorM("Please enter an email");
               return;
             }
             const auth = getAuth();
@@ -97,7 +105,7 @@ export default function ForgetPassword({navigation}) {
                 })
                 .catch((er) => {
                   er = msg(er);
-                  alert(er);
+                  setErrorM(er);
               });
 
           }}
@@ -119,14 +127,13 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 10,
     justifyContent: 'center',
-    
     alignItems: 'center',
   },
   title: {
 
     fontWeight: 'bold',
     fontSize: 35,
-    marginTop: 150,
+    marginTop: 90,
     
   },
   leftTitle: {
@@ -153,8 +160,8 @@ const styles = StyleSheet.create({
     width: 350,
     borderWidth: 1,
     borderRadius: 10,
-    backgroundColor: "#B1D8B7",
-    borderColor: '#B1D8B7',
+    backgroundColor: "#00a46c",
+    borderColor: '#00a46c',
 
   },
 

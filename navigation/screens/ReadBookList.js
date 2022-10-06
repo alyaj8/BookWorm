@@ -18,6 +18,12 @@ import Icon from "react-native-vector-icons/Ionicons";
 
 export default function ReadBookList({ navigation, route }) {
   let books = route.params;
+  const Datacat = (str, num) => {
+    if (str.length > num) {
+      return str.substring(0, num) + "...";
+    }
+    return str;
+  };
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <ImageBackground
@@ -31,7 +37,8 @@ export default function ReadBookList({ navigation, route }) {
           style={{ color: "black", marginTop: 30, marginLeft: 10 }}
           onPress={() => navigation.goBack()}
         />
-        <ScrollView>
+        <ScrollView
+        showsVerticalScrollIndicator={true}>
           <View
             style={{
               flex: 1,
@@ -48,7 +55,7 @@ export default function ReadBookList({ navigation, route }) {
                   style={{
                     height: 250,
                     elevation: 2,
-                    backgroundColor: "#FFF",
+                    backgroundColor: "#EFF3EF",
                     marginLeft: "2%",
                     marginRight: "2%",
                     marginTop: 20,
@@ -73,7 +80,8 @@ export default function ReadBookList({ navigation, route }) {
                         fontWeight: "bold",
                       }}
                     >
-                      {val.title}{" "}
+                     {Datacat(val.title, 39)}
+                          {"\n"}{" "}
                     </Text>
                   </View>
                 </TouchableOpacity>
@@ -86,6 +94,7 @@ export default function ReadBookList({ navigation, route }) {
                   marginTop: 50,
                   fontSize: 30,
                   fontWeight: "bold",
+                  color: "grey",
                 }}
               >
                 Book List Is Empty
