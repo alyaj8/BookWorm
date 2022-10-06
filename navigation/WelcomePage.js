@@ -128,7 +128,8 @@ function WelcomePage({ navigation, isAdmin, setIsAdmin }) {
 
         <Text
           style={{
-            fontSize: 28,
+            fontSize: 35,
+            textDecoration:"underline",
             fontWeight: "500",
             color: "#333",
             marginBottom: 15,
