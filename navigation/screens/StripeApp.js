@@ -22,7 +22,7 @@ import { addDoc, collection, getFirestore } from "firebase/firestore";
 import Toast, { BaseToast, ErrorToast } from "react-native-toast-message";
 
 //ADD localhost address of your server
-const API_URL = "http://192.168.100.44:19003";
+const API_URL = "http://10.6.198.20:19003";
 
 const StripeApp = ({ route, navigation }) => {
   const book = route.params;

@@ -219,6 +219,9 @@ export default function BookInfo({ route, navigation }) {
               {"    "}
               {book.category}
               {"\n"} {"\n"}
+              {"PRICE:"}
+              {book.price}
+              {"\n"} {"\n"}
             </Text>
 
             <TouchableOpacity
@@ -244,11 +247,13 @@ export default function BookInfo({ route, navigation }) {
               </Text>
             </TouchableOpacity>
 
-            <Text   style={{
+            <Text
+              style={{
                 fontWeight: "bold",
-                alignSelf:"center",
-                 fontSize: 16,
-              }}>
+                alignSelf: "center",
+                fontSize: 16,
+              }}
+            >
               {"\n"}
               Review it
             </Text>
@@ -260,10 +265,15 @@ export default function BookInfo({ route, navigation }) {
               <Icon name="star-outline" size={36} style={{ color: "gold" }} />
             </View>
 
-            <Text style={{ fontWeight: "bold", alignSelf: "flex-start" ,  fontWeight: "bold",
-                  fontSize: 16,}}>
-              {"\n"}              {"\n"}
-
+            <Text
+              style={{
+                fontWeight: "bold",
+                alignSelf: "flex-start",
+                fontWeight: "bold",
+                fontSize: 16,
+              }}
+            >
+              {"\n"} {"\n"}
               Leave your comments and read other’s: {"\n"}
             </Text>
             <View
@@ -276,7 +286,7 @@ export default function BookInfo({ route, navigation }) {
             >
               <TextInput
                 placeholder="comment"
-                 underlineColorAndroid="transparent"
+                underlineColorAndroid="transparent"
                 scrollEnabled
               />
             </View>
@@ -295,7 +305,6 @@ export default function BookInfo({ route, navigation }) {
               >
                 <Text style={styles.buyit}>
                   {book.order ? "BOUGHT " : "BUY IT HERE"}
- 
                 </Text>
               </TouchableOpacity>
             </View>
@@ -320,7 +329,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#00a46c",
     marginTop: 40,
     paddingLeft: 10,
-     marginBottom:10
+    marginBottom: 10,
   },
   imagePoster: {
     width: "100%",
@@ -332,10 +341,10 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
     alignSelf: "center",
-   marginTop:10,
-   marginBottom:10,
-    marginRight:18,
-   },
+    marginTop: 10,
+    marginBottom: 10,
+    marginRight: 18,
+  },
 });
 /*<TouchableOpacity
 onPress={() => navigation.navigate("StripeApp")}
