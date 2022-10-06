@@ -18,6 +18,12 @@ import Icon from "react-native-vector-icons/Ionicons";
 
 export default function ReadBookList({ navigation, route }) {
   let books = route.params;
+  const Datacat = (str, num) => {
+    if (str.length > num) {
+      return str.substring(0, num) + "...";
+    }
+    return str;
+  };
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <ImageBackground
@@ -74,7 +80,8 @@ export default function ReadBookList({ navigation, route }) {
                         fontWeight: "bold",
                       }}
                     >
-                      {val.title}{" "}
+                     {Datacat(val.title, 39)}
+                          {"\n"}{" "}
                     </Text>
                   </View>
                 </TouchableOpacity>
