@@ -7,13 +7,13 @@ import { getAuth, signOut } from "firebase/auth";
 
 export default function Account({ navigation }) {
   return (
-    <View style={{backgroundColor:"#EDF5F0"}}>
+    <View style={{ backgroundColor: "#EDF5F0" }}>
       <ScrollView>
         <View style={{ padding: 10, width: "100%", height: 150 }}>
           <TouchableOpacity>
             <Image
               source={require("./profile2.jpg")}
-              style={{ width: 400, height: 170 ,marginTop:-9,marginLeft:-9}}
+              style={{ width: 400, height: 170, marginTop: -9, marginLeft: -9 }}
             ></Image>
             <View></View>
             <View></View>
@@ -38,25 +38,26 @@ export default function Account({ navigation }) {
             {" "}
           </Text>
         </View>
-
-        <View
-          style={{
-            alignSelf: "center",
-            flexDirection: "row",
-            justifyContent: "flex-start",
-            backgroundColor: "#fff",
-            width: "90%",
-            padding: 20,
-            paddingBottom: 22,
-            borderRadius: 10,
-            shadowOpacity: 0.3,
-            elevation: 15,
-            marginTop: 20,
-          }}
-        >
-          <Icon name="person-outline" size={30} style={{ marginRight: 10 }} />
-          <Text style={{ fontSize: 16, marginTop: 7 }}>My detailes</Text>
-        </View>
+        <TouchableOpacity onPress={() => navigation.navigate("Acc")}>
+          <View
+            style={{
+              alignSelf: "center",
+              flexDirection: "row",
+              justifyContent: "flex-start",
+              backgroundColor: "#fff",
+              width: "90%",
+              padding: 20,
+              paddingBottom: 22,
+              borderRadius: 10,
+              shadowOpacity: 0.3,
+              elevation: 15,
+              marginTop: 20,
+            }}
+          >
+            <Icon name="person-outline" size={30} style={{ marginRight: 10 }} />
+            <Text style={{ fontSize: 16, marginTop: 7 }}>My detailes</Text>
+          </View>
+        </TouchableOpacity>
         <TouchableOpacity
           onPress={() => navigation.navigate("Orders")}
           style={{
@@ -116,7 +117,7 @@ export default function Account({ navigation }) {
             shadowOpacity: 0.3,
             elevation: 15,
             marginTop: 20,
-            marginBottom:9
+            marginBottom: 9,
           }}
         >
           <Icon name="log-out-outline" size={30} style={{ marginRight: 10 }} />
