@@ -11,8 +11,6 @@ import {
   Button,
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-import { collection, doc, getFirestore, setDoc } from "firebase/firestore";
 
 export default function Acc({ navigation }) {
   const [value, setValue] = React.useState({
@@ -72,115 +70,7 @@ export default function Acc({ navigation }) {
         flex: 1,
       }}
     >
-      <View
-        style={{
-          backgroundColor: "#00a46c",
-          height: "12%",
-          borderBottomLeftRadius: 20,
-          borderBottomRightRadius: 20,
-          paddingHorizontal: 20,
-          marginBottom: 15,
-        }}
-      >
-        <Icon
-          name="arrow-back-outline"
-          size={45}
-          style={{ color: "black", marginTop: 35, marginLeft: -15 }}
-          onPress={() => navigation.goBack()}
-        />
-        <View
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            marginTop: -10,
-            width: "100%",
-          }}
-        >
-          <Text
-            style={{
-              marginLeft: 79,
-              marginTop: -35,
-              fontSize: 29,
-              color: "#FFF",
-              fontWeight: "bold",
-              alignSelf: "center",
-            }}
-          >
-            My detailes
-          </Text>
-        </View>
-      </View>
-
-      <View
-        style={{
-          backgroundColor: "#FFF",
-          height: "80%",
-          borderRadius: 50,
-          paddingHorizontal: 20,
-          marginBottom: 15,
-          marginTop: 15,
-        }}
-      >
-        <View style={{ marginTop: 40, marginLeft: -10 }}>
-          <View style={styles.InputContainer}>
-            <Text style={{ fontWeight: "bold" }}>First Name</Text>
-            <TextInput
-              style={styles.body}
-              placeholder="First Name"
-              onChangeText={(text) => setValue({ ...value, firstname: text })}
-              underlineColorAndroid="transparent"
-            />
-          </View>
-          <View style={styles.InputContainer}>
-            <Text style={{ fontWeight: "bold" }}>{"\n"}Last Name</Text>
-
-            <TextInput
-              style={styles.body}
-              placeholder="Last Name"
-              nChangeText={(text) => setValue({ ...value, lastname: text })}
-              underlineColorAndroid="transparent"
-            />
-          </View>
-          <View style={styles.InputContainer}>
-            <Text style={{ fontWeight: "bold" }}>{"\n"}User Name</Text>
-
-            <TextInput
-              style={styles.body}
-              placeholder="Username"
-              onChangeText={(text) => setValue({ ...value, username: text })}
-              underlineColorAndroid="transparent"
-            />
-          </View>
-          <View style={styles.InputContainer}>
-            <Text style={{ fontWeight: "bold" }}>{"\n"}Email</Text>
-
-            <TextInput
-              style={styles.body}
-              placeholder="E-mail"
-              onChangeText={(text) => setValue({ ...value, email: text })}
-              underlineColorAndroid="transparent"
-            />
-          </View>
-
-          <View style={styles.InputContainer}>
-            <Text style={{ fontWeight: "bold" }}>{"\n"}Password</Text>
-
-            <TextInput
-              style={styles.body}
-              secureTextEntry={true}
-              placeholder="Password"
-              onChangeText={(text) => setValue({ ...value, password: text })}
-              underlineColorAndroid="transparent"
-            />
-          </View>
-
-          <View style={styles.buttonCont}>
-            <TouchableOpacity>
-              <Text style={styles.savechanges}>Save changes</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </View>
+      <View></View>
     </SafeAreaView>
   );
 }
