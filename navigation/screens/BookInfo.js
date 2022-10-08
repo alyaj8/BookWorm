@@ -14,7 +14,7 @@ import Icon from "react-native-vector-icons/Ionicons";
 import StripeApp from "./StripeApp";
 import { StripeProvider } from "@stripe/stripe-react-native";
 import react, { useEffect, useState } from "react";
-
+import { Rating, AirbnbRating } from 'react-native-ratings';
 //import Map from './screens/Map';
 //import Fetch from './src/Fetch';
 //import {userSate,userEffect} from "react";
@@ -37,6 +37,7 @@ export default function BookInfo({ route, navigation }) {
   const book = route.params;
 
   let [update, setUpdate] = useState(false);
+ 
 
   let AddInfo = async () => {
     try {
@@ -177,13 +178,11 @@ export default function BookInfo({ route, navigation }) {
               by {book.author}
             </Text>
 
-            <View style={{ flex: 1, flexDirection: "row", paddingTop: 10 }}>
-              <Icon name="star" size={30} style={{ color: "gold" }} />
-              <Icon name="star" size={30} style={{ color: "gold" }} />
-              <Icon name="star" size={30} style={{ color: "gold" }} />
-              <Icon name="star" size={30} style={{ color: "gold" }} />
-              <Icon name="star-half" size={30} style={{ color: "gold" }} />
-            </View>
+            <AirbnbRating
+            defaultRating ={3}
+            reviews={[]}
+            isDisabled={true}
+            size={30} />
             <Text
               style={{
                 fontWeight: "bold",
@@ -257,13 +256,10 @@ export default function BookInfo({ route, navigation }) {
               {"\n"}
               Review it
             </Text>
-            <View style={{ flex: 1, flexDirection: "row", paddingTop: 10 }}>
-              <Icon name="star-outline" size={36} style={{ color: "gold" }} />
-              <Icon name="star-outline" size={36} style={{ color: "gold" }} />
-              <Icon name="star-outline" size={36} style={{ color: "gold" }} />
-              <Icon name="star-outline" size={36} style={{ color: "gold" }} />
-              <Icon name="star-outline" size={36} style={{ color: "gold" }} />
-            </View>
+            <AirbnbRating
+            defaultRating ={0} 
+            size = {30}/>
+
 
             <Text
               style={{
