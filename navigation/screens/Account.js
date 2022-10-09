@@ -1,13 +1,73 @@
-import * as React from "react";
-
-import { View, Text, ScrollView, TouchableOpacity, Image } from "react-native";
+import React, { useEffect, useState } from "react";
+import {
+  StyleSheet,
+  View,
+  Text,
+  Image,
+  TextInput,
+  ScrollView,
+  TouchableOpacity,
+  SafeAreaView,
+  Button,
+  FlatList,
+} from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
-
-import { getAuth, signOut } from "firebase/auth";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signOut,
+} from "firebase/auth";
+import { collection, getDocs, query, where } from "firebase/firestore";
+import { doc, getFirestore, setDoc } from "firebase/firestore";
+import { db } from "../../config/firebase";
+import { withUser } from "../../config/UserContext";
 
 export default function Account({ navigation }) {
+  const [infoList, setinfoList] = useState([]);
+  const [fname, setFname] = useState("");
+  const [lastname, setLname] = useState("");
+  const auth = getAuth();
+  const user = auth.currentUser;
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  const getData = async () => {
+    try {
+      const colRef = query(
+        collection(db, "users"),
+        where("uid", "==", user.uid)
+      );
+      const snapshot = await getDocs(colRef);
+      var myData = [];
+      //store the data in an array myData
+      snapshot.forEach((doc) => {
+        let userinfo2 = doc.data();
+        userinfo2.id = doc.id;
+        myData.push(userinfo2);
+      });
+      setinfoList(myData);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <View style={{ backgroundColor: "#EDF5F0" }}>
+      <FlatList
+        columnWrapperStyle={{ justifyContent: "space-between" }}
+        numColumns={2}
+        data={infoList}
+        keyExtractor={(item) => item.id}
+        renderItem={({ item }) => (
+          <View>
+            <Text>
+              {setFname(item.firstname)}
+              {setLname(item.lastname)}
+            </Text>
+          </View>
+        )}
+      />
       <ScrollView>
         <View style={{ padding: 10, width: "100%", height: 150 }}>
           <TouchableOpacity>
@@ -33,6 +93,7 @@ export default function Account({ navigation }) {
           <Text style={{ fontSize: 25, fontWeight: "bold", padding: 10 }}>
             {" "}
             HELLO WELCOME,
+            {fname}
           </Text>
           <Text style={{ fontSize: 15, fontWeight: "bold", color: "grey" }}>
             {" "}
