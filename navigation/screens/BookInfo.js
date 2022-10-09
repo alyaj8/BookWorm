@@ -12,9 +12,10 @@ import {
 import Icon from "react-native-vector-icons/Ionicons";
 
 import StripeApp from "./StripeApp";
+import bookComment from "./bookComment";
 import { StripeProvider } from "@stripe/stripe-react-native";
 import react, { useEffect, useState } from "react";
-
+import { Rating, AirbnbRating } from 'react-native-ratings';
 //import Map from './screens/Map';
 //import Fetch from './src/Fetch';
 //import {userSate,userEffect} from "react";
@@ -37,6 +38,7 @@ export default function BookInfo({ route, navigation }) {
   const book = route.params;
 
   let [update, setUpdate] = useState(false);
+ 
 
   let AddInfo = async () => {
     try {
@@ -177,13 +179,11 @@ export default function BookInfo({ route, navigation }) {
               by {book.author}
             </Text>
 
-            <View style={{ flex: 1, flexDirection: "row", paddingTop: 10 }}>
-              <Icon name="star" size={30} style={{ color: "gold" }} />
-              <Icon name="star" size={30} style={{ color: "gold" }} />
-              <Icon name="star" size={30} style={{ color: "gold" }} />
-              <Icon name="star" size={30} style={{ color: "gold" }} />
-              <Icon name="star-half" size={30} style={{ color: "gold" }} />
-            </View>
+            <AirbnbRating
+            defaultRating ={3}
+            reviews={[]}
+            isDisabled={true}
+            size={30} />
             <Text
               style={{
                 fontWeight: "bold",
@@ -257,39 +257,36 @@ export default function BookInfo({ route, navigation }) {
               {"\n"}
               Review it
             </Text>
-            <View style={{ flex: 1, flexDirection: "row", paddingTop: 10 }}>
-              <Icon name="star-outline" size={36} style={{ color: "gold" }} />
-              <Icon name="star-outline" size={36} style={{ color: "gold" }} />
-              <Icon name="star-outline" size={36} style={{ color: "gold" }} />
-              <Icon name="star-outline" size={36} style={{ color: "gold" }} />
-              <Icon name="star-outline" size={36} style={{ color: "gold" }} />
-            </View>
+            <AirbnbRating
+            defaultRating ={0} 
+            size = {30}/>
 
-            <Text
+
+<TouchableOpacity
               style={{
-                fontWeight: "bold",
-                alignSelf: "flex-start",
-                fontWeight: "bold",
-                fontSize: 16,
+                flex: 1,
+                flexDirection: "row",
+                borderRadius: 25,
+                backgroundColor:"#00a46c",
+                paddingHorizontal: 20,
+              }}
+              onPress={() => {
+                navigation.navigate("bookComment");
               }}
             >
-              {"\n"} {"\n"}
-              Leave your comments and read other’s: {"\n"}
-            </Text>
-            <View
-              style={{
-                backgroundColor: "white",
-                alignSelf: "center",
-                height: 130,
-                width: 340,
-              }}
-            >
-              <TextInput
-                placeholder="comment"
-                underlineColorAndroid="transparent"
-                scrollEnabled
-              />
-            </View>
+              <Text
+                style={{
+                  fontWeight: "bold",
+                  paddingBottom: 10,
+                  paddingTop:10,
+                  fontSize: 18,
+                  marginTop:5,
+                }}
+              >
+                Comments
+              </Text>
+            </TouchableOpacity>
+            
             <View>
               <TouchableOpacity
                 style={[
