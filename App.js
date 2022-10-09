@@ -18,6 +18,7 @@ import Maincontainer from "./navigation/Maincontainer";
 import Adminpage from "./navigation/screens/Adminpage";
 
 import ReadBookList from "./navigation/screens/ReadBookList";
+import bookComment from "./navigation/screens/bookComment";
 import StripeApp from "./navigation/screens/StripeApp";
 import { StripeProvider } from "@stripe/stripe-react-native";
 import { LogBox } from "react-native";
@@ -61,6 +62,7 @@ function App() {
             <Stack.Screen name="BookInfo" component={BookInfo} />
             <Stack.Screen name="Adminpage" component={Adminpage} />
             <Stack.Screen name="ReadBookList" component={ReadBookList} />
+            <Stack.Screen name="bookComment" component={bookComment} />
             <Stack.Screen name="StripeApp" component={StripeApp} />
             <Stack.Screen name="Bookpdf" component={Bookpdf} />
             <Stack.Screen name="Orders" component={Orders} />
