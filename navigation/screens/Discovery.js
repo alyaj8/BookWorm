@@ -12,6 +12,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import * as Notifications from 'expo-notifications';
 import Icon from "react-native-vector-icons/Ionicons";
 import { db } from "../../config/firebase";
 import { withUser } from "../../config/UserContext";
@@ -112,6 +113,27 @@ function Discovry({ navigation, isAdmin }) {
   };
   /* const restUrl = (link1) => {
     setUrl(link1)  }*/
+  /////////////////////// notification 
+    async function registerForPushNotificationsAsync() {
+    let token;
+
+    const { status: existingStatus } = await Notifications.getPermissionsAsync();
+    let finalStatus = existingStatus;
+
+    if (existingStatus !== 'granted') {
+        const { status } = await Notifications.requestPermissionsAsync();
+        finalStatus = status;
+    }
+    if (finalStatus !== 'granted') {
+        alert('Failed to get push token for push notification!');
+        return;
+    }
+    token = (await Notifications.getExpoPushTokenAsync()).data;
+    console.log(token);
+
+    return token;
+}
+
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
