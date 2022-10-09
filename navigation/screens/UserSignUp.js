@@ -73,6 +73,7 @@ export default function UserSignUp({ navigation }) {
         firstname: value.firstname,
         lastname: value.lastname,
         password: value.password,
+        uid: user.uid,
         isAdmin: false,
       };
       await setDoc(doc(db, "users", user.uid), data);
@@ -165,7 +166,6 @@ export default function UserSignUp({ navigation }) {
           <Button
             title="SignUp"
             color="#ffff"
-          
             onPress={() => signUp()} //
           ></Button>
         </View>
