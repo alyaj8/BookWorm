@@ -9,61 +9,74 @@ import {
   TouchableOpacity,
   SafeAreaView,
   Button,
+  FlatList,
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-import { collection, doc, getFirestore, setDoc } from "firebase/firestore";
+import { collection, getDocs, query, where } from "firebase/firestore";
+import { doc, getFirestore, setDoc } from "firebase/firestore";
+import { db } from "../../config/firebase";
+import { withUser } from "../../config/UserContext";
 export default function Acc({ navigation }) {
-  const [value, setValue] = React.useState({
-    email: "",
-    password: "",
-    username: "",
-    firstname: "",
-    lastname: "",
-    error: "",
-  });
+  const [infoList, setinfoList] = useState([]);
+  const [email, setemail] = useState("");
+  const [fname, setFname] = useState("");
+  const [lastname, setLname] = useState("");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+
+  // const [userDoc, setUserDoc] = useState([]);
+
   const auth = getAuth();
-  async function signUp() {
-    if (
-      value.firstname === "" ||
-      value.email === "" ||
-      value.username === "" ||
-      value.password === ""
-    ) {
-      setValue({
-        ...value,
-        error: " First name, username, Email and password are mandatory.",
-      });
-      return;
-    }
+  const user = auth.currentUser;
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  const getData = async () => {
     try {
-      const { user } = await createUserWithEmailAndPassword(
-        auth,
-        value.email,
-        value.password
+      const colRef = query(
+        collection(db, "users"),
+        where("uid", "==", user.uid)
       );
-      console.log("user", user.uid);
-      const db = getFirestore();
-      const data = {
-        email: value.email,
-        username: value.username,
-        firstname: value.firstname,
-        lastname: value.lastname,
-        password: value.password,
-        isAdmin: false,
-      };
-      await setDoc(doc(db, "users", user.uid), data);
-      alert("User Created please Login");
-      navigation.navigate("WelcomePage");
-    } catch (er) {
-      er = msg(er);
-      setValue({
-        ...value,
-        error: er,
+      const snapshot = await getDocs(colRef);
+      console.log(user.uid);
+
+      //const q = query(collection(db, "users"), where("uid", "==", user.uid));
+      //  const snapshot = await getDocs(q);
+
+      var myData = [];
+      //store the data in an array myData
+      snapshot.forEach((doc) => {
+        let userinfo2 = doc.data();
+        userinfo2.id = doc.id;
+        console.log(userinfo2);
+        myData.push(userinfo2);
       });
-      console.log(er);
+      setinfoList(myData);
+      console.log(infoList);
+    } catch (error) {
+      console.log(infoList);
+
+      console.log(error);
     }
-  }
+  };
+
+  /* console.log("here3");
+    const Read = () => {
+      const myDoc = doc(db, "users", user.uid);
+      console.log("hbk");
+  
+      getDocs(myDoc).then((snapshot) => {
+        if (snapshot.exists) {
+          setUserDoc(snapshot.data());
+        } else {
+          alert("not correct");
+        }
+      });
+    };*/
+
   return (
     <SafeAreaView
       style={{
@@ -71,6 +84,23 @@ export default function Acc({ navigation }) {
         flex: 1,
       }}
     >
+      <FlatList
+        columnWrapperStyle={{ justifyContent: "space-between" }}
+        numColumns={2}
+        data={infoList}
+        keyExtractor={(item) => item.id}
+        renderItem={({ item }) => (
+          <View>
+            <Text>
+              {setFname(item.firstname)} {setemail(item.email)}
+              {setLname(item.lastname)}
+              {setUsername(item.username)}
+              {setPassword(item.password)}
+            </Text>
+          </View>
+        )}
+      />
+
       <View
         style={{
           backgroundColor: "#00a46c",
@@ -125,18 +155,18 @@ export default function Acc({ navigation }) {
             <Text style={{ fontWeight: "bold" }}>First Name</Text>
             <TextInput
               style={styles.body}
-              placeholder="First Name"
-              onChangeText={(text) => setValue({ ...value, firstname: text })}
+              placeholder={fname}
+              placeholderTextColor="black"
+              // onChangeText={(text) => setValue({ ...value, firstname: text })}
               underlineColorAndroid="transparent"
             />
           </View>
           <View style={styles.InputContainer}>
             <Text style={{ fontWeight: "bold" }}>{"\n"}Last Name</Text>
-
             <TextInput
               style={styles.body}
-              placeholder="Last Name"
-              nChangeText={(text) => setValue({ ...value, lastname: text })}
+              placeholder={lastname}
+              placeholderTextColor="black" //     onChangeText={(text) => setValue({ ...value, lastname: text })}
               underlineColorAndroid="transparent"
             />
           </View>
@@ -145,8 +175,9 @@ export default function Acc({ navigation }) {
 
             <TextInput
               style={styles.body}
-              placeholder="Username"
-              onChangeText={(text) => setValue({ ...value, username: text })}
+              placeholder={username}
+              placeholderTextColor="black"
+              //   onChangeText={(text) => setValue({ ...value, username: text })}
               underlineColorAndroid="transparent"
             />
           </View>
@@ -155,8 +186,9 @@ export default function Acc({ navigation }) {
 
             <TextInput
               style={styles.body}
-              placeholder="E-mail"
-              onChangeText={(text) => setValue({ ...value, email: text })}
+              placeholder={user.email}
+              placeholderTextColor="black"
+              //   onChangeText={(text) => setValue({ ...value, email: text })}
               underlineColorAndroid="transparent"
             />
           </View>
@@ -167,8 +199,9 @@ export default function Acc({ navigation }) {
             <TextInput
               style={styles.body}
               secureTextEntry={true}
-              placeholder="Password"
-              onChangeText={(text) => setValue({ ...value, password: text })}
+              placeholder={password}
+              placeholderTextColor="black"
+              //   onChangeText={(text) => setValue({ ...value, password: text })}
               underlineColorAndroid="transparent"
             />
           </View>
