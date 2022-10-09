@@ -8,6 +8,9 @@ import ForgetPassword from "./navigation/screens/ForgetPassword";
 import Home from "./navigation/screens/Home";
 import Bookpdf from "./navigation/screens/Bookpdf";
 import Acc from "./navigation/screens/Acc";
+import Changepass from "./navigation/screens/Changepass";
+import Editbook from "./navigation/screens/Editbook";
+import BookInfoApi from "./navigation/screens/BookInfoApi";
 
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -67,6 +70,9 @@ function App() {
             <Stack.Screen name="Bookpdf" component={Bookpdf} />
             <Stack.Screen name="Orders" component={Orders} />
             <Stack.Screen name="Acc" component={Acc} />
+            <Stack.Screen name="Changepass" component={Changepass} />
+            <Stack.Screen name="Editbook" component={Editbook} />
+            <Stack.Screen name="BookInfoApi" component={BookInfoApi} />
           </Stack.Navigator>
         </NavigationContainer>
       </StripeProvider>
