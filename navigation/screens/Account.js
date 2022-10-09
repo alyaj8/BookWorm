@@ -90,14 +90,13 @@ export default function Account({ navigation }) {
               marginTop: -50,
             }}
           ></Image>
-          <Text style={{ fontSize: 25, fontWeight: "bold", padding: 10 }}>
-            {" "}
+          <Text style={{ fontSize: 23, fontWeight: "bold", padding: 10 }}>
             HELLO WELCOME,
-            {fname}
           </Text>
-          <Text style={{ fontSize: 15, fontWeight: "bold", color: "grey" }}>
-            {" "}
-          </Text>
+          <Text style={{ fontSize: 29, fontWeight: "bold" }}>{fname}</Text>
+          <Text
+            style={{ fontSize: 15, fontWeight: "bold", color: "grey" }}
+          ></Text>
         </View>
         <TouchableOpacity onPress={() => navigation.navigate("Acc")}>
           <View
@@ -112,11 +111,35 @@ export default function Account({ navigation }) {
               borderRadius: 10,
               shadowOpacity: 0.3,
               elevation: 15,
-              marginTop: 20,
+              marginTop: 1,
             }}
           >
             <Icon name="person-outline" size={30} style={{ marginRight: 10 }} />
             <Text style={{ fontSize: 16, marginTop: 7 }}>My detailes</Text>
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate("Changepass")}>
+          <View
+            style={{
+              alignSelf: "center",
+              flexDirection: "row",
+              justifyContent: "flex-start",
+              backgroundColor: "#fff",
+              width: "90%",
+              padding: 20,
+              paddingBottom: 22,
+              borderRadius: 10,
+              shadowOpacity: 0.3,
+              elevation: 15,
+              marginTop: 17,
+            }}
+          >
+            <Icon
+              name="lock-closed-outline"
+              size={30}
+              style={{ marginRight: 10 }}
+            />
+            <Text style={{ fontSize: 16, marginTop: 7 }}>Change password</Text>
           </View>
         </TouchableOpacity>
         <TouchableOpacity
@@ -178,7 +201,7 @@ export default function Account({ navigation }) {
             shadowOpacity: 0.3,
             elevation: 15,
             marginTop: 20,
-            marginBottom: 9,
+            marginBottom: 19,
           }}
         >
           <Icon name="log-out-outline" size={30} style={{ marginRight: 10 }} />

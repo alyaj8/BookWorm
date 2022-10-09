@@ -17,7 +17,8 @@ import { collection, getDocs, query, where } from "firebase/firestore";
 import { doc, getFirestore, setDoc } from "firebase/firestore";
 import { db } from "../../config/firebase";
 import { withUser } from "../../config/UserContext";
-export default function Acc({ navigation }) {
+
+export default function Changepass({ navigation }) {
   const [infoList, setinfoList] = useState([]);
   const [email, setemail] = useState("");
   const [fname, setFname] = useState("");
@@ -62,20 +63,6 @@ export default function Acc({ navigation }) {
       console.log(error);
     }
   };
-
-  /* console.log("here3");
-    const Read = () => {
-      const myDoc = doc(db, "users", user.uid);
-      console.log("hbk");
-  
-      getDocs(myDoc).then((snapshot) => {
-        if (snapshot.exists) {
-          setUserDoc(snapshot.data());
-        } else {
-          alert("not correct");
-        }
-      });
-    };*/
 
   return (
     <SafeAreaView
@@ -127,7 +114,7 @@ export default function Acc({ navigation }) {
         >
           <Text
             style={{
-              marginLeft: 79,
+              marginLeft: 60,
               marginTop: -35,
               fontSize: 29,
               color: "#FFF",
@@ -135,7 +122,7 @@ export default function Acc({ navigation }) {
               alignSelf: "center",
             }}
           >
-            My detailes
+            Change password
           </Text>
         </View>
       </View>
@@ -148,69 +135,37 @@ export default function Acc({ navigation }) {
           paddingHorizontal: 20,
           marginBottom: 15,
           marginTop: 15,
+          paddingTop: 50,
         }}
       >
         <View style={{ marginTop: 40, marginLeft: -10 }}>
-          <View style={styles.InputContainer}>
-            <Text style={{ fontWeight: "bold" }}>First Name</Text>
+          <View>
+            <Text style={{ fontWeight: "bold", fontSize: 20 }}>
+              Current password
+            </Text>
             <TextInput
               style={styles.body}
-              placeholder={fname}
-              placeholderTextColor="black"
+              //  placeholder={"*****"}
+              //  placeholderTextColor="black"
               // onChangeText={(text) => setValue({ ...value, firstname: text })}
               underlineColorAndroid="transparent"
             />
           </View>
-          <View style={styles.InputContainer}>
-            <Text style={{ fontWeight: "bold" }}>{"\n"}Last Name</Text>
+          <View>
+            <Text style={{ fontWeight: "bold", fontSize: 20 }}>
+              {"\n"}New password
+            </Text>
             <TextInput
               style={styles.body}
-              placeholder={lastname}
-              placeholderTextColor="black" //     onChangeText={(text) => setValue({ ...value, lastname: text })}
-              underlineColorAndroid="transparent"
-            />
-          </View>
-          <View style={styles.InputContainer}>
-            <Text style={{ fontWeight: "bold" }}>{"\n"}User Name</Text>
-
-            <TextInput
-              style={styles.body}
-              placeholder={username}
-              placeholderTextColor="black"
-              //   onChangeText={(text) => setValue({ ...value, username: text })}
-              underlineColorAndroid="transparent"
-            />
-          </View>
-          <View style={styles.InputContainer}>
-            <Text style={{ fontWeight: "bold" }}>{"\n"}Email</Text>
-
-            <TextInput
-              style={styles.body}
-              placeholder={user.email}
-              placeholderTextColor="black"
-              //   onChangeText={(text) => setValue({ ...value, email: text })}
-              underlineColorAndroid="transparent"
-              //  title="nnn"
-              // value={user.email}
-            />
-          </View>
-
-          <View style={styles.InputContainer}>
-            <Text style={{ fontWeight: "bold" }}>{"\n"}Password</Text>
-
-            <TextInput
-              style={styles.body}
-              secureTextEntry={true}
-              placeholder={password}
-              placeholderTextColor="black"
-              //   onChangeText={(text) => setValue({ ...value, password: text })}
+              //   placeholder={lastname}
+              //   placeholderTextColor="black" //     onChangeText={(text) => setValue({ ...value, lastname: text })}
               underlineColorAndroid="transparent"
             />
           </View>
 
           <View style={styles.buttonCont}>
             <TouchableOpacity>
-              <Text style={styles.savechanges}>Save changes</Text>
+              <Text style={styles.savechanges}>Save password</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -244,7 +199,7 @@ const styles = StyleSheet.create({
     height: 50,
     borderRadius: 50,
     backgroundColor: "#00a46c",
-    marginTop: 20,
+    marginTop: 30,
     paddingLeft: 10,
     alignSelf: "center",
   },

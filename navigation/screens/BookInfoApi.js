@@ -6,6 +6,8 @@ import {
   StyleSheet,
   Text,
   View,
+  TouchableOpacity,
+  Alert,
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 
@@ -32,6 +34,30 @@ export default function BookInfoApi({ route, navigation }) {
 
   let [update, setUpdate] = useState(false);
 
+  const showAlert = () =>
+    Alert.alert(
+      "Deleting a book ",
+      "Are sure you want to delete",
+      [
+        {
+          text: "Cancel",
+          //  onPress: () => Alert.alert("Cancel Pressed"),
+          style: "cancel",
+        },
+        {
+          text: "Delete",
+          onPress: () => Alert.alert("the book got deleted"),
+          style: "cancel",
+        },
+      ],
+      {
+        cancelable: true,
+        onDismiss: () =>
+          Alert.alert(
+            "This alert was dismissed by tapping outside of the alert dialog."
+          ),
+      }
+    );
   let AddInfo = async () => {
     book.listed = true;
     setUpdate(true);
@@ -103,8 +129,8 @@ export default function BookInfoApi({ route, navigation }) {
   return (
     <View>
       <SafeAreaView>
-        <ScrollView>
-          <ImageBackground source={require("./222.jpg")} resizeMode="cover">
+        <ImageBackground source={require("./222.jpg")} resizeMode="cover">
+          <ScrollView>
             <Icon
               name="arrow-back-outline"
               size={40}
@@ -220,9 +246,23 @@ export default function BookInfoApi({ route, navigation }) {
                 {book.category}
                 {"\n "}
               </Text>
+              <View style={{ flexDirection: "row" }}>
+                <View style={styles.buttonCont}>
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate("Editbook")}
+                  >
+                    <Text style={styles.bouttontitle}>Edit book </Text>
+                  </TouchableOpacity>
+                </View>
+                <View style={styles.buttonCont2}>
+                  <TouchableOpacity onPress={showAlert}>
+                    <Text style={styles.bouttontitle}>Delete book </Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
             </View>
-          </ImageBackground>
-        </ScrollView>
+          </ScrollView>
+        </ImageBackground>
       </SafeAreaView>
     </View>
   );
@@ -253,6 +293,31 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
     alignSelf: "center",
+  },
+  buttonCont: {
+    width: 150,
+    height: 50,
+    borderRadius: 50,
+    backgroundColor: "#00a46c",
+    marginTop: 20,
+    alignSelf: "center",
+  },
+  buttonCont2: {
+    width: 150,
+    height: 50,
+    borderRadius: 50,
+    backgroundColor: "#00a46c",
+    marginTop: 20,
+    alignSelf: "center",
+    marginLeft: 10,
+  },
+  bouttontitle: {
+    fontSize: 18,
+    fontWeight: "bold",
+    alignSelf: "center",
+    marginTop: 10,
+    marginBottom: 10,
+    // marginRight: 18,
   },
 });
 /*<TouchableOpacity
