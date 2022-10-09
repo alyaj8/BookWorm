@@ -12,7 +12,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import * as Notifications from 'expo-notifications';
+//import * as Notifications from 'expo-notifications';
 import Icon from "react-native-vector-icons/Ionicons";
 import { db } from "../../config/firebase";
 import { withUser } from "../../config/UserContext";
@@ -114,7 +114,7 @@ function Discovry({ navigation, isAdmin }) {
   /* const restUrl = (link1) => {
     setUrl(link1)  }*/
   /////////////////////// notification 
-    async function registerForPushNotificationsAsync() {
+  /*  async function registerForPushNotificationsAsync() {
     let token;
 
     const { status: existingStatus } = await Notifications.getPermissionsAsync();
@@ -132,7 +132,7 @@ function Discovry({ navigation, isAdmin }) {
     console.log(token);
 
     return token;
-}
+}*/
 
 
   return (
