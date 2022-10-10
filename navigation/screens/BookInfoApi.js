@@ -249,7 +249,7 @@ export default function BookInfoApi({ route, navigation }) {
               <View style={{ flexDirection: "row" }}>
                 <View style={styles.buttonCont}>
                   <TouchableOpacity
-                    onPress={() => navigation.navigate("Editbook")}
+                    onPress={() => navigation.navigate("Editbook", book)}
                   >
                     <Text style={styles.bouttontitle}>Edit book </Text>
                   </TouchableOpacity>

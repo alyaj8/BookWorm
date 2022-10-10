@@ -37,7 +37,9 @@ import { AntDesign } from "@expo/vector-icons";
 
 import background_image from "./222.jpg";
 
-export default function AddBookTest({ navigation }) {
+export default function AddBookTest({ navigation, route }) {
+  const book = route.params;
+
   const [image, setImage] = useState(null);
   const [update, setupdate] = useState(true);
   const [value, setValue] = React.useState({
@@ -103,14 +105,21 @@ export default function AddBookTest({ navigation }) {
 
   //add a new data
   async function addField() {
+    console.log(value);
     if (
       image === null ||
       value.title === "" ||
+      value.title === undefined ||
       value.Description === "" ||
+      value.Description === undefined ||
       value.ISBN === "" ||
+      value.ISBN === undefined ||
       value.author === "" ||
+      value.author === undefined ||
       value.virsion === "" ||
-      value.pric === ""
+      value.virsion === undefined ||
+      value.pric === "" ||
+      value.pric === undefined
     ) {
       console.log(value.title);
 
@@ -124,80 +133,80 @@ export default function AddBookTest({ navigation }) {
         setError(Error);
         setupdate(!update);
       }
-      /*  if (value.title === "") {
+      if (value.title === "" || value.title === undefined) {
         Error.title = false;
         setError(Error);
 
         setupdate(!update);
-      }*/
-      if (value.title !== "") {
+      }
+      if (value.title !== "" && value.title !== undefined) {
         Error.title = true;
         setError(Error);
 
         setupdate(!update);
       }
 
-      /*  if (value.Description === "") {
+      if (value.Description === "" || value.Description === undefined) {
         Error.Description = false;
         setError(Error);
 
         setupdate(!update);
-      }*/
-      if (value.Description !== "") {
+      }
+      if (value.Description !== "" && value.Description !== undefined) {
         Error.Description = true;
         setError(Error);
         setupdate(!update);
       }
-      /*   if (value.category === "") {
+      if (value.category === "" || value.category === undefined) {
         Error.category = false;
         setError(Error);
         setupdate(!update);
-      }*/
+      }
 
-      if (value.category !== "") {
+      if (value.category !== "" && value.category !== undefined) {
         Error.category = true;
         setError(Error);
         setupdate(!update);
       }
 
-      /*   if (value.ISBN === "") {
+      if (value.ISBN === "" || value.ISBN === undefined) {
         Error.ISBN = false;
         setError(Error);
         setupdate(!update);
-      }*/
-      if (value.ISBN !== "") {
+      }
+      if (value.ISBN !== "" && value.ISBN !== undefined) {
         Error.ISBN = true;
         setError(Error);
         setupdate(!update);
       }
-      /*   if (value.author === "") {
+      if (value.author === "" || value.author === undefined) {
         Error.author = false;
         setError(Error);
         setupdate(!update);
-      }*/
-      if (value.author !== "") {
+      }
+      if (value.author !== "" && value.author !== undefined) {
         Error.author = true;
         setError(Error);
         setupdate(!update);
       }
 
-      /* if (value.virsion === "") {
+      if (value.virsion === "" || value.virsion === undefined) {
         Error.virsion = false;
         setError(Error);
         setupdate(!update);
-      }*/
-      if (value.virsion !== "") {
+      }
+      if (value.virsion !== "" && value.virsion !== undefined) {
         Error.virsion = true;
         setError(Error);
         setupdate(!update);
       }
 
-      /* if (value.pric === "") {
+      if (value.pric === "" || value.pric === undefined) {
         Error.pric = false;
         setError(Error);
         setupdate(!update);
-      }*/
-      if (value.pric !== "") {
+      }
+      if (value.pric !== "" && value.pric !== undefined) {
         Error.pric = true;
         setError(Error);
         setupdate(!update);
@@ -208,16 +217,20 @@ export default function AddBookTest({ navigation }) {
         const db = getFirestore();
         // check if we have new feilds data
         //get the timestamp
+        console.log(data, "========>data");
         const data = {
           title: value.title,
           Description: value.Description,
           category: value.category,
           ISBN: value.ISBN,
           author: value.author,
+          virsion: value.virsion,
+          pric: value.pric,
           poster: image,
         };
-        await addDoc(collection(db, "Book"), data);
-        showToast();
+        console.log(book.id);
+        await setDoc(doc(db, "Book", book.id), data);
+        await showToast();
         setError({
           ...Error,
           virsion: true,
@@ -227,18 +240,19 @@ export default function AddBookTest({ navigation }) {
           Description: true,
           title: true,
           poster: true,
+          pric: true,
         });
-        setValue({
-          title: "",
-          Description: "",
-          category: "",
-          ISBN: "",
-          author: "",
-          poster: "",
-          virsion: "",
-          error: "",
+        await navigation.navigate("BookInfoApi", {
+          title: value.title,
+          Description: value.Description,
+          category: value.category,
+          ISBN: value.ISBN,
+          author: value.author,
+          virsion: value.virsion,
+          pric: value.pric,
+          poster: image,
+          id: book.id,
         });
-        setImage(null);
       } catch (error) {
         setValue({
           ...value,
@@ -271,14 +285,29 @@ export default function AddBookTest({ navigation }) {
     Toast.show({
       type: "success",
       text1: "Success",
-      text2: "Book Successfully Added",
+      text2: "Book Successfully Updated",
       position: "bottom",
       // And I can pass any custom props I want
       props: { uuid: "bba1a7d0-6ab2-4a0a-a76e-ebbe05ae6d70" },
     });
   };
 
-  // showToast();
+  useEffect(() => {
+    console.log(book, "=======>");
+    setValue({
+      title: book.title,
+      Description: book.Description,
+      category: book.category,
+      ISBN: book.ISBN,
+      author: book.author,
+      poster: book.poster,
+      virsion: book.virsion,
+      pric: book.pric,
+      error: "",
+    });
+    setImage(book.poster);
+    setupdate(!update);
+  }, []);
 
   return (
     <ImageBackground source={background_image} resizeMode="cover">
@@ -446,7 +475,7 @@ export default function AddBookTest({ navigation }) {
                 styles.body,
                 { borderColor: !Error.ISBN ? "red" : "black" },
               ]} //placeholder="E-mail"
-              value={value.ISBN}
+              value={value?.ISBN?.toString()}
               onChangeText={(text) => setValue({ ...value, ISBN: text })}
               underlineColorAndroid="transparent"
             />

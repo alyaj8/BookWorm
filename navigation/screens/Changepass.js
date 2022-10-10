@@ -12,19 +12,29 @@ import {
   FlatList,
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-import { collection, getDocs, query, where } from "firebase/firestore";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  updatePassword,
+} from "firebase/auth";
+import {
+  collection,
+  getDoc,
+  getDocs,
+  query,
+  updateDoc,
+  where,
+} from "firebase/firestore";
 import { doc, getFirestore, setDoc } from "firebase/firestore";
 import { db } from "../../config/firebase";
 import { withUser } from "../../config/UserContext";
 
 export default function Changepass({ navigation }) {
+  const [current, setCurrentPass] = useState("");
+  const [oldPass, setOldPass] = useState("");
+  const [newPass, setNewPass] = useState("");
+
   const [infoList, setinfoList] = useState([]);
-  const [email, setemail] = useState("");
-  const [fname, setFname] = useState("");
-  const [lastname, setLname] = useState("");
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
 
   // const [userDoc, setUserDoc] = useState([]);
 
@@ -36,34 +46,33 @@ export default function Changepass({ navigation }) {
   }, []);
 
   const getData = async () => {
-    try {
-      const colRef = query(
-        collection(db, "users"),
-        where("uid", "==", user.uid)
-      );
-      const snapshot = await getDocs(colRef);
-      console.log(user.uid);
-
-      //const q = query(collection(db, "users"), where("uid", "==", user.uid));
-      //  const snapshot = await getDocs(q);
-
-      var myData = [];
-      //store the data in an array myData
-      snapshot.forEach((doc) => {
-        let userinfo2 = doc.data();
-        userinfo2.id = doc.id;
-        console.log(userinfo2);
-        myData.push(userinfo2);
-      });
-      setinfoList(myData);
-      console.log(infoList);
-    } catch (error) {
-      console.log(infoList);
-
-      console.log(error);
-    }
+    const colRef = doc(db, "users", user.uid);
+    const snapshot = await getDoc(colRef);
+    let userdata = snapshot.data();
+    setCurrentPass(userdata.password);
   };
 
+  let savePass = async () => {
+    console.log(user.uid, current);
+
+    if (oldPass === current) {
+      if (newPass.length > 7) {
+        updatePassword(user, newPass)
+          .then(async () => {
+            await updateDoc(doc(db, "users", user.uid), { password: newPass });
+
+            navigation.goBack();
+          })
+          .catch((error) => {
+            alert(error.message);
+          });
+      } else {
+        alert("Password will be more then 7 character");
+      }
+    } else {
+      alert("Current Password is not Matched");
+    }
+  };
   return (
     <SafeAreaView
       style={{
@@ -149,6 +158,7 @@ export default function Changepass({ navigation }) {
               //  placeholderTextColor="black"
               // onChangeText={(text) => setValue({ ...value, firstname: text })}
               underlineColorAndroid="transparent"
+              onChangeText={(text) => setOldPass(text)}
             />
           </View>
           <View>
@@ -160,11 +170,12 @@ export default function Changepass({ navigation }) {
               //   placeholder={lastname}
               //   placeholderTextColor="black" //     onChangeText={(text) => setValue({ ...value, lastname: text })}
               underlineColorAndroid="transparent"
+              onChangeText={(text) => setNewPass(text)}
             />
           </View>
 
           <View style={styles.buttonCont}>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => savePass()}>
               <Text style={styles.savechanges}>Save password</Text>
             </TouchableOpacity>
           </View>

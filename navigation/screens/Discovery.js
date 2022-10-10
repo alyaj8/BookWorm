@@ -113,7 +113,7 @@ function Discovry({ navigation, isAdmin }) {
   };
   /* const restUrl = (link1) => {
     setUrl(link1)  }*/
-  /////////////////////// notification 
+  /////////////////////// notification
   /*  async function registerForPushNotificationsAsync() {
     let token;
 
@@ -133,7 +133,6 @@ function Discovry({ navigation, isAdmin }) {
 
     return token;
 }*/
-
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
