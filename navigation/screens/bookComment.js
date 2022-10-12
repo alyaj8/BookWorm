@@ -9,7 +9,7 @@ import {
   FlatList,
   SafeAreaView,
 } from "react-native";
-import { AirbnbRating } from "react-native-ratings";
+import { AirbnbRating, Rating } from "react-native-ratings";
 import Icon from "react-native-vector-icons/Ionicons";
 
 export default class BookComment extends Component {
@@ -75,14 +75,15 @@ export default class BookComment extends Component {
                           {"   "} {review.time}
                         </Text>
                       </View>
-                      <AirbnbRating
-                        defaultRating={review.review}
+                      <Rating
+                        imageSize={25}
+                        fractions={20}
+                        showRating={false}
+                        readonly={true}
+                        startingValue={review.review}
                         reviews={[]}
-                        isDisabled={true}
-                        size={20}
-                        ratingContainerStyle={{
-                          marginBottom: 20,
-                          marginTop: -30,
+                        style={{
+                          marginVertical: 20,
                         }}
                       />
                       <Text rkType="primary3 mediumLine">{review.comment}</Text>
@@ -100,7 +101,7 @@ export default class BookComment extends Component {
                 fontWeight: "bold",
                 // alignItems: "center",
                 // alignSelf: "center",
-                textAlign:"center"
+                textAlign: "center",
               }}
             >
               No Review Yet

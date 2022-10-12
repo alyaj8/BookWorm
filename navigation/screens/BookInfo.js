@@ -9,7 +9,6 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-
 import Icon from "react-native-vector-icons/Ionicons";
 
 import StripeApp from "./StripeApp";
@@ -206,12 +205,15 @@ export default function BookInfo({ route, navigation }) {
             >
               by {book.author}
             </Text>
-
-            <AirbnbRating
-              defaultRating={bookstar / book.reviews?.length}
-              reviews={[]}
-              isDisabled={true}
-              size={25}
+            <Rating
+              startingValue={bookstar / book.reviews?.length}
+              imageSize={30}
+              fractions={20}
+              showRating={false}
+              readonly={true}
+              style={{
+               marginVertical: 10,
+              }}
             />
             {book.reviews?.length > 0 ? (
               <Text style={{ color: "#fbc740" }}>
@@ -220,7 +222,7 @@ export default function BookInfo({ route, navigation }) {
             ) : (
               <Text style={{ color: "#fbc740" }}> No Review</Text>
             )}
-            <TouchableOpacity
+             <TouchableOpacity
                 style={{
                   width: 150,
                   height: 50,
@@ -241,6 +243,7 @@ export default function BookInfo({ route, navigation }) {
                   }}
                 >
                   See Reviews.. 
+                  
                 </Text>
               </TouchableOpacity>
 
@@ -257,7 +260,7 @@ export default function BookInfo({ route, navigation }) {
               {"Book description: "}
             </Text>
 
-            <Text style={{ textAlign: "justify",  }}>{book.Description}</Text>
+            <Text style={{ textAlign: "justify" }}>{book.Description}</Text>
             <Text
               style={{
                 fontWeight: "bold",
@@ -315,13 +318,13 @@ export default function BookInfo({ route, navigation }) {
               }}
             >
               {"\n"}
-              Review it {"\n"}
+              Review it
+              {"\n"}
             </Text>
 
             <View
               style={{
                 alignItems: "center",
-                
                 justifyContent: "space-between",
                 width: 500,
               }}
@@ -338,16 +341,19 @@ export default function BookInfo({ route, navigation }) {
                 disabled={reviewDone}
                 onPress={() => navigation.navigate("ReviewBook", book)}
               >
+                
                 <Text
                   style={{
+                    
                     fontWeight: "bold",
                     alignSelf: "center",
-                    fontSize: 16,
+                    fontSize: 20,
                   }}
                 >
-                 
-                  {reviewDone ? "Reviewed" : "ADD REVIEW"}
+                 {reviewDone ? "Reviewed" : "ADD REVIEW"}
+                
                 </Text>
+               
               </TouchableOpacity>
               
             </View>
