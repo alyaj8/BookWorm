@@ -9,18 +9,19 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+
 import Icon from "react-native-vector-icons/Ionicons";
 
 import StripeApp from "./StripeApp";
 import bookComment from "./bookComment";
 import { StripeProvider } from "@stripe/stripe-react-native";
 import react, { useEffect, useState } from "react";
-import { Rating, AirbnbRating } from 'react-native-ratings';
+import { Rating, AirbnbRating } from "react-native-ratings";
 //import Map from './screens/Map';
 //import Fetch from './src/Fetch';
 //import {userSate,userEffect} from "react";
 //import{collection, query,orderBy,onSanpshot,setDoc,doc,getDoc,getDocs} from "firebase/firestore";
-//import{db} from "../../config/firebase";
+import { db } from "../../config/firebase";
 
 import {
   collection,
@@ -38,11 +39,12 @@ export default function BookInfo({ route, navigation }) {
   const book = route.params;
 
   let [update, setUpdate] = useState(false);
- 
+  let [bookstar, setBookStar] = useState(0);
+  let [reviewDone, setReviewDone] = useState(false);
+  var Auth = getAuth();
 
   let AddInfo = async () => {
     try {
-      const Auth = getAuth();
       const uid = Auth?.currentUser?.uid;
       const db = getFirestore();
       const data = book;
@@ -71,8 +73,34 @@ export default function BookInfo({ route, navigation }) {
       }
     });
   };
-  useEffect(() => CheckListed(), []);
 
+  let checkReview = () => {
+    let countStar = 0;
+    book?.reviews?.length > 0 &&
+      Auth.onAuthStateChanged(async (user) => {
+        book.reviews?.map((val, ind) => {
+          countStar = countStar + +val.review;
+          if (user.uid === val.comenteuseruid) {
+            setReviewDone(true);
+          }
+        });
+        setBookStar(countStar);
+      });
+  };
+  useEffect(() => {
+    const unsubscribe = navigation.addListener("focus", () => {
+      // The screen is focused
+      // Call any action
+
+      // Return the function to unsubscribe from the event so it gets removed on unmount
+      CheckListed();
+      checkReview();
+    });
+
+    return unsubscribe;
+  }, [navigation]);
+
+  console.log(reviewDone, "=========>");
   let CheckOrder = () => {
     const Auth = getAuth();
     Auth.onAuthStateChanged(async (user) => {
@@ -180,10 +208,42 @@ export default function BookInfo({ route, navigation }) {
             </Text>
 
             <AirbnbRating
-            defaultRating ={3}
-            reviews={[]}
-            isDisabled={true}
-            size={30} />
+              defaultRating={bookstar / book.reviews?.length}
+              reviews={[]}
+              isDisabled={true}
+              size={25}
+            />
+            {book.reviews?.length > 0 ? (
+              <Text style={{ color: "#fbc740" }}>
+                {bookstar / book.reviews?.length} out of 5
+              </Text>
+            ) : (
+              <Text style={{ color: "#fbc740" }}> No Review</Text>
+            )}
+            <TouchableOpacity
+                style={{
+                  width: 150,
+                  height: 50,
+                  alignItems: "center",
+                  justifyContent: "center",
+                  
+                }}
+                onPress={() => {
+                  navigation.navigate("bookComment", book);
+                }}
+              >
+                <Text
+                  style={{
+                    textDecorationLines: "underLine",
+                    fontWeight: "bold",
+                    color: "green",
+                    fontSize: 18,
+                  }}
+                >
+                  See Reviews.. 
+                </Text>
+              </TouchableOpacity>
+
             <Text
               style={{
                 fontWeight: "bold",
@@ -197,7 +257,7 @@ export default function BookInfo({ route, navigation }) {
               {"Book description: "}
             </Text>
 
-            <Text style={{ textAlign: "justify" }}>{book.Description}</Text>
+            <Text style={{ textAlign: "justify",  }}>{book.Description}</Text>
             <Text
               style={{
                 fontWeight: "bold",
@@ -255,38 +315,42 @@ export default function BookInfo({ route, navigation }) {
               }}
             >
               {"\n"}
-              Review it
+              Review it {"\n"}
             </Text>
-            <AirbnbRating
-            defaultRating ={0} 
-            size = {30}/>
 
-
-<TouchableOpacity
+            <View
               style={{
-                flex: 1,
-                flexDirection: "row",
-                borderRadius: 25,
-                backgroundColor:"#00a46c",
-                paddingHorizontal: 20,
-              }}
-              onPress={() => {
-                navigation.navigate("bookComment");
+                alignItems: "center",
+                
+                justifyContent: "space-between",
+                width: 500,
               }}
             >
-              <Text
+              <TouchableOpacity
                 style={{
-                  fontWeight: "bold",
-                  paddingBottom: 10,
-                  paddingTop:10,
-                  fontSize: 18,
-                  marginTop:5,
+                  borderRadius: 25,
+                  backgroundColor: reviewDone ? "#aadecc" : "#00a46c",
+                  width: "48%",
+                  height: 50,
+                  alignItems: "center",
+                  justifyContent: "center",
                 }}
+                disabled={reviewDone}
+                onPress={() => navigation.navigate("ReviewBook", book)}
               >
-                Comments
-              </Text>
-            </TouchableOpacity>
-            
+                <Text
+                  style={{
+                    fontWeight: "bold",
+                    alignSelf: "center",
+                    fontSize: 16,
+                  }}
+                >
+                  ADD REVIEW
+                </Text>
+              </TouchableOpacity>
+              
+            </View>
+
             <View>
               <TouchableOpacity
                 style={[
