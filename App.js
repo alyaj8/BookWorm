@@ -20,6 +20,7 @@ import Adminpage from "./navigation/screens/Adminpage";
 import ReadBookList from "./navigation/screens/ReadBookList";
 import bookComment from "./navigation/screens/bookComment";
 import StripeApp from "./navigation/screens/StripeApp";
+import ReviewBook from "./navigation/screens/Reviewbook";
 import { StripeProvider } from "@stripe/stripe-react-native";
 import { LogBox } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -55,6 +56,7 @@ function App() {
             screenOptions={{ headerShown: false }}
             initialRouteName="WelcomePage"
           >
+            <Stack.Screen name="ReviewBook" component={ReviewBook} />
             <Stack.Screen name="WelcomePage" component={WelcomePage} />
             <Stack.Screen name="Maincontainer" component={Maincontainer} />
             <Stack.Screen name="ForgetPassword" component={ForgetPassword} />
