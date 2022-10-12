@@ -18,13 +18,13 @@ import Maincontainer from "./navigation/Maincontainer";
 import Adminpage from "./navigation/screens/Adminpage";
 
 import ReadBookList from "./navigation/screens/ReadBookList";
-import bookComment from "./navigation/screens/bookComment";
 import StripeApp from "./navigation/screens/StripeApp";
-import ReviewBook from "./navigation/screens/Reviewbook";
 import { StripeProvider } from "@stripe/stripe-react-native";
 import { LogBox } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { UserProvider } from "./config/UserContext";
+import ReviewBook from "./navigation/screens/Reviewbook";
+import BookComment from "./navigation/screens/bookComment";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCb8vT5-UmFZV-954feGAE2L0-T4Tgpqhs",
@@ -56,7 +56,6 @@ function App() {
             screenOptions={{ headerShown: false }}
             initialRouteName="WelcomePage"
           >
-            <Stack.Screen name="ReviewBook" component={ReviewBook} />
             <Stack.Screen name="WelcomePage" component={WelcomePage} />
             <Stack.Screen name="Maincontainer" component={Maincontainer} />
             <Stack.Screen name="ForgetPassword" component={ForgetPassword} />
@@ -64,10 +63,11 @@ function App() {
             <Stack.Screen name="BookInfo" component={BookInfo} />
             <Stack.Screen name="Adminpage" component={Adminpage} />
             <Stack.Screen name="ReadBookList" component={ReadBookList} />
-            <Stack.Screen name="bookComment" component={bookComment} />
+            <Stack.Screen name="bookComment" component={BookComment} />
             <Stack.Screen name="StripeApp" component={StripeApp} />
             <Stack.Screen name="Bookpdf" component={Bookpdf} />
             <Stack.Screen name="Orders" component={Orders} />
+            <Stack.Screen name="ReviewBook" component={ReviewBook} />
             <Stack.Screen name="Acc" component={Acc} />
           </Stack.Navigator>
         </NavigationContainer>

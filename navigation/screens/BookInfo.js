@@ -234,7 +234,7 @@ export default function BookInfo({ route, navigation }) {
               >
                 <Text
                   style={{
-                    textDecorationLines: "underLine",
+                    textDecorationLine: "underline",
                     fontWeight: "bold",
                     color: "green",
                     fontSize: 18,
@@ -345,7 +345,8 @@ export default function BookInfo({ route, navigation }) {
                     fontSize: 16,
                   }}
                 >
-                  ADD REVIEW
+                 
+                  {reviewDone ? "Reviewed" : "ADD REVIEW"}
                 </Text>
               </TouchableOpacity>
               
