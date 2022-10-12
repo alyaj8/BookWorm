@@ -12,9 +12,10 @@ import {
 import Icon from "react-native-vector-icons/Ionicons";
 
 import StripeApp from "./StripeApp";
+import bookComment from "./bookComment";
 import { StripeProvider } from "@stripe/stripe-react-native";
 import react, { useEffect, useState } from "react";
-
+import { Rating, AirbnbRating } from 'react-native-ratings';
 //import Map from './screens/Map';
 //import Fetch from './src/Fetch';
 //import {userSate,userEffect} from "react";
@@ -30,18 +31,64 @@ import {
   query,
   where,
   getDocs,
+  updateDoc
 } from "firebase/firestore";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 
 export default function BookInfo({ route, navigation }) {
   const book = route.params;
+  const Auth = getAuth();
+  const uid = Auth?.currentUser?.uid;
 
   let [update, setUpdate] = useState(false);
+  const [isNotified, setIsNotified] = useState(false);
+ 
+  useEffect(() => {
+     (async function() {
+      const db = getFirestore();
+      // the book must be unique its up to you how you do it by id or by ISBN
+      const q = query(collection(db, "Book"), where("ISBN", "==", book.ISBN));
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach(async doc=>{
+        
+        const book = doc.data();
+        if(book?.notifiedUser && book?.notifiedUser?.length > 0){
+         const isUserExist = book?.notifiedUser?.some(item=>item === uid);
+         setIsNotified(isUserExist);
+        }else{
+          setIsNotified(false);
+        }
+        
+        
+      })
+     })()
+    
+   }, [])
 
+   const onClickNotifyMe = async ()=> {
+    const db = getFirestore();
+    // the book must be unique its up to you how you do it by id or by ISBN
+    const q = query(collection(db, "Book"), where("ISBN", "==", book.ISBN));
+    setIsNotified(true)
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach(async doc=>{
+      
+      const book = doc.data();
+      let data = [];
+      if(book?.notifiedUser && book?.notifiedUser?.length > 0){
+        data = [uid,...book.notifiedUser];
+      }else{
+        data.push(uid)
+      }
+      await updateDoc(doc.ref, {
+        notifiedUser: data
+      });
+      
+    })
+      
+  }
   let AddInfo = async () => {
     try {
-      const Auth = getAuth();
-      const uid = Auth?.currentUser?.uid;
       const db = getFirestore();
       const data = book;
       data.favouriteUserId = uid;
@@ -96,6 +143,10 @@ export default function BookInfo({ route, navigation }) {
     CheckListed();
     CheckOrder();
   }, []);
+
+ 
+  
+  
 
   return (
     <SafeAreaView>
@@ -177,13 +228,11 @@ export default function BookInfo({ route, navigation }) {
               by {book.author}
             </Text>
 
-            <View style={{ flex: 1, flexDirection: "row", paddingTop: 10 }}>
-              <Icon name="star" size={30} style={{ color: "gold" }} />
-              <Icon name="star" size={30} style={{ color: "gold" }} />
-              <Icon name="star" size={30} style={{ color: "gold" }} />
-              <Icon name="star" size={30} style={{ color: "gold" }} />
-              <Icon name="star-half" size={30} style={{ color: "gold" }} />
-            </View>
+            <AirbnbRating
+            defaultRating ={3}
+            reviews={[]}
+            isDisabled={true}
+            size={30} />
             <Text
               style={{
                 fontWeight: "bold",
@@ -257,40 +306,37 @@ export default function BookInfo({ route, navigation }) {
               {"\n"}
               Review it
             </Text>
-            <View style={{ flex: 1, flexDirection: "row", paddingTop: 10 }}>
-              <Icon name="star-outline" size={36} style={{ color: "gold" }} />
-              <Icon name="star-outline" size={36} style={{ color: "gold" }} />
-              <Icon name="star-outline" size={36} style={{ color: "gold" }} />
-              <Icon name="star-outline" size={36} style={{ color: "gold" }} />
-              <Icon name="star-outline" size={36} style={{ color: "gold" }} />
-            </View>
+            <AirbnbRating
+            defaultRating ={0} 
+            size = {30}/>
 
-            <Text
+
+<TouchableOpacity
               style={{
-                fontWeight: "bold",
-                alignSelf: "flex-start",
-                fontWeight: "bold",
-                fontSize: 16,
+                flex: 1,
+                flexDirection: "row",
+                borderRadius: 25,
+                backgroundColor:"#00a46c",
+                paddingHorizontal: 20,
+              }}
+              onPress={() => {
+                navigation.navigate("bookComment");
               }}
             >
-              {"\n"} {"\n"}
-              Leave your comments and read other’s: {"\n"}
-            </Text>
-            <View
-              style={{
-                backgroundColor: "white",
-                alignSelf: "center",
-                height: 130,
-                width: 340,
-              }}
-            >
-              <TextInput
-                placeholder="comment"
-                underlineColorAndroid="transparent"
-                scrollEnabled
-              />
-            </View>
-            <View>
+              <Text
+                style={{
+                  fontWeight: "bold",
+                  paddingBottom: 10,
+                  paddingTop:10,
+                  fontSize: 18,
+                  marginTop:5,
+                }}
+              >
+                Comments
+              </Text>
+            </TouchableOpacity>
+            
+            {book.pdf ? <View>
               <TouchableOpacity
                 style={[
                   styles.fixToText,
@@ -307,7 +353,27 @@ export default function BookInfo({ route, navigation }) {
                   {book.order ? "BOUGHT " : "BUY IT HERE"}
                 </Text>
               </TouchableOpacity>
-            </View>
+            </View>: 
+            <View>
+            <TouchableOpacity
+                disabled={isNotified}
+
+                style={[
+                  styles.fixToText,
+                  {
+                    backgroundColor: isNotified ? "#aadecc" : "#00a46c",
+                  },
+                ]}
+              onPress={onClickNotifyMe}
+            >
+              <Text style={styles.buyit}>
+             {isNotified ? 'Notified' : 'Notify me'}
+              </Text>
+            </TouchableOpacity>
+          </View>
+            
+            
+            }
           </View>
         </ScrollView>
       </ImageBackground>

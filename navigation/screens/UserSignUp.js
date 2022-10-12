@@ -15,7 +15,6 @@ import Icon from "react-native-vector-icons/Ionicons";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { collection, doc, getFirestore, setDoc } from "firebase/firestore";
 import { SafeAreaView } from "react-native-safe-area-context";
-
 function msg(error) {
   switch (error.code) {
     case "auth/invalid-email":
@@ -37,6 +36,7 @@ function msg(error) {
   return error.code;
 }
 export default function UserSignUp({ navigation }) {
+  
   const [value, setValue] = React.useState({
     email: "",
     password: "",
@@ -75,6 +75,7 @@ export default function UserSignUp({ navigation }) {
         password: value.password,
         uid: user.uid,
         isAdmin: false,
+        push_token,
       };
       await setDoc(doc(db, "users", user.uid), data);
       alert("User Created please Login");

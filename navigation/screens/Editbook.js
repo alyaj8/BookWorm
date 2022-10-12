@@ -18,6 +18,8 @@ import {
 } from "react-native";
 import { Entypo } from "@expo/vector-icons";
 import { Formik } from "formik";
+import Icon from "react-native-vector-icons/Ionicons";
+import {sendPushNotification} from '../../util/Notifications'
 import * as ImagePicker from "expo-image-picker";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import {
@@ -25,8 +27,10 @@ import {
   doc,
   getFirestore,
   setDoc,
-  firestore,
-  addDoc,
+  where,
+  getDocs,
+  documentId,
+  query
 } from "firebase/firestore";
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import Toast, { BaseToast, ErrorToast } from "react-native-toast-message";
@@ -35,28 +39,9 @@ import { AntDesign } from "@expo/vector-icons";
 
 import background_image from "./222.jpg";
 
-/*function msg (error){
-  switch (error.code){
-         case "auth/invalid-email":
-          error.code = "Wrong email address";
-          break;
+export default function AddBookTest({ navigation, route }) {
+  const book = route.params;
 
-          case "auth/email-already-in-use":
-            error.code= "The email is already registered try to login or use forgot password";
-            break;
-
-            case "auth/weak-password":
-              error.code= "week password";
-              break;
-  
-
-          default:
-          return error.code;
-        }
-        return error.code;
-}*/
-
-export default function AddBookTest({ navigation }) {
   const [image, setImage] = useState(null);
   const [update, setupdate] = useState(true);
   const [value, setValue] = React.useState({
@@ -93,6 +78,34 @@ export default function AddBookTest({ navigation }) {
       includeBase64: false,
     },
   };
+
+  const onClickSendNotification = async ()=>{
+    let notifications = [];
+
+    const db = getFirestore();
+    const q = query(
+      collection(db, "users"),
+      where(documentId(), "in", book.notifiedUser),
+    );
+    
+    const usersDocsSnap = await getDocs(q);
+    
+    usersDocsSnap.forEach((doc) => {
+      const user = doc.data();
+      if(doc.exists){
+
+        notifications.push({
+          to: user.push_token,
+          sound: "default",
+          title: book.title,
+          body: 'Admin Updated the book',
+        })
+      }
+    });
+
+    sendPushNotification(notifications)
+    
+  }
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync(options);
 
@@ -122,101 +135,108 @@ export default function AddBookTest({ navigation }) {
 
   //add a new data
   async function addField() {
+    console.log(value);
     if (
       image === null ||
       value.title === "" ||
+      value.title === undefined ||
       value.Description === "" ||
+      value.Description === undefined ||
       value.ISBN === "" ||
+      value.ISBN === undefined ||
       value.author === "" ||
+      value.author === undefined ||
       value.virsion === "" ||
-      value.pric === ""
+      value.virsion === undefined ||
+      value.pric === "" ||
+      value.pric === undefined
     ) {
       console.log(value.title);
 
-      if (image === null) {
+      /*  if (image === null) {
         Error.poster = false;
         setError(Error);
         setupdate(!update);
-      }
+      }*/
       if (image !== null) {
         Error.poster = true;
         setError(Error);
         setupdate(!update);
       }
-      if (value.title === "") {
+      if (value.title === "" || value.title === undefined) {
         Error.title = false;
         setError(Error);
 
         setupdate(!update);
       }
-      if (value.title !== "") {
+      if (value.title !== "" && value.title !== undefined) {
         Error.title = true;
         setError(Error);
 
         setupdate(!update);
       }
 
-      if (value.Description === "") {
+      if (value.Description === "" || value.Description === undefined) {
         Error.Description = false;
         setError(Error);
 
         setupdate(!update);
       }
-      if (value.Description !== "") {
+      if (value.Description !== "" && value.Description !== undefined) {
         Error.Description = true;
         setError(Error);
         setupdate(!update);
       }
-      if (value.category === "") {
+      if (value.category === "" || value.category === undefined) {
         Error.category = false;
         setError(Error);
         setupdate(!update);
       }
 
-      if (value.category !== "") {
+      if (value.category !== "" && value.category !== undefined) {
         Error.category = true;
         setError(Error);
         setupdate(!update);
       }
 
-      if (value.ISBN === "") {
+      if (value.ISBN === "" || value.ISBN === undefined) {
         Error.ISBN = false;
         setError(Error);
         setupdate(!update);
       }
-      if (value.ISBN !== "") {
+      if (value.ISBN !== "" && value.ISBN !== undefined) {
         Error.ISBN = true;
         setError(Error);
         setupdate(!update);
       }
-      if (value.author === "") {
+      if (value.author === "" || value.author === undefined) {
         Error.author = false;
         setError(Error);
         setupdate(!update);
       }
-      if (value.author !== "") {
+      if (value.author !== "" && value.author !== undefined) {
         Error.author = true;
         setError(Error);
         setupdate(!update);
       }
 
-      /* if (value.virsion === "") {
+      if (value.virsion === "" || value.virsion === undefined) {
         Error.virsion = false;
         setError(Error);
         setupdate(!update);
-      }*/
-      if (value.virsion !== "") {
+      }
+      if (value.virsion !== "" && value.virsion !== undefined) {
         Error.virsion = true;
         setError(Error);
         setupdate(!update);
       }
 
-      /*   if (value.pric === "") {
+      if (value.pric === "" || value.pric === undefined) {
         Error.pric = false;
         setError(Error);
         setupdate(!update);
-      }*/
-      if (value.pric !== "") {
+      }
+      if (value.pric !== "" && value.pric !== undefined) {
         Error.pric = true;
         setError(Error);
         setupdate(!update);
@@ -227,16 +247,23 @@ export default function AddBookTest({ navigation }) {
         const db = getFirestore();
         // check if we have new feilds data
         //get the timestamp
+        console.log(data, "========>data");
         const data = {
           title: value.title,
           Description: value.Description,
           category: value.category,
           ISBN: value.ISBN,
           author: value.author,
+          pdf: value.virsion,
+          pric: value.pric,
           poster: image,
         };
-        await addDoc(collection(db, "Book"), data);
-        showToast();
+        console.log(book.id);
+        await setDoc(doc(db, "Book", book.id), data);
+        if(book?.notifiedUser && book?.notifiedUser.length > 0 && value.virsion){ 
+          onClickSendNotification()
+        }
+        await showToast();
         setError({
           ...Error,
           virsion: true,
@@ -246,18 +273,19 @@ export default function AddBookTest({ navigation }) {
           Description: true,
           title: true,
           poster: true,
+          pric: true,
         });
-        setValue({
-          title: "",
-          Description: "",
-          category: "",
-          ISBN: "",
-          author: "",
-          poster: "",
-          virsion: "",
-          error: "",
+        await navigation.navigate("BookInfoApi", {
+          title: value.title,
+          Description: value.Description,
+          category: value.category,
+          ISBN: value.ISBN,
+          author: value.author,
+          virsion: value.virsion,
+          pric: value.pric,
+          poster: image,
+          id: book.id,
         });
-        setImage(null);
       } catch (error) {
         setValue({
           ...value,
@@ -267,42 +295,6 @@ export default function AddBookTest({ navigation }) {
       }
     }
   }
-  ////////////////////////////////////end new code
-  /*async function addBook() {
-
-    if ( value.title ==="" || value.Description === "" || value.category === ""||value.author === ""||value.ISBN === "" ){
-      setValue({
-        ...value,
-        error: "all feilds are mandatory.",
-      });
-      return;
-    }
-    try {
-      //const {user} = await createUserWithEmailAndPassword(auth, value.email, value.password,value.email, value.password);
-      console.log('user',user.uid)
-      const db = getFirestore();
-      const data = {
-        title:value.title,
-        Description:value.Description,
-        category:value.category,
-        ISBN:value.ISBN,
-        author:value.author,
-        poster:value.poster,
-        
-      };
-      await setDoc(doc(db,"Book", user.uid), data);
-      alert("Book is added");
-      navigation.navigate("AdminPage");
-    } catch (er) {
-      er = msg(er)
-      setValue({
-        ...value,
-        error: er,
-      });
-      console.log(er);
-    }
-  }*/
-
   const toastConfig = {
     success: (props) => (
       <BaseToast
@@ -326,14 +318,29 @@ export default function AddBookTest({ navigation }) {
     Toast.show({
       type: "success",
       text1: "Success",
-      text2: "Book Successfully Added",
+      text2: "Book Successfully Updated",
       position: "bottom",
       // And I can pass any custom props I want
       props: { uuid: "bba1a7d0-6ab2-4a0a-a76e-ebbe05ae6d70" },
     });
   };
 
-  // showToast();
+  useEffect(() => {
+    console.log(book, "=======>");
+    setValue({
+      title: book.title,
+      Description: book.Description,
+      category: book.category,
+      ISBN: book.ISBN,
+      author: book.author,
+      poster: book.poster,
+      virsion: book.virsion,
+      pric: book.pric,
+      error: "",
+    });
+    setImage(book.poster);
+    setupdate(!update);
+  }, []);
 
   return (
     <ImageBackground source={background_image} resizeMode="cover">
@@ -346,7 +353,12 @@ export default function AddBookTest({ navigation }) {
               paddingHorizontal: 20,
             }}
           ></View>
-          <Text style={[styles.title, styles.leftTitle]}>Add new Book</Text>
+          <Icon
+            name="arrow-back-outline"
+            size={45}
+            style={{ color: "black", marginTop: 40, marginLeft: 15 }}
+            onPress={() => navigation.goBack()}
+          />
           <Text
             style={{
               color: "red",
@@ -419,10 +431,7 @@ export default function AddBookTest({ navigation }) {
             <TextInput
               style={[
                 styles.body,
-                {
-                  borderColor: !Error.title ? "red" : "black",
-                  backgroundColor: "white",
-                },
+                { borderColor: !Error.title ? "red" : "black" },
               ]}
               //placeholder="First Name"
               onChangeText={(text) => setValue({ ...value, title: text })}
@@ -447,10 +456,7 @@ export default function AddBookTest({ navigation }) {
               multiline={true}
               style={[
                 styles.bodyX,
-                {
-                  borderColor: !Error.Description ? "red" : "black",
-                  backgroundColor: "white",
-                },
+                { borderColor: !Error.Description ? "red" : "black" },
               ]}
               //placeholder="Last Name"
               value={value.Description}
@@ -474,10 +480,7 @@ export default function AddBookTest({ navigation }) {
             <TextInput
               style={[
                 styles.body,
-                {
-                  borderColor: !Error.category ? "red" : "black",
-                  backgroundColor: "white",
-                },
+                { borderColor: !Error.category ? "red" : "black" },
               ]}
               value={value.category}
               // placeholder="Username"
@@ -503,12 +506,9 @@ export default function AddBookTest({ navigation }) {
             <TextInput
               style={[
                 styles.body,
-                {
-                  borderColor: !Error.ISBN ? "red" : "black",
-                  backgroundColor: "white",
-                },
+                { borderColor: !Error.ISBN ? "red" : "black" },
               ]} //placeholder="E-mail"
-              value={value.ISBN}
+              value={value?.ISBN?.toString()}
               onChangeText={(text) => setValue({ ...value, ISBN: text })}
               underlineColorAndroid="transparent"
             />
@@ -529,10 +529,7 @@ export default function AddBookTest({ navigation }) {
             <TextInput
               style={[
                 styles.body,
-                {
-                  borderColor: !Error.author ? "red" : "black",
-                  backgroundColor: "white",
-                },
+                { borderColor: !Error.author ? "red" : "black" },
               ]} //secureTextEntry={true}
               //placeholder="Password"
               value={value.author}
@@ -555,10 +552,7 @@ export default function AddBookTest({ navigation }) {
             <TextInput
               style={[
                 styles.body,
-                {
-                  borderColor: !Error.virsion ? "red" : "black",
-                  backgroundColor: "white",
-                },
+                { borderColor: !Error.virsion ? "red" : "black" },
               ]} //secureTextEntry={true}
               //placeholder="Password"
               value={value.virsion}
@@ -582,10 +576,7 @@ export default function AddBookTest({ navigation }) {
             <TextInput
               style={[
                 styles.body,
-                {
-                  borderColor: !Error.pric ? "red" : "black",
-                  backgroundColor: "white",
-                },
+                { borderColor: !Error.pric ? "red" : "black" },
               ]} //secureTextEntry={true}
               //placeholder="Password"
               value={value.pric}
@@ -606,10 +597,8 @@ export default function AddBookTest({ navigation }) {
               }}
               onPress={() => addField()}
             >
-              <Text
-                style={{ color: "white", fontWeight: "bold", fontSize: 18 }}
-              >
-                Add Book
+              <Text style={{ color: "white", fontWeight: "bold" }}>
+                ADD BUTTON
               </Text>
             </TouchableOpacity>
           </View>

@@ -1,6 +1,6 @@
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-import { doc, getDoc, getFirestore } from "firebase/firestore";
-import React, { useEffect } from "react";
+import { doc, getDoc, getFirestore, updateDoc } from "firebase/firestore";
+import React, { useEffect, useState } from "react";
 import {
   Image,
   LogBox,
@@ -12,6 +12,7 @@ import {
   View,
 } from "react-native";
 import { withUser } from "../config/UserContext";
+import { registerForPushNotificationsAsync } from "../util/Notifications";
 
 function msg(error) {
   switch (error.code) {
@@ -38,6 +39,12 @@ function msg(error) {
 }
 
 function WelcomePage({ navigation, isAdmin, setIsAdmin }) {
+  const [push_token, setPushToken] = useState("");
+  useEffect(() => {
+    registerForPushNotificationsAsync().then((token) => {
+      setPushToken(token === undefined ? "" : token);
+    });
+  }, []);
   const [value, setValue] = React.useState({
     email: "",
     password: "",
@@ -97,6 +104,9 @@ function WelcomePage({ navigation, isAdmin, setIsAdmin }) {
         navigation.navigate("Adminpage");
       } else {
         setIsAdmin(false);
+        await updateDoc(docRef, {
+          push_token
+        });
         navigation.navigate("Maincontainer");
       }
     } catch (er) {

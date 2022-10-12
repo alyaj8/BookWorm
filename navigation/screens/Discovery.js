@@ -12,8 +12,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import * as Notifications from 'expo-notifications';
-import PushNotificationIOS from '@react-native-community/push-notification-ios';
+//import * as Notifications from 'expo-notifications';
 import Icon from "react-native-vector-icons/Ionicons";
 import { db } from "../../config/firebase";
 import { withUser } from "../../config/UserContext";
@@ -114,8 +113,8 @@ function Discovry({ navigation, isAdmin }) {
   };
   /* const restUrl = (link1) => {
     setUrl(link1)  }*/
-  /////////////////////// notification 
-    async function registerForPushNotificationsAsync() {
+  /////////////////////// notification
+  /*  async function registerForPushNotificationsAsync() {
     let token;
 
     const { status: existingStatus } = await Notifications.getPermissionsAsync();
@@ -133,78 +132,7 @@ function Discovry({ navigation, isAdmin }) {
     console.log(token);
 
     return token;
-}
-const notfyi = () => {
-  const [permissions, setPermissions] = useState({});
-
-  /**
-   * By calling this function, notification with category `userAction` will have action buttons
-   */
-  const setNotificationCategories = () => {
-    PushNotificationIOS.setNotificationCategories([
-      {
-        id: 'userAction',
-        actions: [
-          {id: 'open', title: 'Open', options: {foreground: true}},
-          {
-            id: 'ignore',
-            title: 'Desruptive',
-            options: {foreground: true, destructive: true},
-          },
-          {
-            id: 'text',
-            title: 'Text Input',
-            options: {foreground: true},
-            textInput: {buttonTitle: 'Send'},
-          },
-        ],
-      },
-    ]);
-  };
-  const notivication = () => {
-  const [permissions, setPermissions] = useState({});
-
-  useEffect(() => {
-    const type = 'notification';
-    PushNotificationIOS.addEventListener(type, onRemoteNotification);
-    return () => {
-      PushNotificationIOS.removeEventListener(type);
-    };
-  });
-
-  const onRemoteNotification = (notification) => {
-    const isClicked = notification.getData().userInteraction === 1;
-
-    if (isClicked) {
-      // Navigate user to another screen
-    } else {
-      // Do something else with push notification
-    }
-  };
-};
-
-  useEffect(() => {
-    const type = 'notification';
-    PushNotificationIOS.addEventListener(type, onRemoteNotification);
-    return () => {
-      PushNotificationIOS.removeEventListener(type);
-    };
-  });
-
-  const onRemoteNotification = (notification) => {
-    const actionIdentifier = notification.getActionIdentifier();
-
-    if (actionIdentifier === 'open') {
-      // Perform action based on open action
-    }
-
-    if (actionIdentifier === 'text') {
-      // Text that of user input.
-      const userText = notification.getUserText();
-      // Perform action based on textinput action
-    }
-  };
-};
+}*/
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
