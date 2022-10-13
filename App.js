@@ -8,6 +8,9 @@ import ForgetPassword from "./navigation/screens/ForgetPassword";
 import Home from "./navigation/screens/Home";
 import Bookpdf from "./navigation/screens/Bookpdf";
 import Acc from "./navigation/screens/Acc";
+import Changepass from "./navigation/screens/Changepass";
+import Editbook from "./navigation/screens/Editbook";
+import BookInfoApi from "./navigation/screens/BookInfoApi";
 
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -18,11 +21,13 @@ import Maincontainer from "./navigation/Maincontainer";
 import Adminpage from "./navigation/screens/Adminpage";
 
 import ReadBookList from "./navigation/screens/ReadBookList";
+import bookComment from "./navigation/screens/bookComment";
 import StripeApp from "./navigation/screens/StripeApp";
 import { StripeProvider } from "@stripe/stripe-react-native";
 import { LogBox } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { UserProvider } from "./config/UserContext";
+import * as Notifications from "expo-notifications";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCb8vT5-UmFZV-954feGAE2L0-T4Tgpqhs",
@@ -33,6 +38,15 @@ const firebaseConfig = {
   appId: "1:19414542563:web:460d20dd6abdeabef47dd6",
   measurementId: "G-F5B7J7EDXR",
 };
+
+
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: false,
+    shouldSetBadge: false,
+  }),
+});
 
 export const Stack = createNativeStackNavigator();
 initializeApp(firebaseConfig);
@@ -61,10 +75,14 @@ function App() {
             <Stack.Screen name="BookInfo" component={BookInfo} />
             <Stack.Screen name="Adminpage" component={Adminpage} />
             <Stack.Screen name="ReadBookList" component={ReadBookList} />
+            <Stack.Screen name="bookComment" component={bookComment} />
             <Stack.Screen name="StripeApp" component={StripeApp} />
             <Stack.Screen name="Bookpdf" component={Bookpdf} />
             <Stack.Screen name="Orders" component={Orders} />
             <Stack.Screen name="Acc" component={Acc} />
+            <Stack.Screen name="Changepass" component={Changepass} />
+            <Stack.Screen name="Editbook" component={Editbook} />
+            <Stack.Screen name="BookInfoApi" component={BookInfoApi} />
           </Stack.Navigator>
         </NavigationContainer>
       </StripeProvider>
