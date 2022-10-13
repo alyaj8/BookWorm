@@ -208,6 +208,7 @@ export default function BookInfo({ route, navigation }) {
             <Rating
               startingValue={bookstar / book.reviews?.length}
               imageSize={30}
+              transparc
               fractions={20}
               showRating={false}
               readonly={true}
@@ -216,7 +217,7 @@ export default function BookInfo({ route, navigation }) {
               }}
             />
             {book.reviews?.length > 0 ? (
-              <Text style={{ color: "#fbc740" }}>
+              <Text style={{ color: "black", fontWeight:"bold" }}>
                 {bookstar / book.reviews?.length} out of 5
               </Text>
             ) : (
