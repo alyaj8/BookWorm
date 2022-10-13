@@ -15,12 +15,13 @@ import StripeApp from "./StripeApp";
 import bookComment from "./bookComment";
 import { StripeProvider } from "@stripe/stripe-react-native";
 import react, { useEffect, useState } from "react";
-import { Rating, AirbnbRating } from 'react-native-ratings';
+import { Rating, AirbnbRating } from "react-native-ratings";
+
 //import Map from './screens/Map';
 //import Fetch from './src/Fetch';
 //import {userSate,userEffect} from "react";
 //import{collection, query,orderBy,onSanpshot,setDoc,doc,getDoc,getDocs} from "firebase/firestore";
-//import{db} from "../../config/firebase";
+import { db } from "../../config/firebase";
 
 import {
   collection,
@@ -38,11 +39,14 @@ export default function BookInfo({ route, navigation }) {
   const book = route.params;
 
   let [update, setUpdate] = useState(false);
- 
+  let [bookstar, setBookStar] = useState(0);
+  let [reviewDone, setReviewDone] = useState(false);
+  var Auth = getAuth();
 
+  let [disabled, setDisabled] = useState(false);
   let AddInfo = async () => {
+    setDisabled(true);
     try {
-      const Auth = getAuth();
       const uid = Auth?.currentUser?.uid;
       const db = getFirestore();
       const data = book;
@@ -50,8 +54,10 @@ export default function BookInfo({ route, navigation }) {
       await addDoc(collection(db, "readBookList"), data);
       book.listed = true;
       setUpdate(true);
+      setDisabled(false);
     } catch (error) {
       alert(error);
+      setDisabled(false);
     }
   };
 
@@ -71,8 +77,34 @@ export default function BookInfo({ route, navigation }) {
       }
     });
   };
-  useEffect(() => CheckListed(), []);
 
+  let checkReview = () => {
+    let countStar = 0;
+    book?.reviews?.length > 0 &&
+      Auth.onAuthStateChanged(async (user) => {
+        book.reviews?.map((val, ind) => {
+          countStar = countStar + +val.review;
+          if (user.uid === val.comenteuseruid) {
+            setReviewDone(true);
+          }
+        });
+        setBookStar(countStar);
+      });
+  };
+  useEffect(() => {
+    const unsubscribe = navigation.addListener("focus", () => {
+      // The screen is focused
+      // Call any action
+
+      // Return the function to unsubscribe from the event so it gets removed on unmount
+      CheckListed();
+      checkReview();
+    });
+
+    return unsubscribe;
+  }, [navigation]);
+
+  console.log(reviewDone, "=========>");
   let CheckOrder = () => {
     const Auth = getAuth();
     Auth.onAuthStateChanged(async (user) => {
@@ -97,7 +129,7 @@ export default function BookInfo({ route, navigation }) {
   useEffect(() => {
     CheckListed();
     CheckOrder();
-  }, []);
+  }, [navigation]);
 
   return (
     <SafeAreaView>
@@ -111,8 +143,6 @@ export default function BookInfo({ route, navigation }) {
           />
           <View
             style={{
-              //poster area
-              // backgroundColor: "grey",
               alignItems: "center",
               alignSelf: "center",
               height: 360,
@@ -179,11 +209,57 @@ export default function BookInfo({ route, navigation }) {
               by {book.author}
             </Text>
 
-            <AirbnbRating
-            defaultRating ={3}
-            reviews={[]}
-            isDisabled={true}
-            size={30} />
+            <Rating
+              startingValue={bookstar && bookstar / book.reviews?.length}
+              imageSize={30}
+              fractions={20}
+              showRating={false}
+              readonly={true}
+              tintColor="#EDF5F0"
+              style={{
+                marginVertical: 10,
+              }}
+            />
+
+            {book.reviews?.length > 0 ? (
+              <Text
+                style={{
+                  color: "black",
+                  alignItems: "center",
+                  fontWeight: "bold",
+                }}
+              >
+                {"     "} {(bookstar / book.reviews?.length).toFixed(1)} out of
+                5 {"\n"}
+                {book.reviews?.length} People Reviewed
+              </Text>
+            ) : (
+              <Text style={{ color: "black" }}> No Reviews yet {"\n     0 Poeple "}
+              </Text>
+            )}
+            <TouchableOpacity
+              style={{
+                width: 150,
+                height: 50,
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+              onPress={() => {
+                navigation.navigate("bookComment", book);
+              }}
+            >
+              <Text
+                style={{
+                  textDecorationLine: "underline",
+                  fontWeight: "bold",
+                  fontSize: 16,
+                  color:"green",
+                }}
+              >
+                See Reviews...
+              </Text>
+            </TouchableOpacity>
+
             <Text
               style={{
                 fontWeight: "bold",
@@ -233,7 +309,7 @@ export default function BookInfo({ route, navigation }) {
                 paddingHorizontal: 20,
               }}
               onPress={() => AddInfo()}
-              disabled={book.listed}
+              disabled={book.listed || disabled}
             >
               <Text
                 style={{
@@ -247,50 +323,43 @@ export default function BookInfo({ route, navigation }) {
               </Text>
             </TouchableOpacity>
 
-            <Text
+            <View
               style={{
-                fontWeight: "bold",
-                alignSelf: "center",
-                fontSize: 16,
+                margin: 45,
+                alignItems: "center",
+                justifyContent: "space-between",
+                width: 400,
               }}
             >
-              {"\n"}
-              Review it
-            </Text>
-            <AirbnbRating
-            defaultRating ={0} 
-            size = {30}/>
-
-
-<TouchableOpacity
-              style={{
-                flex: 1,
-                flexDirection: "row",
-                borderRadius: 25,
-                backgroundColor:"#00a46c",
-                paddingHorizontal: 20,
-              }}
-              onPress={() => {
-                navigation.navigate("bookComment");
-              }}
-            >
-              <Text
+              <TouchableOpacity
                 style={{
-                  fontWeight: "bold",
-                  paddingBottom: 10,
-                  paddingTop:10,
-                  fontSize: 18,
-                  marginTop:5,
+                  borderRadius: 25,
+                  backgroundColor: reviewDone ? "#aadecc" : "#00a46c",
+                  width: "48%",
+                  height: 50,
+                  alignItems: "center",
+                  justifyContent: "center",
                 }}
+                disabled={reviewDone}
+                onPress={() => navigation.navigate("ReviewBook", book)}
               >
-                Comments
-              </Text>
-            </TouchableOpacity>
-            
-            <View>
+                <Text
+                  style={{
+                    fontWeight: "bold",
+                    alignSelf: "center",
+                    fontSize: 18,
+                  }}
+                >
+                  {reviewDone ? "Reviewed" : "Review it.."}
+                </Text>
+              </TouchableOpacity>
+            </View>
+
+            <View style={{ margin: 5 }}>
               <TouchableOpacity
                 style={[
                   styles.fixToText,
+
                   {
                     backgroundColor: book.order ? "#aadecc" : "#00a46c",
                   },
@@ -317,16 +386,13 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   fixToText: {
-    width: 180,
-
+    width: 200,
     height: 50,
     justifyContent: "center",
     alignContent: "center",
     borderRadius: 50,
     backgroundColor: "#00a46c",
-    marginTop: 40,
     paddingLeft: 10,
-    marginBottom: 10,
   },
   imagePoster: {
     width: "100%",
@@ -343,8 +409,3 @@ const styles = StyleSheet.create({
     marginRight: 18,
   },
 });
-/*<TouchableOpacity
-onPress={() => navigation.navigate("StripeApp")}
->
-<Text>buy Here</Text>
-</TouchableOpacity>*/

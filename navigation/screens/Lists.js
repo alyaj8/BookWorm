@@ -15,8 +15,11 @@ import {
   where,
   getDocs,
   getFirestore,
+  doc,
+  getDoc,
 } from "firebase/firestore";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { db } from "../../config/firebase";
 
 export default function Lists({ navigation }) {
   let [BookList, setBookList] = useState([]);
@@ -55,6 +58,14 @@ export default function Lists({ navigation }) {
     }
   };
 
+  let OpenInfo = async (val) => {
+    const colRef = doc(db, "Book", val.id);
+    const snapshot = await getDoc(colRef);
+    let book = snapshot.data();
+    book.id = val.id;
+    console.log(book);
+    navigation.navigate("BookInfo", book);
+  };
   useEffect(() => {
     navigation.addListener("focus", () => {
       GetBookList();
@@ -106,7 +117,7 @@ export default function Lists({ navigation }) {
           paddingHorizontal: 20,
           width: "100%",
           alignItems: "center",
-         }}
+        }}
       >
         <View style={{ width: "50%" }}>
           <Text
@@ -119,7 +130,7 @@ export default function Lists({ navigation }) {
             Read Books
           </Text>
         </View>
-        <View style={{ width: "50%", alignItems: "flex-end", }}>
+        <View style={{ width: "50%", alignItems: "flex-end" }}>
           <TouchableOpacity
             onPress={() => navigation.navigate("ReadBookList", BookList)}
           >
@@ -144,7 +155,7 @@ export default function Lists({ navigation }) {
           </TouchableOpacity>
         </View>
       </View>
-   <ScrollView
+      <ScrollView
         horizontal
         showsHorizontalScrollIndicator={true}
         style={{ height: 320 }}
@@ -158,15 +169,14 @@ export default function Lists({ navigation }) {
             height: 100,
             marginTop: 220,
             top: 0,
-            width:9999,
-
+            width: 9999,
           }}
         />
         {BookList.length > 0 ? (
           BookList.map((val, ind) => (
             <TouchableOpacity
               key={ind}
-              onPress={() => navigation.navigate("BookInfo", val)}
+              onPress={() => OpenInfo(val)}
               style={{
                 height: 250,
                 elevation: 2,
@@ -195,7 +205,7 @@ export default function Lists({ navigation }) {
                   }}
                 >
                   {Datacat(val.title, 29)}
-                          {"\n"}
+                  {"\n"}
                 </Text>
               </View>
             </TouchableOpacity>
@@ -203,22 +213,20 @@ export default function Lists({ navigation }) {
         ) : (
           <Text
             style={{
-            //  flex: 1,
+              //  flex: 1,
               //textAlign: "center",
-             marginTop: -10,////////////////////////////////////////
-             marginLeft:130,////////////////////////////////////////
+              marginTop: -10, ////////////////////////////////////////
+              marginLeft: 130, ////////////////////////////////////////
               fontSize: 15,
               fontWeight: "bold",
               color: "grey",
-              alignSelf:"center"
+              alignSelf: "center",
             }}
           >
-                   Book List Is Empty   
- 
+            Book List Is Empty
           </Text>
         )}
       </ScrollView>
-      
 
       <View
         style={{
@@ -226,8 +234,7 @@ export default function Lists({ navigation }) {
           paddingHorizontal: 20,
           width: "100%",
           alignItems: "center",
-          backgroundColor:"white"
-
+          backgroundColor: "white",
         }}
       >
         <View style={{ width: "50%" }}>
@@ -242,8 +249,7 @@ export default function Lists({ navigation }) {
           </Text>
         </View>
         <View style={{ width: "50%", alignItems: "flex-end" }}>
-          <TouchableOpacity
-          >
+          <TouchableOpacity>
             <View
               style={{
                 backgroundColor: "#00a46c",
@@ -280,26 +286,23 @@ export default function Lists({ navigation }) {
             height: 100,
             marginTop: 220,
             top: 0,
-            width:9999,
-
+            width: 9999,
           }}
         />
-          <Text
-            style={{
-              flex: 1,
-              textAlign: "center",
-               fontSize: 15,
-              fontWeight: "bold",
-              color: "grey",
-              marginTop: 140,///////////////////////////////////////////////
-             marginLeft:130,///////////////////////////////////////////////
-            }}
-          >
-            Book List Is Empty
-          </Text>
+        <Text
+          style={{
+            flex: 1,
+            textAlign: "center",
+            fontSize: 15,
+            fontWeight: "bold",
+            color: "grey",
+            marginTop: 140, ///////////////////////////////////////////////
+            marginLeft: 130, ///////////////////////////////////////////////
+          }}
+        >
+          Book List Is Empty
+        </Text>
       </ScrollView>
-
-
 
       <View
         style={{
@@ -321,8 +324,7 @@ export default function Lists({ navigation }) {
           </Text>
         </View>
         <View style={{ width: "50%", alignItems: "flex-end" }}>
-          <TouchableOpacity
-          >
+          <TouchableOpacity>
             <View
               style={{
                 backgroundColor: "#00a46c",
@@ -348,7 +350,7 @@ export default function Lists({ navigation }) {
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={true}
-        style={{ height: 320,backgroundColor:"white" }}/////////////////
+        style={{ height: 320, backgroundColor: "white" }} /////////////////
       >
         <LinearGradient
           colors={["rgba(0,164,109,0.09)", "transparent"]}
@@ -359,26 +361,24 @@ export default function Lists({ navigation }) {
             height: 100,
             marginTop: 220,
             top: 0,
-                backgroundColor: "#FFF",
-            width:9999,
-
+            backgroundColor: "#FFF",
+            width: 9999,
           }}
         />
-          <Text
-            style={{
-              flex: 1,
-              textAlign: "center",
-               fontSize: 15,
-              fontWeight: "bold",
-              color: "grey",
-              marginTop: 140,///////////////////////////////////////////////
-             marginLeft:130,///////////////////////////////////////////////
-            }}
-          >
-            Book List Is Empty
-          </Text>
+        <Text
+          style={{
+            flex: 1,
+            textAlign: "center",
+            fontSize: 15,
+            fontWeight: "bold",
+            color: "grey",
+            marginTop: 140, ///////////////////////////////////////////////
+            marginLeft: 130, ///////////////////////////////////////////////
+          }}
+        >
+          Book List Is Empty
+        </Text>
       </ScrollView>
-
-    </ScrollView>//for all the page
+    </ScrollView> //for all the page
   );
 }
