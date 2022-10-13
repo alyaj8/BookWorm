@@ -43,7 +43,10 @@ export default function BookInfo({ route, navigation }) {
   let [reviewDone, setReviewDone] = useState(false);
   var Auth = getAuth();
 
+  let [disabled, setDisabled] = useState(false);
+
   let AddInfo = async () => {
+    setDisabled(true);
     try {
       const uid = Auth?.currentUser?.uid;
       const db = getFirestore();
@@ -52,8 +55,10 @@ export default function BookInfo({ route, navigation }) {
       await addDoc(collection(db, "readBookList"), data);
       book.listed = true;
       setUpdate(true);
+      setDisabled(false);
     } catch (error) {
       alert(error);
+      setDisabled(false);
     }
   };
 
@@ -125,7 +130,7 @@ export default function BookInfo({ route, navigation }) {
   useEffect(() => {
     CheckListed();
     CheckOrder();
-  }, []);
+  }, [navigation]);
 
   return (
     <SafeAreaView>
@@ -220,36 +225,42 @@ export default function BookInfo({ route, navigation }) {
             />
 
             {book.reviews?.length > 0 ? (
-              <Text style={{ color: "black",alignItems:"center", fontWeight:"bold"}}>
-               {"     "} {bookstar / book.reviews?.length} out of 5 {"\n"}
+              <Text
+                style={{
+                  color: "black",
+                  alignItems: "center",
+                  fontWeight: "bold",
+                }}
+              >
+                {"     "} {(bookstar / book.reviews?.length).toFixed(1)} out of
+                5 {"\n"}
                 {book.reviews?.length} People Reviewed
               </Text>
-            ) : 
-            (
+            ) : (
               <Text style={{ color: "#fbc740" }}> No Review</Text>
             )}
             <TouchableOpacity
+              style={{
+                width: 150,
+                height: 50,
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+              onPress={() => {
+                navigation.navigate("bookComment", book);
+              }}
+            >
+              <Text
                 style={{
-                  width: 150,
-                  height: 50,
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-                onPress={() => {
-                  navigation.navigate("bookComment", book);
+                  textDecorationLine: "underline",
+                  fontWeight: "bold",
+                  fontSize: 16,
+                  color: "green",
                 }}
               >
-                <Text
-                  style={{
-                    textDecorationLine:"underline",
-                    fontWeight: "bold",
-                    fontSize: 16,
-                  }}
-                >
-                  See Reviews...
-                </Text>
-              </TouchableOpacity>
-
+                See Reviews...
+              </Text>
+            </TouchableOpacity>
 
             <Text
               style={{
@@ -300,7 +311,7 @@ export default function BookInfo({ route, navigation }) {
                 paddingHorizontal: 20,
               }}
               onPress={() => AddInfo()}
-              disabled={book.listed}
+              disabled={book.listed || disabled}
             >
               <Text
                 style={{
@@ -314,11 +325,9 @@ export default function BookInfo({ route, navigation }) {
               </Text>
             </TouchableOpacity>
 
-            
-
             <View
               style={{
-                margin:45,
+                margin: 45,
                 alignItems: "center",
                 justifyContent: "space-between",
                 width: 400,
@@ -326,7 +335,6 @@ export default function BookInfo({ route, navigation }) {
             >
               <TouchableOpacity
                 style={{
-
                   borderRadius: 25,
                   backgroundColor: reviewDone ? "#aadecc" : "#00a46c",
                   width: "48%",
@@ -344,17 +352,16 @@ export default function BookInfo({ route, navigation }) {
                     fontSize: 18,
                   }}
                 >
-                 {reviewDone? "Reviewed" : "Review it.."}
+                  {reviewDone ? "Reviewed" : "Review it.."}
                 </Text>
               </TouchableOpacity>
-              
             </View>
 
-            <View style={{ margin:5}}>
+            <View style={{ margin: 5 }}>
               <TouchableOpacity
                 style={[
                   styles.fixToText,
-                  
+
                   {
                     backgroundColor: book.order ? "#aadecc" : "#00a46c",
                   },
@@ -388,7 +395,6 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     backgroundColor: "#00a46c",
     paddingLeft: 10,
-    
   },
   imagePoster: {
     width: "100%",

@@ -19,7 +19,7 @@ export default function Reviewbook({ route, navigation }) {
   const auth = getAuth();
   const user = auth.currentUser;
 
-  let [review, setReview] = useState("");
+  let [review, setReview] = useState(0);
   let [comment, setComment] = useState("");
 
   let PostReview = async () => {
@@ -55,7 +55,6 @@ export default function Reviewbook({ route, navigation }) {
 
           <View style={styles.bottomView}>
             <Rating
-              
               startingValue={0}
               imageSize={35}
               fractions={20}
@@ -79,7 +78,7 @@ export default function Reviewbook({ route, navigation }) {
               style={{
                 borderRadius: 25,
                 backgroundColor:
-                  review === "" && comment === "" ? "#aadecc" : "#00a46c",
+                  review === 0 || comment === "" ? "#aadecc" : "#00a46c",
                 width: "48%",
                 alignSelf: "center",
                 marginTop: 30,
@@ -89,6 +88,7 @@ export default function Reviewbook({ route, navigation }) {
                 justifyContent: "center",
               }}
               onPress={() => PostReview()}
+              disabled={review === 0 && comment === "" ? true : false}
             >
               <Text
                 style={{
