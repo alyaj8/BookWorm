@@ -253,6 +253,7 @@ export default function BookInfo({ route, navigation }) {
                   textDecorationLine: "underline",
                   fontWeight: "bold",
                   fontSize: 16,
+                  color:"green",
                 }}
               >
                 See Reviews...
