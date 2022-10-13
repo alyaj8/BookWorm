@@ -16,6 +16,7 @@ import bookComment from "./bookComment";
 import { StripeProvider } from "@stripe/stripe-react-native";
 import react, { useEffect, useState } from "react";
 import { Rating, AirbnbRating } from "react-native-ratings";
+
 //import Map from './screens/Map';
 //import Fetch from './src/Fetch';
 //import {userSate,userEffect} from "react";
@@ -205,31 +206,34 @@ export default function BookInfo({ route, navigation }) {
             >
               by {book.author}
             </Text>
+
             <Rating
               startingValue={bookstar / book.reviews?.length}
               imageSize={30}
-              transparc
               fractions={20}
               showRating={false}
               readonly={true}
+              tintColor="#EDF5F0"
               style={{
-               marginVertical: 10,
+                marginVertical: 10,
               }}
             />
+
             {book.reviews?.length > 0 ? (
-              <Text style={{ color: "black", fontWeight:"bold" }}>
-                {bookstar / book.reviews?.length} out of 5
+              <Text style={{ color: "black",alignItems:"center", fontWeight:"bold"}}>
+               {"     "} {bookstar / book.reviews?.length} out of 5 {"\n"}
+                {book.reviews?.length} People Reviewed
               </Text>
-            ) : (
+            ) : 
+            (
               <Text style={{ color: "#fbc740" }}> No Review</Text>
             )}
-             <TouchableOpacity
+            <TouchableOpacity
                 style={{
                   width: 150,
                   height: 50,
                   alignItems: "center",
                   justifyContent: "center",
-                  
                 }}
                 onPress={() => {
                   navigation.navigate("bookComment", book);
@@ -237,16 +241,15 @@ export default function BookInfo({ route, navigation }) {
               >
                 <Text
                   style={{
-                    textDecorationLine: "underline",
+                    textDecorationLine:"underline",
                     fontWeight: "bold",
-                    color: "green",
-                    fontSize: 18,
+                    fontSize: 16,
                   }}
                 >
-                  See Reviews.. 
-                  
+                  See Reviews...
                 </Text>
               </TouchableOpacity>
+
 
             <Text
               style={{
@@ -311,27 +314,19 @@ export default function BookInfo({ route, navigation }) {
               </Text>
             </TouchableOpacity>
 
-            <Text
-              style={{
-                fontWeight: "bold",
-                alignSelf: "center",
-                fontSize: 16,
-              }}
-            >
-              {"\n"}
-              Review it
-              {"\n"}
-            </Text>
+            
 
             <View
               style={{
+                margin:45,
                 alignItems: "center",
                 justifyContent: "space-between",
-                width: 500,
+                width: 400,
               }}
             >
               <TouchableOpacity
                 style={{
+
                   borderRadius: 25,
                   backgroundColor: reviewDone ? "#aadecc" : "#00a46c",
                   width: "48%",
@@ -342,27 +337,24 @@ export default function BookInfo({ route, navigation }) {
                 disabled={reviewDone}
                 onPress={() => navigation.navigate("ReviewBook", book)}
               >
-                
                 <Text
                   style={{
-                    
                     fontWeight: "bold",
                     alignSelf: "center",
-                    fontSize: 20,
+                    fontSize: 18,
                   }}
                 >
-                 {reviewDone ? "Reviewed" : "ADD REVIEW"}
-                
+                 {reviewDone? "Reviewed" : "Review it.."}
                 </Text>
-               
               </TouchableOpacity>
               
             </View>
 
-            <View>
+            <View style={{ margin:5}}>
               <TouchableOpacity
                 style={[
                   styles.fixToText,
+                  
                   {
                     backgroundColor: book.order ? "#aadecc" : "#00a46c",
                   },
@@ -389,16 +381,14 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   fixToText: {
-    width: 180,
-
+    width: 200,
     height: 50,
     justifyContent: "center",
     alignContent: "center",
     borderRadius: 50,
     backgroundColor: "#00a46c",
-    marginTop: 40,
     paddingLeft: 10,
-    marginBottom: 10,
+    
   },
   imagePoster: {
     width: "100%",
