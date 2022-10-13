@@ -44,7 +44,6 @@ export default function BookInfo({ route, navigation }) {
   var Auth = getAuth();
 
   let [disabled, setDisabled] = useState(false);
-
   let AddInfo = async () => {
     setDisabled(true);
     try {
@@ -144,8 +143,6 @@ export default function BookInfo({ route, navigation }) {
           />
           <View
             style={{
-              //poster area
-              // backgroundColor: "grey",
               alignItems: "center",
               alignSelf: "center",
               height: 360,
@@ -213,7 +210,7 @@ export default function BookInfo({ route, navigation }) {
             </Text>
 
             <Rating
-              startingValue={bookstar / book.reviews?.length}
+              startingValue={bookstar && bookstar / book.reviews?.length}
               imageSize={30}
               fractions={20}
               showRating={false}
@@ -237,7 +234,8 @@ export default function BookInfo({ route, navigation }) {
                 {book.reviews?.length} People Reviewed
               </Text>
             ) : (
-              <Text style={{ color: "#fbc740" }}> No Review</Text>
+              <Text style={{ color: "black" }}> No Reviews yet {"\n     0 Poeple "}
+              </Text>
             )}
             <TouchableOpacity
               style={{
@@ -255,7 +253,6 @@ export default function BookInfo({ route, navigation }) {
                   textDecorationLine: "underline",
                   fontWeight: "bold",
                   fontSize: 16,
-                  color: "green",
                 }}
               >
                 See Reviews...
@@ -411,8 +408,3 @@ const styles = StyleSheet.create({
     marginRight: 18,
   },
 });
-/*<TouchableOpacity
-onPress={() => navigation.navigate("StripeApp")}
->
-<Text>buy Here</Text>
-</TouchableOpacity>*/
