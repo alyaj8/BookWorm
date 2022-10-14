@@ -29,6 +29,11 @@ import {
   setDoc,
   firestore,
   addDoc,
+  updateDoc,
+  query,
+  where,
+  deleteDoc,
+  getDocs,
 } from "firebase/firestore";
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import Toast, { BaseToast, ErrorToast } from "react-native-toast-message";
@@ -105,7 +110,6 @@ export default function AddBookTest({ navigation, route }) {
 
   //add a new data
   async function addField() {
-    console.log(value);
     if (
       image === null ||
       value.title === "" ||
@@ -229,7 +233,19 @@ export default function AddBookTest({ navigation, route }) {
           poster: image,
         };
         console.log(book.id);
-        await setDoc(doc(db, "Book", book.id), data);
+        await updateDoc(doc(db, "Book", book.id), data);
+
+        const q = query(
+          collection(db, "readBookList"),
+          where("id", "==", book.id)
+        );
+        const querySnapshot = await getDocs(q);
+        if (!querySnapshot.empty) {
+          querySnapshot.forEach(async (document) => {
+            await updateDoc(doc(db, "readBookList", document.id), data);
+          });
+        }
+
         await showToast();
         setError({
           ...Error,
@@ -242,6 +258,7 @@ export default function AddBookTest({ navigation, route }) {
           poster: true,
           pric: true,
         });
+
         await navigation.navigate("BookInfoApi", {
           title: value.title,
           Description: value.Description,

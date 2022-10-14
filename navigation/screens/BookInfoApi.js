@@ -23,16 +23,35 @@ import { getAuth } from "firebase/auth";
 import {
   addDoc,
   collection,
+  deleteDoc,
+  doc,
   getDocs,
   getFirestore,
   query,
+  updateDoc,
   where,
 } from "firebase/firestore";
+import { db } from "../../config/firebase";
 
 export default function BookInfoApi({ route, navigation }) {
   const book = route.params;
 
   let [update, setUpdate] = useState(false);
+  let DeleteBook = async () => {
+    await deleteDoc(doc(db, "Book", book.id));
+
+    const q = query(collection(db, "readBookList"), where("id", "==", book.id));
+    const querySnapshot = await getDocs(q);
+    if (!querySnapshot.empty) {
+      querySnapshot.forEach(async (document) => {
+        let data = book;
+        data.deleted = true;
+        await updateDoc(doc(db, "readBookList", document.id), data);
+      });
+    }
+    Alert.alert("the book got deleted");
+    navigation.goBack();
+  };
 
   const showAlert = () =>
     Alert.alert(
@@ -46,7 +65,7 @@ export default function BookInfoApi({ route, navigation }) {
         },
         {
           text: "Delete",
-          onPress: () => Alert.alert("the book got deleted"),
+          onPress: () => DeleteBook(),
           style: "cancel",
         },
       ],

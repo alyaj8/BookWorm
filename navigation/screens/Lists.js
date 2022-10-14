@@ -187,7 +187,38 @@ export default function Lists({ navigation }) {
                 marginBottom: 10,
                 width: 160,
               }}
+              disabled={val.deleted}
             >
+              {val.deleted && (
+                <View
+                  style={{
+                    position: "absolute",
+                    zIndex: 1,
+                    alignSelf: "center",
+                    // marginTop: 100,
+                    width: 160,
+                    opacity: 0.8,
+                    // paddingTop: 100,
+                    justifyContent: "center",
+                    alignItems: "center",
+
+                    backgroundColor: "green",
+                    height: 250,
+                  }}
+                >
+                  <Text
+                    style={{
+                      color: "red",
+                      textAlign: "center",
+                      fontWeight: "bold",
+                      // backgroundColor: "black",
+                    }}
+                  >
+                    DELETED
+                  </Text>
+                </View>
+              )}
+
               <Image
                 source={{ uri: val.poster }}
                 style={{ width: "100%", height: 200 }}
