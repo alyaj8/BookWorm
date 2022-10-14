@@ -35,6 +35,7 @@ export default function Changepass({ navigation }) {
   const [newPass, setNewPass] = useState("");
 
   const [infoList, setinfoList] = useState([]);
+  const [error, setError] = useState("");
 
   // const [userDoc, setUserDoc] = useState([]);
 
@@ -53,24 +54,26 @@ export default function Changepass({ navigation }) {
   };
 
   let savePass = async () => {
-    console.log(user.uid, current);
+    // console.log(user.uid, current);
 
-    if (oldPass === current) {
-      if (newPass.length > 7) {
+    console.log(newPass.length);
+
+    if (newPass.length > 7) {
+      if (oldPass === current) {
         updatePassword(user, newPass)
           .then(async () => {
             await updateDoc(doc(db, "users", user.uid), { password: newPass });
-
+            setError("");
             navigation.goBack();
           })
           .catch((error) => {
-            alert(error.message);
+            setError(error.message);
           });
       } else {
-        alert("Password will be more then 7 character");
+        setError("Current Password is not Matched");
       }
     } else {
-      alert("Current Password is not Matched");
+      setError("Password will be more then 7 character");
     }
   };
   return (
@@ -147,6 +150,16 @@ export default function Changepass({ navigation }) {
           paddingTop: 50,
         }}
       >
+        <Text
+          style={{
+            color: "red",
+            fontWeight: "bold",
+            textAlign: "center",
+            fontSize: 16,
+          }}
+        >
+          {error}
+        </Text>
         <View style={{ marginTop: 40, marginLeft: -10 }}>
           <View>
             <Text style={{ fontWeight: "bold", fontSize: 20 }}>
