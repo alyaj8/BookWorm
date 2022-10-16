@@ -11,6 +11,7 @@ import {
 } from "react-native";
 import { AirbnbRating, Rating } from "react-native-ratings";
 import Icon from "react-native-vector-icons/Ionicons";
+import Reviewbook from "./Reviewbook";
 
 export default class BookComment extends Component {
   constructor(props) {
@@ -48,7 +49,11 @@ export default class BookComment extends Component {
               style={{ color: "white" }}
               onPress={() => this.props.navigation.goBack()}
             />
-            <Text style={styles.bookTitle}>{book.title} </Text>
+            <Text style={styles.bookTitle}>
+              {" "}
+              Comments
+              {"\n"} {book.title}{" "}
+            </Text>
           </View>
           {book.reviews?.length > 0 ? (
             <FlatList
@@ -84,6 +89,7 @@ export default class BookComment extends Component {
                         reviews={[]}
                         style={{
                           marginVertical: 20,
+                          marginLeft: 200,
                         }}
                       />
                       <Text rkType="primary3 mediumLine">{review.comment}</Text>
@@ -108,6 +114,15 @@ export default class BookComment extends Component {
             </Text>
           )}
         </View>
+        <View style={{ marginLeft: 320, marginTop: 15, marginBottom: 15 }}>
+          <Icon
+            name="add-circle"
+            size={55}
+            style={{ color: "#00a46c" }}
+            marginLeft={50}
+            onPress={() => this.props.navigation.navigate("ReviewBook", book)}
+          />
+        </View>
       </SafeAreaView>
     );
   }
@@ -115,11 +130,10 @@ export default class BookComment extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: "7%",
+    marginTop: -5,
   },
   root: {
     backgroundColor: "#ffffff",
-    marginTop: "5%",
   },
   container1: {
     paddingLeft: 19,
@@ -160,15 +174,15 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: 10,
     marginTop: 10,
+    alignContent: "center",
     backgroundColor: "#00a46c",
     borderBottomLeftRadius: 20,
     borderBottomRightRadius: 20,
-    paddingHorizontal: 20,
   },
   bookTitle: {
     fontSize: 22,
     fontWeight: "bold",
+    textAlign: "center",
     color: "white",
-    marginLeft: 10,
   },
 });

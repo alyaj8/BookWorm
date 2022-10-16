@@ -50,7 +50,11 @@ export default function Reviewbook({ route, navigation }) {
               style={{ color: "white" }}
               onPress={() => navigation.goBack()}
             />
-            <Text style={styles.bookTitle}>{book.title} </Text>
+           <Text style={styles.bookTitle}>
+              {" "}
+              Add Review
+              {"\n"} {book.title}{" "}
+            </Text>
           </View>
 
           <View style={styles.bottomView}>
