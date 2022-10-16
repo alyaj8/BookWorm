@@ -229,7 +229,7 @@ export default function BookInfo({ route, navigation }) {
                   fontWeight: "bold",
                 }}
               >
-                {"     "} {(bookstar / book.reviews?.length).toFixed(1)} out of
+                {"     "} {(bookstar / book.reviews?.length).toFixed(2)} out of
                 5 {"\n"}
                 {book.reviews?.length} People Reviewed
               </Text>
