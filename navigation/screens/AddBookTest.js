@@ -591,6 +591,7 @@ export default function AddBookTest({ navigation }) {
               value={value.pric}
               onChangeText={(text) => setValue({ ...value, pric: text })}
               underlineColorAndroid="transparent"
+              keyboardType="numeric"
             />
           </View>
 

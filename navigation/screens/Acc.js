@@ -49,7 +49,7 @@ export default function Acc({ navigation }) {
     try {
       const colRef = doc(db, "users", user.uid);
       const snapshot = await getDoc(colRef);
-      console.log(snapshot.data(), "========>");
+      // console.log(snapshot.id, "========>");
       let userdata = snapshot.data();
       setValue(userdata);
       setOldName(userdata.username);
@@ -68,8 +68,6 @@ export default function Acc({ navigation }) {
       // console.log(infoList);
     } catch (error) {
       // console.log(infoList);
-
-      console.log(error);
     }
   };
 
@@ -116,7 +114,6 @@ export default function Acc({ navigation }) {
         setupdate(!update);
       }
 
-      console.log(await CheckUnique(), "==========>checkUnique");
       if (await CheckUnique()) {
         Error.usernameunique = true;
         setError(Error);
@@ -140,8 +137,6 @@ export default function Acc({ navigation }) {
     }
   };
 
-  console.log(Error);
-
   let checkFirstName = (value) => {
     var letters = /^[A-Za-z]+$/;
     if (value.match(letters)) {
@@ -160,7 +155,6 @@ export default function Acc({ navigation }) {
   };
 
   let CheckUnique = async () => {
-    console.log(value.username);
     if (oldName === value.username) {
       return true;
     } else {
@@ -188,12 +182,10 @@ export default function Acc({ navigation }) {
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <View>
-            <Text>
-              {setFname(item.firstname)} {setemail(item.email)}
-              {setLname(item.lastname)}
-              {setUsername(item.username)}
-              {setPassword(item.password)}
-            </Text>
+            {setFname(item.firstname)} {setemail(item.email)}
+            {setLname(item.lastname)}
+            {setUsername(item.username)}
+            {setPassword(item.password)}
           </View>
         )}
       />
@@ -201,11 +193,12 @@ export default function Acc({ navigation }) {
       <View
         style={{
           backgroundColor: "#00a46c",
-          height: "10%",
+          height: "13%",
           borderBottomLeftRadius: 20,
           borderBottomRightRadius: 20,
           paddingHorizontal: 20,
           marginBottom: 15,
+          marginTop: -80,
         }}
       >
         <Icon
@@ -250,7 +243,9 @@ export default function Acc({ navigation }) {
         >
           <View style={{ marginTop: 40, marginLeft: -10 }}>
             <View style={styles.InputContainer}>
-              <Text style={{ fontWeight: "bold" }}>First Name</Text>
+              <Text style={{ fontWeight: "bold", fontSize: 17 }}>
+                First Name :
+              </Text>
               {!Error.firstname && (
                 <Text
                   style={{
@@ -264,7 +259,7 @@ export default function Acc({ navigation }) {
               <TextInput
                 style={[
                   styles.body,
-                  { borderColor: !Error.firstname ? "red" : "black" },
+                  { borderColor: !Error.firstname ? "red" : "green" },
                 ]}
                 placeholder={value.firstname}
                 placeholderTextColor="black"
@@ -274,7 +269,9 @@ export default function Acc({ navigation }) {
               />
             </View>
             <View style={styles.InputContainer}>
-              <Text style={{ fontWeight: "bold" }}>{"\n"}Last Name</Text>
+              <Text style={{ fontWeight: "bold", fontSize: 17 }}>
+                {"\n"}Last Name :
+              </Text>
               {!Error.lastname && (
                 <Text
                   style={{
@@ -288,7 +285,7 @@ export default function Acc({ navigation }) {
               <TextInput
                 style={[
                   styles.body,
-                  { borderColor: !Error.lastname ? "red" : "black" },
+                  { borderColor: !Error.lastname ? "red" : "green" },
                 ]}
                 placeholder={value.lastname}
                 value={value.lastname}
@@ -298,7 +295,9 @@ export default function Acc({ navigation }) {
               />
             </View>
             <View style={styles.InputContainer}>
-              <Text style={{ fontWeight: "bold" }}>{"\n"}User Name</Text>
+              <Text style={{ fontWeight: "bold", fontSize: 17 }}>
+                {"\n"}User Name :
+              </Text>
               {!Error.usernametype && (
                 <Text
                   style={{
@@ -329,7 +328,9 @@ export default function Acc({ navigation }) {
               />
             </View>
             <View style={styles.InputContainer}>
-              <Text style={{ fontWeight: "bold" }}>{"\n"}Email</Text>
+              <Text style={{ fontWeight: "bold", fontSize: 17 }}>
+                {"\n"}Email :
+              </Text>
 
               <TextInput
                 style={styles.body}
@@ -340,23 +341,8 @@ export default function Acc({ navigation }) {
                 //   onChangeText={(text) => setValue({ ...value, email: text })}
                 underlineColorAndroid="transparent"
                 //  titl
-                e="nnn"
+                //  e="nnn"
                 // value={user.email}
-              />
-            </View>
-
-            <View style={styles.InputContainer}>
-              <Text style={{ fontWeight: "bold" }}>{"\n"}Password</Text>
-
-              <TextInput
-                style={styles.body}
-                secureTextEntry={true}
-                placeholder={value.password}
-                value={value.password}
-                editable={false}
-                placeholderTextColor="black"
-                //   onChangeText={(text) => setValue({ ...value, password: text })}
-                underlineColorAndroid="transparent"
               />
             </View>
 

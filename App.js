@@ -11,6 +11,7 @@ import Acc from "./navigation/screens/Acc";
 import Changepass from "./navigation/screens/Changepass";
 import Editbook from "./navigation/screens/Editbook";
 import BookInfoApi from "./navigation/screens/BookInfoApi";
+import Discovery from "./navigation/screens/Discovery";
 
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -75,6 +76,7 @@ function App() {
             <Stack.Screen name="Changepass" component={Changepass} />
             <Stack.Screen name="Editbook" component={Editbook} />
             <Stack.Screen name="BookInfoApi" component={BookInfoApi} />
+            <Stack.Screen name="Discovery" component={Discovery} />
           </Stack.Navigator>
         </NavigationContainer>
       </StripeProvider>

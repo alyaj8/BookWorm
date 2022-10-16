@@ -195,20 +195,17 @@ export default function Lists({ navigation }) {
                     position: "absolute",
                     zIndex: 1,
                     alignSelf: "center",
-                    // marginTop: 100,
                     width: 160,
-                    opacity: 0.8,
-                    // paddingTop: 100,
+                    opacity: 0.6,
                     justifyContent: "center",
                     alignItems: "center",
-
-                    backgroundColor: "green",
+                    backgroundColor: "red",
                     height: 250,
                   }}
                 >
                   <Text
                     style={{
-                      color: "red",
+                      color: "white",
                       textAlign: "center",
                       fontWeight: "bold",
                       // backgroundColor: "black",

@@ -63,15 +63,42 @@ export default function ReadBookList({ navigation, route }) {
                   style={{
                     height: 250,
                     elevation: 2,
-                    backgroundColor: "#EFF3EF",
-                    marginLeft: "2%",
-                    marginRight: "2%",
+                    backgroundColor: "#FFF",
+                    marginLeft: 20,
                     marginTop: 20,
                     borderRadius: 15,
                     marginBottom: 10,
-                    width: "42%",
+                    width: 160,
                   }}
+                  disabled={val.deleted}
                 >
+                  {val.deleted && (
+                    <View
+                      style={{
+                        position: "absolute",
+                        zIndex: 1,
+                        alignSelf: "center",
+                        width: 160,
+                        opacity: 0.6,
+                        justifyContent: "center",
+                        alignItems: "center",
+                        backgroundColor: "red",
+                        height: 250,
+                      }}
+                    >
+                      <Text
+                        style={{
+                          color: "white",
+                          textAlign: "center",
+                          fontWeight: "bold",
+                          // backgroundColor: "black",
+                        }}
+                      >
+                        DELETED
+                      </Text>
+                    </View>
+                  )}
+
                   <Image
                     source={{ uri: val.poster }}
                     style={{ width: "100%", height: 200 }}

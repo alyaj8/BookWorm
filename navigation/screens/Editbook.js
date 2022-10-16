@@ -64,6 +64,7 @@ export default function AddBookTest({ navigation, route }) {
     category: true,
     ISBN: true,
     author: true,
+    authortype: true,
     poster: true,
     virsion: true,
     pric: true,
@@ -108,6 +109,16 @@ export default function AddBookTest({ navigation, route }) {
   ///////////////////////////////new code
   const [addDate, setAddData] = useState("");
 
+  let checAuther = (text) => {
+    var letters = /^[A-Za-z]+$/;
+    if (text.match(letters)) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
+  console.log(checAuther("fjjj"), "=======>");
   //add a new data
   async function addField() {
     if (
@@ -120,10 +131,7 @@ export default function AddBookTest({ navigation, route }) {
       value.ISBN === undefined ||
       value.author === "" ||
       value.author === undefined ||
-      value.virsion === "" ||
-      value.virsion === undefined ||
-      value.pric === "" ||
-      value.pric === undefined
+      checAuther(value.author) === false
     ) {
       console.log(value.title);
 
@@ -192,30 +200,16 @@ export default function AddBookTest({ navigation, route }) {
         Error.author = true;
         setError(Error);
         setupdate(!update);
+        if (checAuther(value.author)) {
+          Error.authortype = true;
+          setError(Error);
+          setupdate(!update);
+        } else {
+          Error.authortype = false;
+          setError(Error);
+          setupdate(!update);
+        }
       }
-
-      if (value.virsion === "" || value.virsion === undefined) {
-        Error.virsion = false;
-        setError(Error);
-        setupdate(!update);
-      }
-      if (value.virsion !== "" && value.virsion !== undefined) {
-        Error.virsion = true;
-        setError(Error);
-        setupdate(!update);
-      }
-
-      if (value.pric === "" || value.pric === undefined) {
-        Error.pric = false;
-        setError(Error);
-        setupdate(!update);
-      }
-      if (value.pric !== "" && value.pric !== undefined) {
-        Error.pric = true;
-        setError(Error);
-        setupdate(!update);
-      }
-      console.log(Error);
     } else {
       try {
         const db = getFirestore();
@@ -257,6 +251,7 @@ export default function AddBookTest({ navigation, route }) {
           title: true,
           poster: true,
           pric: true,
+          authortype: true,
         });
 
         await navigation.navigate("BookInfoApi", {
@@ -510,6 +505,16 @@ export default function AddBookTest({ navigation, route }) {
                 This Field is mandatory
               </Text>
             )}
+            {!Error.authortype && (
+              <Text
+                style={{
+                  color: "red",
+                  marginLeft: 10,
+                }}
+              >
+                Auther name will be a-z and A-Z
+              </Text>
+            )}
             <TextInput
               style={[
                 styles.body,
@@ -517,7 +522,9 @@ export default function AddBookTest({ navigation, route }) {
               ]} //secureTextEntry={true}
               //placeholder="Password"
               value={value.author}
-              onChangeText={(text) => setValue({ ...value, author: text })}
+              onChangeText={(text) => {
+                setValue({ ...value, author: text });
+              }}
               underlineColorAndroid="transparent"
             />
           </View>
@@ -566,6 +573,7 @@ export default function AddBookTest({ navigation, route }) {
               value={value.pric}
               onChangeText={(text) => setValue({ ...value, pric: text })}
               underlineColorAndroid="transparent"
+              keyboardType="numeric"
             />
           </View>
 

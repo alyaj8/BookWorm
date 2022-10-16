@@ -90,12 +90,10 @@ export default function Changepass({ navigation }) {
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <View>
-            <Text>
-              {setFname(item.firstname)} {setemail(item.email)}
-              {setLname(item.lastname)}
-              {setUsername(item.username)}
-              {setPassword(item.password)}
-            </Text>
+            {setFname(item.firstname)} {setemail(item.email)}
+            {setLname(item.lastname)}
+            {setUsername(item.username)}
+            {setPassword(item.password)}
           </View>
         )}
       />
@@ -103,7 +101,7 @@ export default function Changepass({ navigation }) {
       <View
         style={{
           backgroundColor: "#00a46c",
-          height: "12%",
+          height: "13%",
           borderBottomLeftRadius: 20,
           borderBottomRightRadius: 20,
           paddingHorizontal: 20,
@@ -147,7 +145,7 @@ export default function Changepass({ navigation }) {
           paddingHorizontal: 20,
           marginBottom: 15,
           marginTop: 15,
-          paddingTop: 50,
+          paddingTop: 10,
         }}
       >
         <Text
@@ -172,6 +170,7 @@ export default function Changepass({ navigation }) {
               // onChangeText={(text) => setValue({ ...value, firstname: text })}
               underlineColorAndroid="transparent"
               onChangeText={(text) => setOldPass(text)}
+              secureTextEntry={true}
             />
           </View>
           <View>
@@ -184,6 +183,7 @@ export default function Changepass({ navigation }) {
               //   placeholderTextColor="black" //     onChangeText={(text) => setValue({ ...value, lastname: text })}
               underlineColorAndroid="transparent"
               onChangeText={(text) => setNewPass(text)}
+              secureTextEntry={true}
             />
           </View>
 

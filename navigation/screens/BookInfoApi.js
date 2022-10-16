@@ -154,7 +154,7 @@ export default function BookInfoApi({ route, navigation }) {
               name="arrow-back-outline"
               size={40}
               style={{ color: "black", marginTop: 30, marginLeft: 10 }}
-              onPress={() => navigation.goBack()}
+              onPress={() => navigation.navigate("Discovery")}
             />
             <View
               style={{
@@ -263,6 +263,11 @@ export default function BookInfoApi({ route, navigation }) {
                 {"CATEGORY:"}
                 {"    "}
                 {book.category}
+                {"\n \n"}
+                {"price:"}
+                {"    "}
+                {book.pric}
+                {"$"}
                 {"\n "}
               </Text>
               <View style={{ flexDirection: "row" }}>
