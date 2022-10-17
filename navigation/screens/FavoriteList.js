@@ -82,7 +82,7 @@ import {
                           opacity: 0.6,
                           justifyContent: "center",
                           alignItems: "center",
-                          backgroundColor: "red",
+                          backgroundColor: "#525454",
                           height: 250,
                         }}
                       >
@@ -115,7 +115,7 @@ import {
                           fontWeight: "bold",
                         }}
                       >
-                        {Datacat(val.title, 30)}
+                        {Datacat(val.title, 25)}
                         {"\n"}{" "}
                       </Text>
                     </View>

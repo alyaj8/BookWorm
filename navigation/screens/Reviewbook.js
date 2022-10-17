@@ -47,7 +47,7 @@ export default function Reviewbook({ route, navigation }) {
             <Icon
               name="arrow-back-outline"
               size={40}
-              style={{ color: "white" }}
+              style={{ color: "black" }}
               onPress={() => navigation.goBack()}
             />
            <Text style={styles.bookTitle}>

@@ -12,7 +12,7 @@ import {
 import Icon from "react-native-vector-icons/Ionicons";
 
 import StripeApp from "./StripeApp";
-import bookComment from "./BookComment";
+import BookComment from "./BookComment";
 import { StripeProvider } from "@stripe/stripe-react-native";
 import react, { useEffect, useState } from "react";
 import { Rating, AirbnbRating } from "react-native-ratings";
@@ -315,7 +315,7 @@ export default function BookInfo({ route, navigation }) {
                 justifyContent: "center",
               }}
               onPress={() => {
-                navigation.navigate("bookComment", book);
+                navigation.navigate("BookComment", book);
               }}
             >
               <Text

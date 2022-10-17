@@ -255,7 +255,7 @@ export default function Lists({ navigation }) {
                     opacity: 0.6,
                     justifyContent: "center",
                     alignItems: "center",
-                    backgroundColor: "red",
+                    backgroundColor: "#525454",
                     height: 250,
                   }}
                 >
@@ -400,7 +400,7 @@ export default function Lists({ navigation }) {
                     opacity: 0.6,
                     justifyContent: "center",
                     alignItems: "center",
-                    backgroundColor: "red",
+                    backgroundColor: "#525454",
                     height: 250,
                   }}
                 >
@@ -544,7 +544,7 @@ export default function Lists({ navigation }) {
                     opacity: 0.6,
                     justifyContent: "center",
                     alignItems: "center",
-                    backgroundColor: "red",
+                    backgroundColor: "#525454",
                     height: 250,
                   }}
                 >

@@ -82,7 +82,7 @@ import {
                           opacity: 0.6,
                           justifyContent: "center",
                           alignItems: "center",
-                          backgroundColor: "red",
+                          backgroundColor: "#525454",
                           height: 250,
                         }}
                       >

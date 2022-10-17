@@ -46,7 +46,7 @@ export default class BookComment extends Component {
             <Icon
               name="arrow-back-outline"
               size={40}
-              style={{ color: "white" }}
+              style={{ color: "black" }}
               onPress={() => this.props.navigation.goBack()}
             />
             <Text style={styles.bookTitle}>
