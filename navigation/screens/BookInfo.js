@@ -12,7 +12,7 @@ import {
 import Icon from "react-native-vector-icons/Ionicons";
 
 import StripeApp from "./StripeApp";
-import bookComment from "./bookComment";
+import bookComment from "./BookComment";
 import { StripeProvider } from "@stripe/stripe-react-native";
 import react, { useEffect, useState } from "react";
 import { Rating, AirbnbRating } from "react-native-ratings";

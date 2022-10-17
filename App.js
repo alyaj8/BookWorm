@@ -30,7 +30,7 @@ import { LogBox } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { UserProvider } from "./config/UserContext";
 import ReviewBook from "./navigation/screens/Reviewbook";
-import BookComment from "./navigation/screens/bookComment";
+import BookComment from "./navigation/screens/BookComment";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCb8vT5-UmFZV-954feGAE2L0-T4Tgpqhs",
@@ -71,7 +71,7 @@ function App() {
             <Stack.Screen name="ReadBookList" component={ReadBookList} />
             <Stack.Screen name="FavoriteList" component={FavoriteList} />
             <Stack.Screen name="WishList" component={WishList} />
-            <Stack.Screen name="bookComment" component={BookComment} />
+            <Stack.Screen name="BookComment" component={BookComment} />
             <Stack.Screen name="StripeApp" component={StripeApp} />
             <Stack.Screen name="Bookpdf" component={Bookpdf} />
             <Stack.Screen name="Orders" component={Orders} />
