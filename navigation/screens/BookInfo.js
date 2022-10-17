@@ -12,7 +12,7 @@ import {
 import Icon from "react-native-vector-icons/Ionicons";
 
 import StripeApp from "./StripeApp";
-import bookComment from "./bookComment";
+import bookComment from "./BookComment";
 import { StripeProvider } from "@stripe/stripe-react-native";
 import react, { useEffect, useState } from "react";
 import { Rating, AirbnbRating } from "react-native-ratings";
@@ -38,13 +38,15 @@ import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 export default function BookInfo({ route, navigation }) {
   const book = route.params;
 
-  let [update, setUpdate] = useState(false);
+  let [updateReadList, setupdateReadList] = useState(false);
+  let [updateFavList, setupdateFavList] = useState(false);
+  let [updateWishList, setupdateWishList] = useState(false);
   let [bookstar, setBookStar] = useState(0);
   let [reviewDone, setReviewDone] = useState(false);
   var Auth = getAuth();
 
   let [disabled, setDisabled] = useState(false);
-  let AddInfo = async () => {
+  let AddInfoToReadList = async () => {
     setDisabled(true);
     try {
       const uid = Auth?.currentUser?.uid;
@@ -52,8 +54,40 @@ export default function BookInfo({ route, navigation }) {
       const data = book;
       data.favouriteUserId = uid;
       await addDoc(collection(db, "readBookList"), data);
-      book.listed = true;
-      setUpdate(true);
+      book.listedInRead = true;
+      setupdateReadList(true);
+      setDisabled(false);
+    } catch (error) {
+      alert(error);
+      setDisabled(false);
+    }
+  };
+  let AddInfoToFavList = async () => {
+    setDisabled(true);
+    try {
+      const uid = Auth?.currentUser?.uid;
+      const db = getFirestore();
+      const data = book;
+      data.favouriteListUserId = uid;
+      await addDoc(collection(db, "favoriteList"), data);
+      book.listedInFav = true;
+      setupdateFavList(true);
+      setDisabled(false);
+    } catch (error) {
+      alert(error);
+      setDisabled(false);
+    }
+  };
+  let AddInfoToWishList = async () => {
+    setDisabled(true);
+    try {
+      const uid = Auth?.currentUser?.uid;
+      const db = getFirestore();
+      const data = book;
+      data.wishListUserId = uid;
+      await addDoc(collection(db, "wishList"), data);
+      book.listedInWish = true;
+      setupdateWishList(true);
       setDisabled(false);
     } catch (error) {
       alert(error);
@@ -61,7 +95,7 @@ export default function BookInfo({ route, navigation }) {
     }
   };
 
-  let CheckListed = () => {
+  let CheckListedInRead = () => {
     const Auth = getAuth();
     Auth.onAuthStateChanged(async (user) => {
       const db = getFirestore();
@@ -72,8 +106,40 @@ export default function BookInfo({ route, navigation }) {
       );
       const querySnapshot = await getDocs(q);
       if (!querySnapshot.empty) {
-        book.listed = true;
-        setUpdate(true);
+        book.listedInRead = true;
+        setupdateReadList(true);
+      }
+    });
+  };
+  let CheckListedInFav = () => {
+    const Auth = getAuth();
+    Auth.onAuthStateChanged(async (user) => {
+      const db = getFirestore();
+      const q = query(
+        collection(db, "favoriteList"),
+        where("favouriteListUserId", "==", user.uid),
+        where("id", "==", book.id)
+      );
+      const querySnapshot = await getDocs(q);
+      if (!querySnapshot.empty) {
+        book.listedInFav = true;
+        setupdateFavList(true);
+      }
+    });
+  };
+  let CheckListedInWish = () => {
+    const Auth = getAuth();
+    Auth.onAuthStateChanged(async (user) => {
+      const db = getFirestore();
+      const q = query(
+        collection(db, "wishList"),
+        where("wishListUserId", "==", user.uid),
+        where("id", "==", book.id)
+      );
+      const querySnapshot = await getDocs(q);
+      if (!querySnapshot.empty) {
+        book.listedInWish = true;
+        setupdateWishList(true);
       }
     });
   };
@@ -97,7 +163,9 @@ export default function BookInfo({ route, navigation }) {
       // Call any action
 
       // Return the function to unsubscribe from the event so it gets removed on unmount
-      CheckListed();
+      CheckListedInRead();
+      CheckListedInFav();
+      CheckListedInWish();
       checkReview();
     });
 
@@ -118,7 +186,7 @@ export default function BookInfo({ route, navigation }) {
         const querySnapshot = await getDocs(q);
         if (!querySnapshot.empty) {
           book.order = true;
-          setUpdate(true);
+          setupdateReadList(true);
         }
       } catch (error) {
         console.log(error);
@@ -127,7 +195,9 @@ export default function BookInfo({ route, navigation }) {
   };
 
   useEffect(() => {
-    CheckListed();
+    CheckListedInRead();
+    CheckListedInFav();
+    CheckListedInWish();
     CheckOrder();
   }, [navigation]);
 
@@ -299,30 +369,95 @@ export default function BookInfo({ route, navigation }) {
               {book.price}
               {"\n"} {"\n"}
             </Text>
+<Text style={{
+                flew: 1,
+                alignItems: "center",
+                justifyContent: "center",
+                marginTop: 9,
+                paddingLeft: 10,
+                paddingRight: 10,
+                paddingBottom:5,
+                // fontSize: "15%",
+                fontSize: 20,
+                fontWeight: "bold",
+                color: "grey",
+              }}>Add Book to your list</Text>
+          <View style={{flexDirection:'row'}}>
+            <TouchableOpacity
+              style={{
+                flex: 1,
+                flexDirection: "row",
+                borderRadius: 25,
+                width:"48%",
+                height:50,
+                backgroundColor: book.listedInRead ? "#aadecc" : "#00a46c",
+                paddingHorizontal: 20,
+                
+              }}
+              onPress={() => AddInfoToReadList()}
+              disabled={book.listedInRead || disabled}
+            >
+              <Text
+                style={{
+                  fontWeight: "bold",
+                  paddingBottom: 1,
+                  fontSize: 18,
+                  marginTop:book.listedInRead ? 0 : 15,
+                  paddingLeft:book.listedInRead ? 0 : 18,
+                }}
+              >
+                {book.listedInRead ? "Added to Read" : "Read"}
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={{
+                flex: 1,
+                flexDirection: "row",
+                borderRadius: 25,
+                backgroundColor: book.listedInFav ? "#aadecc" : "#00a46c",
+                paddingHorizontal: 20,
+               
+              }}
+              onPress={() => AddInfoToFavList()}
+              disabled={book.listedInFav || disabled}
+            >
+              <Text
+                style={{
+                  fontWeight: "bold",
+                  paddingBottom: 1,
+                  fontSize: 18,
+                  marginTop:book.listedInFav ? 0 : 15,
+                  paddingLeft:book.listedInFav ? 0 : 10,
+                }}
+              >
+                {book.listedInFav ? "Added to Favorite" : "Favorite"}
+              </Text>
+            </TouchableOpacity>
 
             <TouchableOpacity
               style={{
                 flex: 1,
                 flexDirection: "row",
                 borderRadius: 25,
-                backgroundColor: book.listed ? "#aadecc" : "#00a46c",
+                backgroundColor: book.listedInWish ? "#aadecc" : "#00a46c",
                 paddingHorizontal: 20,
               }}
-              onPress={() => AddInfo()}
-              disabled={book.listed || disabled}
+              onPress={() => AddInfoToWishList()}
+              disabled={book.listedInWish || disabled}
             >
               <Text
                 style={{
                   fontWeight: "bold",
-                  paddingBottom: 10,
+                  paddingBottom: 1,
                   fontSize: 18,
+                  marginTop:book.listedInWish ? 0 : 15,
+                  paddingLeft:book.listedInWish ? 0 : 18,
                 }}
               >
-                {book.listed ? "ADDED TO LIST" : "ADD TO LIST"}
-                <Icon name="add" size={36} style={{ color: "white" }} />
+                {book.listedInWish ? "Added to Wish" : "Wish"}
               </Text>
             </TouchableOpacity>
-
+            </View>
             <View
               style={{
                 margin: 45,

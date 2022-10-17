@@ -39,7 +39,13 @@ export default function BookInfoApi({ route, navigation }) {
   let [update, setUpdate] = useState(false);
   let DeleteBook = async () => {
     await deleteDoc(doc(db, "Book", book.id));
-
+    DeleteBookRead();
+    DeleteBookFav();
+    DeleteBookWish();
+    Alert.alert("the book got deleted");
+    navigation.goBack();
+  };
+  let DeleteBookRead = async () => {
     const q = query(collection(db, "readBookList"), where("id", "==", book.id));
     const querySnapshot = await getDocs(q);
     if (!querySnapshot.empty) {
@@ -49,8 +55,28 @@ export default function BookInfoApi({ route, navigation }) {
         await updateDoc(doc(db, "readBookList", document.id), data);
       });
     }
-    Alert.alert("the book got deleted");
-    navigation.goBack();
+  };
+  let DeleteBookFav = async () => {
+    const q = query(collection(db, "favoriteList"), where("id", "==", book.id));
+    const querySnapshot = await getDocs(q);
+    if (!querySnapshot.empty) {
+      querySnapshot.forEach(async (document) => {
+        let data = book;
+        data.deleted = true;
+        await updateDoc(doc(db, "favoriteList", document.id), data);
+      });
+    }
+  };
+  let DeleteBookWish = async () => {
+    const q = query(collection(db, "wishList"), where("id", "==", book.id));
+    const querySnapshot = await getDocs(q);
+    if (!querySnapshot.empty) {
+      querySnapshot.forEach(async (document) => {
+        let data = book;
+        data.deleted = true;
+        await updateDoc(doc(db, "wishList", document.id), data);
+      });
+    }
   };
 
   const showAlert = () =>
