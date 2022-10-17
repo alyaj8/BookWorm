@@ -315,7 +315,7 @@ export default function BookInfo({ route, navigation }) {
                 justifyContent: "center",
               }}
               onPress={() => {
-                navigation.navigate("bookComment", book);
+                navigation.navigate("BookComment", book);
               }}
             >
               <Text
