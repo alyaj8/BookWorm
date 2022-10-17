@@ -49,7 +49,7 @@ export default function Acc({ navigation }) {
     try {
       const colRef = doc(db, "users", user.uid);
       const snapshot = await getDoc(colRef);
-      console.log(snapshot.id, "========>");
+      //  console.log(snapshot.id, "========>");
       let userdata = snapshot.data();
       setValue(userdata);
       setOldName(userdata.username);
@@ -126,7 +126,7 @@ export default function Acc({ navigation }) {
       }
     } else {
       // await setDoc(doc(db, "users", user.uid), value);
-      alert("Profile Update Successfully");
+      alert("Profile Updated Successfully");
       setError({
         firstname: true,
         lastname: true,
@@ -263,7 +263,8 @@ export default function Acc({ navigation }) {
                     marginLeft: 10,
                   }}
                 >
-                  please enter only character and dosnt exceed 15 digit
+                  Please enter a firstname of only characters and dosnt exceed
+                  15 digit
                 </Text>
               )}
               <TextInput
@@ -287,7 +288,8 @@ export default function Acc({ navigation }) {
                     // marginLeft: 10,
                   }}
                 >
-                  please enter only character and dosnt exceed 20 digit
+                  Please enter a lasttname of only characters and dosnt exceed
+                  25 digit
                 </Text>
               )}
               <TextInput
@@ -311,7 +313,8 @@ export default function Acc({ navigation }) {
                     // marginLeft: 10,
                   }}
                 >
-                  please enter only character or _ or- and dosnt exceed 25 digit
+                  Please enter a username that has character or _ or- and dosnt
+                  exceed 25 digit
                 </Text>
               )}
               {!Error.usernameunique && (

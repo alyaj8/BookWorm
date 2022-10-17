@@ -55,22 +55,21 @@ export default function Changepass({ navigation }) {
 
   let savePass = async () => {
     // console.log(user.uid, current);
-
     console.log(newPass.length);
-
     if (newPass.length > 7) {
       if (oldPass === current) {
         updatePassword(user, newPass)
           .then(async () => {
             await updateDoc(doc(db, "users", user.uid), { password: newPass });
             setError("");
+            //  alert("Password changes successfully");
             navigation.goBack();
           })
           .catch((error) => {
             setError(error.message);
           });
       } else {
-        setError("Current Password is not Matched");
+        setError("Current Password is no correct");
       }
     } else {
       setError("Password will be more then 7 character");
