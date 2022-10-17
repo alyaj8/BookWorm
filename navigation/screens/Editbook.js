@@ -65,6 +65,9 @@ export default function AddBookTest({ navigation, route }) {
     ISBN: true,
     author: true,
     authortype: true,
+    authortype2: true,
+    authortype3: true,
+
     poster: true,
     virsion: true,
     pric: true,
@@ -110,7 +113,33 @@ export default function AddBookTest({ navigation, route }) {
   const [addDate, setAddData] = useState("");
 
   let checAuther = (text) => {
-    var letters = /^[A-Za-z]+$/;
+    var letters = /^[A-Za-z" "]+$/;
+    if (text.match(letters) && text.length < 30) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+  let checISBN = (text) => {
+    var letters = /^[0-9]+$/;
+    if (text.match(letters) && text.length == 10) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
+  let checC = (text) => {
+    var letters = /^[A-Za-z" "]+$/;
+    if (text.match(letters)) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
+  let checT = (text) => {
+    var letters = /^[A-Za-z" "]+$/;
     if (text.match(letters)) {
       return true;
     } else {
@@ -129,6 +158,8 @@ export default function AddBookTest({ navigation, route }) {
       value.Description === undefined ||
       value.ISBN === "" ||
       value.ISBN === undefined ||
+      checISBN(value.ISBN) === false ||
+      checT(value.title) === false ||
       value.author === "" ||
       value.author === undefined ||
       checAuther(value.author) === false
@@ -154,8 +185,16 @@ export default function AddBookTest({ navigation, route }) {
       if (value.title !== "" && value.title !== undefined) {
         Error.title = true;
         setError(Error);
-
         setupdate(!update);
+        if (checT(value.title)) {
+          Error.authortype3 = true;
+          setError(Error);
+          setupdate(!update);
+        } else {
+          Error.authortype3 = false;
+          setError(Error);
+          setupdate(!update);
+        }
       }
 
       if (value.Description === "" || value.Description === undefined) {
@@ -190,6 +229,15 @@ export default function AddBookTest({ navigation, route }) {
         Error.ISBN = true;
         setError(Error);
         setupdate(!update);
+        if (checISBN(value.ISBN)) {
+          Error.authortype2 = true;
+          setError(Error);
+          setupdate(!update);
+        } else {
+          Error.authortype2 = false;
+          setError(Error);
+          setupdate(!update);
+        }
       }
       if (value.author === "" || value.author === undefined) {
         Error.author = false;
@@ -252,6 +300,8 @@ export default function AddBookTest({ navigation, route }) {
           poster: true,
           pric: true,
           authortype: true,
+          authortype2: true,
+          authortype3: true,
         });
 
         await navigation.navigate("BookInfoApi", {
@@ -336,7 +386,7 @@ export default function AddBookTest({ navigation, route }) {
             name="arrow-back-outline"
             size={45}
             style={{ color: "black", marginTop: 40, marginLeft: 15 }}
-            onPress={() => navigation.goBack()}
+            onPress={() => navigation.goBack()} /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
           />
           <Text
             style={{
@@ -407,6 +457,16 @@ export default function AddBookTest({ navigation, route }) {
                 This Field is mandatory
               </Text>
             )}
+            {!Error.authortype3 && (
+              <Text
+                style={{
+                  color: "red",
+                  marginLeft: 10,
+                }}
+              >
+                Title only accept character
+              </Text>
+            )}
             <TextInput
               style={[
                 styles.body,
@@ -468,8 +528,6 @@ export default function AddBookTest({ navigation, route }) {
             />
           </View>
 
-          <View></View>
-
           <View style={styles.InputContainer}>
             <Text style={styles.textD}>ISBN</Text>
             {!Error.ISBN && (
@@ -480,6 +538,16 @@ export default function AddBookTest({ navigation, route }) {
                 }}
               >
                 This Field is mandatory
+              </Text>
+            )}
+            {!Error.authortype2 && (
+              <Text
+                style={{
+                  color: "red",
+                  marginLeft: 10,
+                }}
+              >
+                ISBN should be numric and of 10 digit
               </Text>
             )}
             <TextInput
@@ -512,7 +580,7 @@ export default function AddBookTest({ navigation, route }) {
                   marginLeft: 10,
                 }}
               >
-                Auther name will be a-z and A-Z
+                Auther name only accept character
               </Text>
             )}
             <TextInput

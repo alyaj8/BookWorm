@@ -49,7 +49,7 @@ export default function Acc({ navigation }) {
     try {
       const colRef = doc(db, "users", user.uid);
       const snapshot = await getDoc(colRef);
-      // console.log(snapshot.id, "========>");
+      console.log(snapshot.id, "========>");
       let userdata = snapshot.data();
       setValue(userdata);
       setOldName(userdata.username);
@@ -77,9 +77,9 @@ export default function Acc({ navigation }) {
       value.lastname === "" ||
       value.username === "" ||
       checkFirstName(value.firstname) === false ||
-      checkFirstName(value.lastname) === false ||
+      checklastName(value.lastname) === false ||
       checkUserName(value.username) === false ||
-      CheckUnique(value.username) === false
+      (await CheckUnique(value.username)) === false
     ) {
       if (checkFirstName(value.firstname) && value.firstname !== "") {
         Error.firstname = true;
@@ -92,12 +92,12 @@ export default function Acc({ navigation }) {
         setupdate(!update);
       }
 
-      if (checkFirstName(value.lastname) && value.lastname !== "") {
+      if (checklastName(value.lastname) && value.lastname !== "") {
         Error.lastname = true;
         setError(Error);
         setupdate(!update);
       }
-      if (!checkFirstName(value.lastname) || value.lastname === "") {
+      if (!checklastName(value.lastname) || value.lastname === "") {
         Error.lastname = false;
         setError(Error);
         setupdate(!update);
@@ -125,7 +125,7 @@ export default function Acc({ navigation }) {
         setupdate(!update);
       }
     } else {
-      await setDoc(doc(db, "users", user.uid), value);
+      // await setDoc(doc(db, "users", user.uid), value);
       alert("Profile Update Successfully");
       setError({
         firstname: true,
@@ -139,15 +139,25 @@ export default function Acc({ navigation }) {
 
   let checkFirstName = (value) => {
     var letters = /^[A-Za-z]+$/;
-    if (value.match(letters)) {
+    if (value.match(letters) && value.length < 15) {
       return true;
     } else {
       return false;
     }
   };
+
+  let checklastName = (value) => {
+    var letters = /^[A-Za-z]+$/;
+    if (value.match(letters) && value.length < 26) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
   let checkUserName = (value) => {
     var letters = /^[0-9a-zA-Z-_]+$/;
-    if (value.match(letters)) {
+    if (value.match(letters) && value.length < 26) {
       return true;
     } else {
       return false;
@@ -163,7 +173,7 @@ export default function Acc({ navigation }) {
         where("username", "==", value.username)
       );
       const snapshot = await getDocs(q);
-      console.log(snapshot.empty);
+      console.log(snapshot.empty, "========>empty");
       return snapshot.empty;
     }
   };
@@ -182,10 +192,12 @@ export default function Acc({ navigation }) {
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <View>
-            {setFname(item.firstname)} {setemail(item.email)}
-            {setLname(item.lastname)}
-            {setUsername(item.username)}
-            {setPassword(item.password)}
+            <Text>
+              {setFname(item.firstname)} {setemail(item.email)}
+              {setLname(item.lastname)}
+              {setUsername(item.username)}
+              {setPassword(item.password)}
+            </Text>
           </View>
         )}
       />
@@ -243,9 +255,7 @@ export default function Acc({ navigation }) {
         >
           <View style={{ marginTop: 40, marginLeft: -10 }}>
             <View style={styles.InputContainer}>
-              <Text style={{ fontWeight: "bold", fontSize: 17 }}>
-                First Name :
-              </Text>
+              <Text style={{ fontWeight: "bold" }}>First Name</Text>
               {!Error.firstname && (
                 <Text
                   style={{
@@ -253,7 +263,7 @@ export default function Acc({ navigation }) {
                     marginLeft: 10,
                   }}
                 >
-                  please enter only character from a-z and A-Z
+                  please enter only character and dosnt exceed 15 digit
                 </Text>
               )}
               <TextInput
@@ -269,9 +279,7 @@ export default function Acc({ navigation }) {
               />
             </View>
             <View style={styles.InputContainer}>
-              <Text style={{ fontWeight: "bold", fontSize: 17 }}>
-                {"\n"}Last Name :
-              </Text>
+              <Text style={{ fontWeight: "bold" }}>{"\n"}Last Name</Text>
               {!Error.lastname && (
                 <Text
                   style={{
@@ -279,7 +287,7 @@ export default function Acc({ navigation }) {
                     // marginLeft: 10,
                   }}
                 >
-                  please enter only character from a-z and A-Z
+                  please enter only character and dosnt exceed 20 digit
                 </Text>
               )}
               <TextInput
@@ -295,9 +303,7 @@ export default function Acc({ navigation }) {
               />
             </View>
             <View style={styles.InputContainer}>
-              <Text style={{ fontWeight: "bold", fontSize: 17 }}>
-                {"\n"}User Name :
-              </Text>
+              <Text style={{ fontWeight: "bold" }}>{"\n"}User Name</Text>
               {!Error.usernametype && (
                 <Text
                   style={{
@@ -305,7 +311,7 @@ export default function Acc({ navigation }) {
                     // marginLeft: 10,
                   }}
                 >
-                  please enter only character from a-z and A-Z and 0-9 or _ or-
+                  please enter only character or _ or- and dosnt exceed 25 digit
                 </Text>
               )}
               {!Error.usernameunique && (
@@ -328,9 +334,7 @@ export default function Acc({ navigation }) {
               />
             </View>
             <View style={styles.InputContainer}>
-              <Text style={{ fontWeight: "bold", fontSize: 17 }}>
-                {"\n"}Email :
-              </Text>
+              <Text style={{ fontWeight: "bold" }}>{"\n"}Email</Text>
 
               <TextInput
                 style={styles.body}
@@ -341,7 +345,7 @@ export default function Acc({ navigation }) {
                 //   onChangeText={(text) => setValue({ ...value, email: text })}
                 underlineColorAndroid="transparent"
                 //  titl
-                //  e="nnn"
+                e="nnn"
                 // value={user.email}
               />
             </View>
