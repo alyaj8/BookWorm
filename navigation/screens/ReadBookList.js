@@ -63,7 +63,7 @@ export default function ReadBookList({ navigation, route }) {
                   style={{
                     height: 250,
                     elevation: 2,
-                    backgroundColor: "#FFF",
+                    backgroundColor: "#EFF3EF",
                     marginLeft: 20,
                     marginTop: 20,
                     borderRadius: 15,
@@ -115,7 +115,7 @@ export default function ReadBookList({ navigation, route }) {
                         fontWeight: "bold",
                       }}
                     >
-                      {Datacat(val.title, 39)}
+                      {Datacat(val.title, 25)}
                       {"\n"}{" "}
                     </Text>
                   </View>
