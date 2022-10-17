@@ -376,16 +376,20 @@ export default function BookInfo({ route, navigation }) {
                 marginTop: 9,
                 paddingLeft: 10,
                 paddingRight: 10,
+                paddingBottom:5,
                 // fontSize: "15%",
-                fontSize: 15,
+                fontSize: 20,
                 fontWeight: "bold",
                 color: "grey",
               }}>Add Book to your list</Text>
+          <View style={{flexDirection:'row'}}>
             <TouchableOpacity
               style={{
                 flex: 1,
                 flexDirection: "row",
                 borderRadius: 25,
+                width:"48%",
+                height:50,
                 backgroundColor: book.listedInRead ? "#aadecc" : "#00a46c",
                 paddingHorizontal: 20,
                 
@@ -398,6 +402,8 @@ export default function BookInfo({ route, navigation }) {
                   fontWeight: "bold",
                   paddingBottom: 1,
                   fontSize: 18,
+                  marginTop:book.listedInRead ? 0 : 15,
+                  paddingLeft:book.listedInRead ? 0 : 18,
                 }}
               >
                 {book.listedInRead ? "Added to Read" : "Read"}
@@ -420,6 +426,8 @@ export default function BookInfo({ route, navigation }) {
                   fontWeight: "bold",
                   paddingBottom: 1,
                   fontSize: 18,
+                  marginTop:book.listedInFav ? 0 : 15,
+                  paddingLeft:book.listedInFav ? 0 : 10,
                 }}
               >
                 {book.listedInFav ? "Added to Favorite" : "Favorite"}
@@ -442,12 +450,14 @@ export default function BookInfo({ route, navigation }) {
                   fontWeight: "bold",
                   paddingBottom: 1,
                   fontSize: 18,
+                  marginTop:book.listedInWish ? 0 : 15,
+                  paddingLeft:book.listedInWish ? 0 : 18,
                 }}
               >
                 {book.listedInWish ? "Added to Wish" : "Wish"}
               </Text>
             </TouchableOpacity>
-
+            </View>
             <View
               style={{
                 margin: 45,
