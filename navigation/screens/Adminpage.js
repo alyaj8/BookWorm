@@ -58,7 +58,7 @@ export default function Maincontainer() {
   return (
     //for bottom navigation
     <Tab.Navigator
-      //   initialRouteName={HomeName} //to go to the first screen
+      initialRouteName={"Discovery"} //to go to the first screen
       screenOptions={({ route }) => ({
         //route means the location u r at
 

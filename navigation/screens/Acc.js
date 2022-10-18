@@ -12,17 +12,22 @@ import {
   FlatList,
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  updateEmail,
+} from "firebase/auth";
 import { collection, getDoc, getDocs, query, where } from "firebase/firestore";
 import { doc, getFirestore, setDoc } from "firebase/firestore";
 import { db } from "../../config/firebase";
 import { withUser } from "../../config/UserContext";
-
-
 export default function Acc({ navigation }) {
   const [infoList, setinfoList] = useState([]);
   const [update, setupdate] = useState(true);
   const [oldName, setOldName] = useState("");
+  const [oldEmail, setOldEmail] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [uid, setUid] = useState("");
   const [value, setValue] = React.useState({
     email: "",
     firstname: "",
@@ -36,6 +41,7 @@ export default function Acc({ navigation }) {
     lastname: true,
     usernametype: true,
     usernameunique: true,
+    email: true,
   });
 
   // const [userDoc, setUserDoc] = useState([]);
@@ -51,10 +57,12 @@ export default function Acc({ navigation }) {
     try {
       const colRef = doc(db, "users", user.uid);
       const snapshot = await getDoc(colRef);
-      //  console.log(snapshot.id, "========>");
+      console.log(snapshot.id, "========>");
       let userdata = snapshot.data();
       setValue(userdata);
       setOldName(userdata.username);
+      setOldEmail(userdata.email);
+      setUid(user.uid);
       //const q = query(collection(db, "users"), where("uid", "==", user.uid));
       //  const snapshot = await getDocs(q);
 
@@ -74,10 +82,14 @@ export default function Acc({ navigation }) {
   };
 
   let saveChanges = async () => {
+    console.log(value.email);
+    // await checkEmail();
+    console.log(await checkEmail(), "======>check Email");
     if (
       value.firstname === "" ||
       value.lastname === "" ||
       value.username === "" ||
+      value.email === "" ||
       checkFirstName(value.firstname) === false ||
       checklastName(value.lastname) === false ||
       checkUserName(value.username) === false ||
@@ -115,27 +127,35 @@ export default function Acc({ navigation }) {
         setError(Error);
         setupdate(!update);
       }
-
-      if (await CheckUnique()) {
+      if (await CheckUnique(value.username)) {
         Error.usernameunique = true;
         setError(Error);
         setupdate(!update);
       }
-      if (!(await CheckUnique())) {
-        Error.usernameunique = false;
+      if (!(await CheckUnique(value.username))) {
+        Error.usernametype = false;
         setError(Error);
         setupdate(!update);
       }
     } else {
-      // await setDoc(doc(db, "users", user.uid), value);
-      alert("Profile Updated Successfully");
-      setError({
-        firstname: true,
-        lastname: true,
-        usernametype: true,
-        usernameunique: true,
-      });
-      setOldName(value.username);
+      if (checkEmail()) {
+        await setDoc(doc(db, "users", uid), value);
+        alert("Profile Updated Successfully");
+        setError({
+          firstname: true,
+          lastname: true,
+          usernametype: true,
+          usernameunique: true,
+        });
+        setOldName(value.username);
+        if (oldEmail !== value.email) {
+          navigation.navigate("Account");
+        }
+      } else {
+        Error.usernametype = true;
+        setError(Error);
+        setupdate(!update);
+      }
     }
   };
 
@@ -145,6 +165,25 @@ export default function Acc({ navigation }) {
       return true;
     } else {
       return false;
+    }
+  };
+
+  let checkEmail = async () => {
+    if (oldEmail === value.email) {
+      setEmailError("");
+      return true;
+    } else {
+      updateEmail(user, value.email)
+        .then(() => {
+          console.log("success");
+          setEmailError("");
+          return true;
+        })
+        .catch((error) => {
+          console.log("error", error.message);
+          setEmailError(error.message);
+          return "false";
+        });
     }
   };
 
@@ -161,8 +200,6 @@ export default function Acc({ navigation }) {
     var letters = /^[0-9a-zA-Z-_]+$/;
     if (value.match(letters) && value.length < 26) {
       return true;
-    } else {
-      return false;
     }
   };
 
@@ -341,16 +378,25 @@ export default function Acc({ navigation }) {
             <View style={styles.InputContainer}>
               <Text style={{ fontWeight: "bold" }}>{"\n"}Email</Text>
 
+              {emailError && (
+                <Text
+                  style={{
+                    color: "red",
+                    // marginLeft: 10,
+                  }}
+                >
+                  {emailError}
+                </Text>
+              )}
+
               <TextInput
                 style={styles.body}
                 placeholder={value.email}
                 value={value.email}
                 placeholderTextColor="black"
-                editable={false}
-                //   onChangeText={(text) => setValue({ ...value, email: text })}
+                onChangeText={(text) => setValue({ ...value, email: text })}
                 underlineColorAndroid="transparent"
                 //  titl
-                e="nnn"
                 // value={user.email}
               />
             </View>

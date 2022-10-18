@@ -36,9 +36,6 @@ export default function Changepass({ navigation }) {
 
   const [infoList, setinfoList] = useState([]);
   const [error, setError] = useState("");
-
-  // const [userDoc, setUserDoc] = useState([]);
-
   const auth = getAuth();
   const user = auth.currentUser;
 
@@ -62,7 +59,7 @@ export default function Changepass({ navigation }) {
           .then(async () => {
             await updateDoc(doc(db, "users", user.uid), { password: newPass });
             setError("");
-            //  alert("Password changes successfully");
+            alert("Password changed successfully");
             navigation.goBack();
           })
           .catch((error) => {
