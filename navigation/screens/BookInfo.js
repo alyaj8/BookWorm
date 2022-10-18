@@ -43,9 +43,50 @@ export default function BookInfo({ route, navigation }) {
   let [update, setUpdate] = useState(false);
   const [isNotified, setIsNotified] = useState(false);
  
-  
+  useEffect(() => {
+     (async function() {
+      const db = getFirestore();
+      // the book must be unique its up to you how you do it by id or by ISBN
+      const q = query(collection(db, "Book"), where("ISBN", "==", book.ISBN));
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach(async doc=>{
+        
+        const book = doc.data();
+        if(book?.notifiedUser && book?.notifiedUser?.length > 0){
+         const isUserExist = book?.notifiedUser?.some(item=>item === uid);
+         setIsNotified(isUserExist);
+        }else{
+          setIsNotified(false);
+        }
+        
+        
+      })
+     })()
+    
+   }, [])
 
-   
+   const onClickNotifyMe = async ()=> {
+    const db = getFirestore();
+    // the book must be unique its up to you how you do it by id or by ISBN
+    const q = query(collection(db, "Book"), where("ISBN", "==", book.ISBN));
+    setIsNotified(true)
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach(async doc=>{
+      
+      const book = doc.data();
+      let data = [];
+      if(book?.notifiedUser && book?.notifiedUser?.length > 0){
+        data = [uid,...book.notifiedUser];
+      }else{
+        data.push(uid)
+      }
+      await updateDoc(doc.ref, {
+        notifiedUser: data
+      });
+      
+    })
+      
+  }
   let AddInfo = async () => {
     try {
       const db = getFirestore();
