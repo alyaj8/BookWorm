@@ -19,7 +19,7 @@ import {
 import { Entypo } from "@expo/vector-icons";
 import { Formik } from "formik";
 import Icon from "react-native-vector-icons/Ionicons";
-import {sendPushNotification} from '../../util/Notifications'
+
 import * as ImagePicker from "expo-image-picker";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import {
@@ -27,14 +27,18 @@ import {
   doc,
   getFirestore,
   setDoc,
+  firestore,
+  addDoc,
+  updateDoc,
+  query,
   where,
+  deleteDoc,
   getDocs,
-  documentId,
-  query
+  documentId
 } from "firebase/firestore";
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import Toast, { BaseToast, ErrorToast } from "react-native-toast-message";
-
+import {sendPushNotification} from '../../util/Notifcations'
 import { AntDesign } from "@expo/vector-icons";
 
 import background_image from "./222.jpg";
@@ -51,7 +55,7 @@ export default function AddBookTest({ navigation, route }) {
     ISBN: "",
     author: "",
     poster: "",
-    virsion: "",
+    pdf: "",
     pric: "",
     error: "",
   });
@@ -61,8 +65,12 @@ export default function AddBookTest({ navigation, route }) {
     category: true,
     ISBN: true,
     author: true,
+    authortype: true,
+    authortype2: true,
+    authortype3: true,
+
     poster: true,
-    virsion: true,
+    pdf: true,
     pric: true,
   });
 
@@ -78,7 +86,6 @@ export default function AddBookTest({ navigation, route }) {
       includeBase64: false,
     },
   };
-
   const onClickSendNotification = async ()=>{
     let notifications = [];
 
@@ -102,7 +109,6 @@ export default function AddBookTest({ navigation, route }) {
         })
       }
     });
-
     sendPushNotification(notifications)
     
   }
@@ -133,9 +139,44 @@ export default function AddBookTest({ navigation, route }) {
   ///////////////////////////////new code
   const [addDate, setAddData] = useState("");
 
+  let checAuther = (text) => {
+    var letters = /^[A-Za-z" "]+$/;
+    if (text.match(letters) && text.length < 30) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+  let checISBN = (text) => {
+    var letters = /^[0-9]+$/;
+    if (text.match(letters) && text.length == 10) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
+  let checC = (text) => {
+    var letters = /^[A-Za-z" "]+$/;
+    if (text.match(letters)) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
+  let checT = (text) => {
+    var letters = /^[A-Za-z" "]+$/;
+    if (text.match(letters)) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
+  console.log(checAuther("fjjj"), "=======>");
   //add a new data
   async function addField() {
-    console.log(value);
     if (
       image === null ||
       value.title === "" ||
@@ -144,12 +185,11 @@ export default function AddBookTest({ navigation, route }) {
       value.Description === undefined ||
       value.ISBN === "" ||
       value.ISBN === undefined ||
+      checISBN(value.ISBN) === false ||
+      checT(value.title) === false ||
       value.author === "" ||
       value.author === undefined ||
-      value.virsion === "" ||
-      value.virsion === undefined ||
-      value.pric === "" ||
-      value.pric === undefined
+      checAuther(value.author) === false
     ) {
       console.log(value.title);
 
@@ -172,8 +212,16 @@ export default function AddBookTest({ navigation, route }) {
       if (value.title !== "" && value.title !== undefined) {
         Error.title = true;
         setError(Error);
-
         setupdate(!update);
+        if (checT(value.title)) {
+          Error.authortype3 = true;
+          setError(Error);
+          setupdate(!update);
+        } else {
+          Error.authortype3 = false;
+          setError(Error);
+          setupdate(!update);
+        }
       }
 
       if (value.Description === "" || value.Description === undefined) {
@@ -208,6 +256,15 @@ export default function AddBookTest({ navigation, route }) {
         Error.ISBN = true;
         setError(Error);
         setupdate(!update);
+        if (checISBN(value.ISBN)) {
+          Error.authortype2 = true;
+          setError(Error);
+          setupdate(!update);
+        } else {
+          Error.authortype2 = false;
+          setError(Error);
+          setupdate(!update);
+        }
       }
       if (value.author === "" || value.author === undefined) {
         Error.author = false;
@@ -218,30 +275,16 @@ export default function AddBookTest({ navigation, route }) {
         Error.author = true;
         setError(Error);
         setupdate(!update);
+        if (checAuther(value.author)) {
+          Error.authortype = true;
+          setError(Error);
+          setupdate(!update);
+        } else {
+          Error.authortype = false;
+          setError(Error);
+          setupdate(!update);
+        }
       }
-
-      if (value.virsion === "" || value.virsion === undefined) {
-        Error.virsion = false;
-        setError(Error);
-        setupdate(!update);
-      }
-      if (value.virsion !== "" && value.virsion !== undefined) {
-        Error.virsion = true;
-        setError(Error);
-        setupdate(!update);
-      }
-
-      if (value.pric === "" || value.pric === undefined) {
-        Error.pric = false;
-        setError(Error);
-        setupdate(!update);
-      }
-      if (value.pric !== "" && value.pric !== undefined) {
-        Error.pric = true;
-        setError(Error);
-        setupdate(!update);
-      }
-      console.log(Error);
     } else {
       try {
         const db = getFirestore();
@@ -254,19 +297,31 @@ export default function AddBookTest({ navigation, route }) {
           category: value.category,
           ISBN: value.ISBN,
           author: value.author,
-          pdf: value.virsion,
+          pdf: value.pdf,
           pric: value.pric,
           poster: image,
         };
-        console.log(book.id);
-        await setDoc(doc(db, "Book", book.id), data);
-        if(book?.notifiedUser && book?.notifiedUser.length > 0 && value.virsion){ 
-          onClickSendNotification()
+        if(book?.notifiedUser && book?.notifiedUser.length > 0 && value.pdf){ 
+          onClickSendNotification();
+          data.notifiedUser= [];
         }
+        await updateDoc(doc(db, "Book", book.id), data);
+
+        const q = query(
+          collection(db, "readBookList"),
+          where("id", "==", book.id)
+        );
+        const querySnapshot = await getDocs(q);
+        if (!querySnapshot.empty) {
+          querySnapshot.forEach(async (document) => {
+            await updateDoc(doc(db, "readBookList", document.id), data);
+          });
+        }
+
         await showToast();
         setError({
           ...Error,
-          virsion: true,
+          pdf: true,
           author: true,
           ISBN: true,
           category: true,
@@ -274,14 +329,18 @@ export default function AddBookTest({ navigation, route }) {
           title: true,
           poster: true,
           pric: true,
+          authortype: true,
+          authortype2: true,
+          authortype3: true,
         });
+
         await navigation.navigate("BookInfoApi", {
           title: value.title,
           Description: value.Description,
           category: value.category,
           ISBN: value.ISBN,
           author: value.author,
-          virsion: value.virsion,
+          pdf: value.pdf,
           pric: value.pric,
           poster: image,
           id: book.id,
@@ -334,7 +393,7 @@ export default function AddBookTest({ navigation, route }) {
       ISBN: book.ISBN,
       author: book.author,
       poster: book.poster,
-      virsion: book.virsion,
+      pdf: book.pdf,
       pric: book.pric,
       error: "",
     });
@@ -357,7 +416,7 @@ export default function AddBookTest({ navigation, route }) {
             name="arrow-back-outline"
             size={45}
             style={{ color: "black", marginTop: 40, marginLeft: 15 }}
-            onPress={() => navigation.goBack()}
+            onPress={() => navigation.goBack()} /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
           />
           <Text
             style={{
@@ -428,6 +487,16 @@ export default function AddBookTest({ navigation, route }) {
                 This Field is mandatory
               </Text>
             )}
+            {!Error.authortype3 && (
+              <Text
+                style={{
+                  color: "red",
+                  marginLeft: 10,
+                }}
+              >
+                Title only accept character
+              </Text>
+            )}
             <TextInput
               style={[
                 styles.body,
@@ -489,8 +558,6 @@ export default function AddBookTest({ navigation, route }) {
             />
           </View>
 
-          <View></View>
-
           <View style={styles.InputContainer}>
             <Text style={styles.textD}>ISBN</Text>
             {!Error.ISBN && (
@@ -501,6 +568,16 @@ export default function AddBookTest({ navigation, route }) {
                 }}
               >
                 This Field is mandatory
+              </Text>
+            )}
+            {!Error.authortype2 && (
+              <Text
+                style={{
+                  color: "red",
+                  marginLeft: 10,
+                }}
+              >
+                ISBN should be numric and of 10 digit
               </Text>
             )}
             <TextInput
@@ -526,6 +603,16 @@ export default function AddBookTest({ navigation, route }) {
                 This Field is mandatory
               </Text>
             )}
+            {!Error.authortype && (
+              <Text
+                style={{
+                  color: "red",
+                  marginLeft: 10,
+                }}
+              >
+                Auther name only accept character
+              </Text>
+            )}
             <TextInput
               style={[
                 styles.body,
@@ -533,13 +620,15 @@ export default function AddBookTest({ navigation, route }) {
               ]} //secureTextEntry={true}
               //placeholder="Password"
               value={value.author}
-              onChangeText={(text) => setValue({ ...value, author: text })}
+              onChangeText={(text) => {
+                setValue({ ...value, author: text });
+              }}
               underlineColorAndroid="transparent"
             />
           </View>
           <View>
-            <Text style={styles.textD}>The book's electronic virsion</Text>
-            {!Error.virsion && (
+            <Text style={styles.textD}>The book's electronic pdf</Text>
+            {!Error.pdf && (
               <Text
                 style={{
                   color: "red",
@@ -552,15 +641,14 @@ export default function AddBookTest({ navigation, route }) {
             <TextInput
               style={[
                 styles.body,
-                { borderColor: !Error.virsion ? "red" : "black" },
+                { borderColor: !Error.pdf ? "red" : "black" },
               ]} //secureTextEntry={true}
               //placeholder="Password"
-              value={value.virsion}
-              onChangeText={(text) => setValue({ ...value, virsion: text })}
+              value={value.pdf}
+              onChangeText={(text) => setValue({ ...value, pdf: text })}
               underlineColorAndroid="transparent"
             />
           </View>
-
           <View>
             <Text style={styles.textD}>The book's price</Text>
             {!Error.pric && (
@@ -582,6 +670,7 @@ export default function AddBookTest({ navigation, route }) {
               value={value.pric}
               onChangeText={(text) => setValue({ ...value, pric: text })}
               underlineColorAndroid="transparent"
+              keyboardType="numeric"
             />
           </View>
 

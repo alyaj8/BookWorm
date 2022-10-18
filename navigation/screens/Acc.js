@@ -17,6 +17,8 @@ import { collection, getDoc, getDocs, query, where } from "firebase/firestore";
 import { doc, getFirestore, setDoc } from "firebase/firestore";
 import { db } from "../../config/firebase";
 import { withUser } from "../../config/UserContext";
+
+
 export default function Acc({ navigation }) {
   const [infoList, setinfoList] = useState([]);
   const [update, setupdate] = useState(true);
@@ -49,7 +51,7 @@ export default function Acc({ navigation }) {
     try {
       const colRef = doc(db, "users", user.uid);
       const snapshot = await getDoc(colRef);
-      console.log(snapshot.data(), "========>");
+      //  console.log(snapshot.id, "========>");
       let userdata = snapshot.data();
       setValue(userdata);
       setOldName(userdata.username);
@@ -68,8 +70,6 @@ export default function Acc({ navigation }) {
       // console.log(infoList);
     } catch (error) {
       // console.log(infoList);
-
-      console.log(error);
     }
   };
 
@@ -79,9 +79,9 @@ export default function Acc({ navigation }) {
       value.lastname === "" ||
       value.username === "" ||
       checkFirstName(value.firstname) === false ||
-      checkFirstName(value.lastname) === false ||
+      checklastName(value.lastname) === false ||
       checkUserName(value.username) === false ||
-      CheckUnique(value.username) === false
+      (await CheckUnique(value.username)) === false
     ) {
       if (checkFirstName(value.firstname) && value.firstname !== "") {
         Error.firstname = true;
@@ -94,12 +94,12 @@ export default function Acc({ navigation }) {
         setupdate(!update);
       }
 
-      if (checkFirstName(value.lastname) && value.lastname !== "") {
+      if (checklastName(value.lastname) && value.lastname !== "") {
         Error.lastname = true;
         setError(Error);
         setupdate(!update);
       }
-      if (!checkFirstName(value.lastname) || value.lastname === "") {
+      if (!checklastName(value.lastname) || value.lastname === "") {
         Error.lastname = false;
         setError(Error);
         setupdate(!update);
@@ -116,7 +116,6 @@ export default function Acc({ navigation }) {
         setupdate(!update);
       }
 
-      console.log(await CheckUnique(), "==========>checkUnique");
       if (await CheckUnique()) {
         Error.usernameunique = true;
         setError(Error);
@@ -128,8 +127,8 @@ export default function Acc({ navigation }) {
         setupdate(!update);
       }
     } else {
-      await setDoc(doc(db, "users", user.uid), value);
-      alert("Profile Update Successfully");
+      // await setDoc(doc(db, "users", user.uid), value);
+      alert("Profile Updated Successfully");
       setError({
         firstname: true,
         lastname: true,
@@ -140,19 +139,27 @@ export default function Acc({ navigation }) {
     }
   };
 
-  console.log(Error);
-
   let checkFirstName = (value) => {
     var letters = /^[A-Za-z]+$/;
-    if (value.match(letters)) {
+    if (value.match(letters) && value.length < 15) {
       return true;
     } else {
       return false;
     }
   };
+
+  let checklastName = (value) => {
+    var letters = /^[A-Za-z]+$/;
+    if (value.match(letters) && value.length < 26) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
   let checkUserName = (value) => {
     var letters = /^[0-9a-zA-Z-_]+$/;
-    if (value.match(letters)) {
+    if (value.match(letters) && value.length < 26) {
       return true;
     } else {
       return false;
@@ -160,7 +167,6 @@ export default function Acc({ navigation }) {
   };
 
   let CheckUnique = async () => {
-    console.log(value.username);
     if (oldName === value.username) {
       return true;
     } else {
@@ -169,7 +175,7 @@ export default function Acc({ navigation }) {
         where("username", "==", value.username)
       );
       const snapshot = await getDocs(q);
-      console.log(snapshot.empty);
+      console.log(snapshot.empty, "========>empty");
       return snapshot.empty;
     }
   };
@@ -201,11 +207,12 @@ export default function Acc({ navigation }) {
       <View
         style={{
           backgroundColor: "#00a46c",
-          height: "10%",
+          height: "13%",
           borderBottomLeftRadius: 20,
           borderBottomRightRadius: 20,
           paddingHorizontal: 20,
           marginBottom: 15,
+          marginTop: -80,
         }}
       >
         <Icon
@@ -258,13 +265,14 @@ export default function Acc({ navigation }) {
                     marginLeft: 10,
                   }}
                 >
-                  please enter only character from a-z and A-Z
+                  Please enter a firstname of only characters and dosnt exceed
+                  15 digit
                 </Text>
               )}
               <TextInput
                 style={[
                   styles.body,
-                  { borderColor: !Error.firstname ? "red" : "black" },
+                  { borderColor: !Error.firstname ? "red" : "green" },
                 ]}
                 placeholder={value.firstname}
                 placeholderTextColor="black"
@@ -282,13 +290,14 @@ export default function Acc({ navigation }) {
                     // marginLeft: 10,
                   }}
                 >
-                  please enter only character from a-z and A-Z
+                  Please enter a lasttname of only characters and dosnt exceed
+                  25 digit
                 </Text>
               )}
               <TextInput
                 style={[
                   styles.body,
-                  { borderColor: !Error.lastname ? "red" : "black" },
+                  { borderColor: !Error.lastname ? "red" : "green" },
                 ]}
                 placeholder={value.lastname}
                 value={value.lastname}
@@ -306,7 +315,8 @@ export default function Acc({ navigation }) {
                     // marginLeft: 10,
                   }}
                 >
-                  please enter only character from a-z and A-Z and 0-9 or _ or-
+                  Please enter a username that has character or _ or- and dosnt
+                  exceed 25 digit
                 </Text>
               )}
               {!Error.usernameunique && (
@@ -342,21 +352,6 @@ export default function Acc({ navigation }) {
                 //  titl
                 e="nnn"
                 // value={user.email}
-              />
-            </View>
-
-            <View style={styles.InputContainer}>
-              <Text style={{ fontWeight: "bold" }}>{"\n"}Password</Text>
-
-              <TextInput
-                style={styles.body}
-                secureTextEntry={true}
-                placeholder={value.password}
-                value={value.password}
-                editable={false}
-                placeholderTextColor="black"
-                //   onChangeText={(text) => setValue({ ...value, password: text })}
-                underlineColorAndroid="transparent"
               />
             </View>
 

@@ -115,7 +115,7 @@ export default function Account({ navigation }) {
             }}
           >
             <Icon name="person-outline" size={30} style={{ marginRight: 10 }} />
-            <Text style={{ fontSize: 16, marginTop: 7 }}>My detailes</Text>
+            <Text style={{ fontSize: 16, marginTop: 7 }}>Edit my information</Text>
           </View>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => navigation.navigate("Changepass")}>

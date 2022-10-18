@@ -12,15 +12,17 @@ import {
 import Icon from "react-native-vector-icons/Ionicons";
 
 import StripeApp from "./StripeApp";
-import bookComment from "./bookComment";
+import BookComment from "./BookComment";
 import { StripeProvider } from "@stripe/stripe-react-native";
 import react, { useEffect, useState } from "react";
-import { Rating, AirbnbRating } from 'react-native-ratings';
+import { Rating, AirbnbRating } from "react-native-ratings";
+
+
 //import Map from './screens/Map';
 //import Fetch from './src/Fetch';
 //import {userSate,userEffect} from "react";
 //import{collection, query,orderBy,onSanpshot,setDoc,doc,getDoc,getDocs} from "firebase/firestore";
-//import{db} from "../../config/firebase";
+import { db } from "../../config/firebase";
 
 import {
   collection,
@@ -31,15 +33,20 @@ import {
   query,
   where,
   getDocs,
-  updateDoc
+  updateDoc,
 } from "firebase/firestore";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 
 export default function BookInfo({ route, navigation }) {
   const book = route.params;
-  const Auth = getAuth();
+  var Auth = getAuth();
   const uid = Auth?.currentUser?.uid;
 
+  let [updateReadList, setupdateReadList] = useState(false);
+  let [updateFavList, setupdateFavList] = useState(false);
+  let [updateWishList, setupdateWishList] = useState(false);
+  let [bookstar, setBookStar] = useState(0);
+  let [reviewDone, setReviewDone] = useState(false);
   let [update, setUpdate] = useState(false);
   const [isNotified, setIsNotified] = useState(false);
  
@@ -87,20 +94,58 @@ export default function BookInfo({ route, navigation }) {
     })
       
   }
-  let AddInfo = async () => {
+
+  let [disabled, setDisabled] = useState(false);
+  let AddInfoToReadList = async () => {
+    setDisabled(true);
     try {
+      const uid = Auth?.currentUser?.uid;
       const db = getFirestore();
       const data = book;
       data.favouriteUserId = uid;
       await addDoc(collection(db, "readBookList"), data);
-      book.listed = true;
-      setUpdate(true);
+      book.listedInRead = true;
+      setupdateReadList(true);
+      setDisabled(false);
     } catch (error) {
       alert(error);
+      setDisabled(false);
+    }
+  };
+  let AddInfoToFavList = async () => {
+    setDisabled(true);
+    try {
+      const uid = Auth?.currentUser?.uid;
+      const db = getFirestore();
+      const data = book;
+      data.favouriteListUserId = uid;
+      await addDoc(collection(db, "favoriteList"), data);
+      book.listedInFav = true;
+      setupdateFavList(true);
+      setDisabled(false);
+    } catch (error) {
+      alert(error);
+      setDisabled(false);
+    }
+  };
+  let AddInfoToWishList = async () => {
+    setDisabled(true);
+    try {
+      const uid = Auth?.currentUser?.uid;
+      const db = getFirestore();
+      const data = book;
+      data.wishListUserId = uid;
+      await addDoc(collection(db, "wishList"), data);
+      book.listedInWish = true;
+      setupdateWishList(true);
+      setDisabled(false);
+    } catch (error) {
+      alert(error);
+      setDisabled(false);
     }
   };
 
-  let CheckListed = () => {
+  let CheckListedInRead = () => {
     const Auth = getAuth();
     Auth.onAuthStateChanged(async (user) => {
       const db = getFirestore();
@@ -111,13 +156,73 @@ export default function BookInfo({ route, navigation }) {
       );
       const querySnapshot = await getDocs(q);
       if (!querySnapshot.empty) {
-        book.listed = true;
-        setUpdate(true);
+        book.listedInRead = true;
+        setupdateReadList(true);
       }
     });
   };
-  useEffect(() => CheckListed(), []);
+  let CheckListedInFav = () => {
+    const Auth = getAuth();
+    Auth.onAuthStateChanged(async (user) => {
+      const db = getFirestore();
+      const q = query(
+        collection(db, "favoriteList"),
+        where("favouriteListUserId", "==", user.uid),
+        where("id", "==", book.id)
+      );
+      const querySnapshot = await getDocs(q);
+      if (!querySnapshot.empty) {
+        book.listedInFav = true;
+        setupdateFavList(true);
+      }
+    });
+  };
+  let CheckListedInWish = () => {
+    const Auth = getAuth();
+    Auth.onAuthStateChanged(async (user) => {
+      const db = getFirestore();
+      const q = query(
+        collection(db, "wishList"),
+        where("wishListUserId", "==", user.uid),
+        where("id", "==", book.id)
+      );
+      const querySnapshot = await getDocs(q);
+      if (!querySnapshot.empty) {
+        book.listedInWish = true;
+        setupdateWishList(true);
+      }
+    });
+  };
 
+  let checkReview = () => {
+    let countStar = 0;
+    book?.reviews?.length > 0 &&
+      Auth.onAuthStateChanged(async (user) => {
+        book.reviews?.map((val, ind) => {
+          countStar = countStar + +val.review;
+          if (user.uid === val.comenteuseruid) {
+            setReviewDone(true);
+          }
+        });
+        setBookStar(countStar);
+      });
+  };
+  useEffect(() => {
+    const unsubscribe = navigation.addListener("focus", () => {
+      // The screen is focused
+      // Call any action
+
+      // Return the function to unsubscribe from the event so it gets removed on unmount
+      CheckListedInRead();
+      CheckListedInFav();
+      CheckListedInWish();
+      checkReview();
+    });
+
+    return unsubscribe;
+  }, [navigation]);
+
+  console.log(reviewDone, "=========>");
   let CheckOrder = () => {
     const Auth = getAuth();
     Auth.onAuthStateChanged(async (user) => {
@@ -131,7 +236,7 @@ export default function BookInfo({ route, navigation }) {
         const querySnapshot = await getDocs(q);
         if (!querySnapshot.empty) {
           book.order = true;
-          setUpdate(true);
+          setupdateReadList(true);
         }
       } catch (error) {
         console.log(error);
@@ -140,13 +245,11 @@ export default function BookInfo({ route, navigation }) {
   };
 
   useEffect(() => {
-    CheckListed();
+    CheckListedInRead();
+    CheckListedInFav();
+    CheckListedInWish();
     CheckOrder();
-  }, []);
-
- 
-  
-  
+  }, [navigation]);
 
   return (
     <SafeAreaView>
@@ -160,8 +263,6 @@ export default function BookInfo({ route, navigation }) {
           />
           <View
             style={{
-              //poster area
-              // backgroundColor: "grey",
               alignItems: "center",
               alignSelf: "center",
               height: 360,
@@ -228,11 +329,57 @@ export default function BookInfo({ route, navigation }) {
               by {book.author}
             </Text>
 
-            <AirbnbRating
-            defaultRating ={3}
-            reviews={[]}
-            isDisabled={true}
-            size={30} />
+            <Rating
+              startingValue={bookstar && bookstar / book.reviews?.length}
+              imageSize={30}
+              fractions={20}
+              showRating={false}
+              readonly={true}
+              tintColor="#EDF5F0"
+              style={{
+                marginVertical: 10,
+              }}
+            />
+
+            {book.reviews?.length > 0 ? (
+              <Text
+                style={{
+                  color: "black",
+                  alignItems: "center",
+                  fontWeight: "bold",
+                }}
+              >
+                {"     "} {(bookstar / book.reviews?.length).toFixed(2)} out of
+                5 {"\n"}
+                {book.reviews?.length} People Reviewed
+              </Text>
+            ) : (
+              <Text style={{ color: "black" }}> No Reviews yet {"\n     0 Poeple "}
+              </Text>
+            )}
+            <TouchableOpacity
+              style={{
+                width: 150,
+                height: 50,
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+              onPress={() => {
+                navigation.navigate("BookComment", book);
+              }}
+            >
+              <Text
+                style={{
+                  textDecorationLine: "underline",
+                  fontWeight: "bold",
+                  fontSize: 16,
+                  color:"green",
+                }}
+              >
+                See Reviews...
+              </Text>
+            </TouchableOpacity>
+
             <Text
               style={{
                 fontWeight: "bold",
@@ -272,71 +419,128 @@ export default function BookInfo({ route, navigation }) {
               {book.price}
               {"\n"} {"\n"}
             </Text>
+<Text style={{
+                flew: 1,
+                alignItems: "center",
+                justifyContent: "center",
+                marginTop: 9,
+                paddingLeft: 10,
+                paddingRight: 10,
+                paddingBottom:5,
+                // fontSize: "15%",
+                fontSize: 20,
+                fontWeight: "bold",
+                color: "grey",
+              }}>Add Book to your list</Text>
+          <View style={{flexDirection:'row'}}>
+            <TouchableOpacity
+              style={{
+                flex: 1,
+                flexDirection: "row",
+                borderRadius: 25,
+                width:"48%",
+                height:50,
+                backgroundColor: book.listedInRead ? "#aadecc" : "#00a46c",
+                paddingHorizontal: 20,
+                
+              }}
+              onPress={() => AddInfoToReadList()}
+              disabled={book.listedInRead || disabled}
+            >
+              <Text
+                style={{
+                  fontWeight: "bold",
+                  paddingBottom: 1,
+                  fontSize: 18,
+                  marginTop:book.listedInRead ? 0 : 15,
+                  paddingLeft:book.listedInRead ? 0 : 18,
+                }}
+              >
+                {book.listedInRead ? "Added to Read" : "Read"}
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={{
+                flex: 1,
+                flexDirection: "row",
+                borderRadius: 25,
+                backgroundColor: book.listedInFav ? "#aadecc" : "#00a46c",
+                paddingHorizontal: 20,
+               
+              }}
+              onPress={() => AddInfoToFavList()}
+              disabled={book.listedInFav || disabled}
+            >
+              <Text
+                style={{
+                  fontWeight: "bold",
+                  paddingBottom: 1,
+                  fontSize: 18,
+                  marginTop:book.listedInFav ? 0 : 15,
+                  paddingLeft:book.listedInFav ? 0 : 10,
+                }}
+              >
+                {book.listedInFav ? "Added to Favorite" : "Favorite"}
+              </Text>
+            </TouchableOpacity>
 
             <TouchableOpacity
               style={{
                 flex: 1,
                 flexDirection: "row",
                 borderRadius: 25,
-                backgroundColor: book.listed ? "#aadecc" : "#00a46c",
+                backgroundColor: book.listedInWish ? "#aadecc" : "#00a46c",
                 paddingHorizontal: 20,
               }}
-              onPress={() => AddInfo()}
-              disabled={book.listed}
+              onPress={() => AddInfoToWishList()}
+              disabled={book.listedInWish || disabled}
             >
               <Text
                 style={{
                   fontWeight: "bold",
-                  paddingBottom: 10,
+                  paddingBottom: 1,
                   fontSize: 18,
+                  marginTop:book.listedInWish ? 0 : 15,
+                  paddingLeft:book.listedInWish ? 0 : 18,
                 }}
               >
-                {book.listed ? "ADDED TO LIST" : "ADD TO LIST"}
-                <Icon name="add" size={36} style={{ color: "white" }} />
+                {book.listedInWish ? "Added to Wish" : "Wish"}
               </Text>
             </TouchableOpacity>
-
-            <Text
+            </View>
+            <View
               style={{
-                fontWeight: "bold",
-                alignSelf: "center",
-                fontSize: 16,
+                margin: 45,
+                alignItems: "center",
+                justifyContent: "space-between",
+                width: 400,
               }}
             >
-              {"\n"}
-              Review it
-            </Text>
-            <AirbnbRating
-            defaultRating ={0} 
-            size = {30}/>
-
-
-<TouchableOpacity
-              style={{
-                flex: 1,
-                flexDirection: "row",
-                borderRadius: 25,
-                backgroundColor:"#00a46c",
-                paddingHorizontal: 20,
-              }}
-              onPress={() => {
-                navigation.navigate("bookComment");
-              }}
-            >
-              <Text
+              <TouchableOpacity
                 style={{
-                  fontWeight: "bold",
-                  paddingBottom: 10,
-                  paddingTop:10,
-                  fontSize: 18,
-                  marginTop:5,
+                  borderRadius: 25,
+                  backgroundColor: reviewDone ? "#aadecc" : "#00a46c",
+                  width: "48%",
+                  height: 50,
+                  alignItems: "center",
+                  justifyContent: "center",
                 }}
+                disabled={reviewDone}
+                onPress={() => navigation.navigate("ReviewBook", book)}
               >
-                Comments
-              </Text>
-            </TouchableOpacity>
-            
-            {book.pdf ? <View>
+                <Text
+                  style={{
+                    fontWeight: "bold",
+                    alignSelf: "center",
+                    fontSize: 18,
+                  }}
+                >
+                  {reviewDone ? "Reviewed" : "Review it.."}
+                </Text>
+              </TouchableOpacity>
+            </View>
+
+           {book.pdf ? <View>
               <TouchableOpacity
                 style={[
                   styles.fixToText,
@@ -353,7 +557,7 @@ export default function BookInfo({ route, navigation }) {
                   {book.order ? "BOUGHT " : "BUY IT HERE"}
                 </Text>
               </TouchableOpacity>
-            </View>: 
+            </View> : 
             <View>
             <TouchableOpacity
                 disabled={isNotified}
@@ -367,13 +571,11 @@ export default function BookInfo({ route, navigation }) {
               onPress={onClickNotifyMe}
             >
               <Text style={styles.buyit}>
-             {isNotified ? 'Under Process' : 'Notify me'}
+             {isNotified ? "Under Process" : "Notify me"}
               </Text>
             </TouchableOpacity>
-          </View>
-            
-            
-            }
+          </View>}
+          
           </View>
         </ScrollView>
       </ImageBackground>
@@ -386,16 +588,13 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   fixToText: {
-    width: 180,
-
+    width: 200,
     height: 50,
     justifyContent: "center",
     alignContent: "center",
     borderRadius: 50,
     backgroundColor: "#00a46c",
-    marginTop: 40,
     paddingLeft: 10,
-    marginBottom: 10,
   },
   imagePoster: {
     width: "100%",
@@ -412,8 +611,3 @@ const styles = StyleSheet.create({
     marginRight: 18,
   },
 });
-/*<TouchableOpacity
-onPress={() => navigation.navigate("StripeApp")}
->
-<Text>buy Here</Text>
-</TouchableOpacity>*/

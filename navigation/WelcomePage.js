@@ -1,6 +1,7 @@
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { doc, getDoc, getFirestore, updateDoc } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
+import { registerForPushNotificationsAsync } from "../util/Notifcations";
 import {
   Image,
   LogBox,
@@ -12,7 +13,6 @@ import {
   View,
 } from "react-native";
 import { withUser } from "../config/UserContext";
-import { registerForPushNotificationsAsync } from "../util/Notifications";
 
 function msg(error) {
   switch (error.code) {

@@ -35,6 +35,7 @@ export default function Changepass({ navigation }) {
   const [newPass, setNewPass] = useState("");
 
   const [infoList, setinfoList] = useState([]);
+  const [error, setError] = useState("");
 
   // const [userDoc, setUserDoc] = useState([]);
 
@@ -53,24 +54,25 @@ export default function Changepass({ navigation }) {
   };
 
   let savePass = async () => {
-    console.log(user.uid, current);
-
-    if (oldPass === current) {
-      if (newPass.length > 7) {
+    // console.log(user.uid, current);
+    console.log(newPass.length);
+    if (newPass.length > 7) {
+      if (oldPass === current) {
         updatePassword(user, newPass)
           .then(async () => {
             await updateDoc(doc(db, "users", user.uid), { password: newPass });
-
+            setError("");
+            //  alert("Password changes successfully");
             navigation.goBack();
           })
           .catch((error) => {
-            alert(error.message);
+            setError(error.message);
           });
       } else {
-        alert("Password will be more then 7 character");
+        setError("Current Password is no correct");
       }
     } else {
-      alert("Current Password is not Matched");
+      setError("Password will be more then 7 character");
     }
   };
   return (
@@ -87,12 +89,10 @@ export default function Changepass({ navigation }) {
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <View>
-            <Text>
-              {setFname(item.firstname)} {setemail(item.email)}
-              {setLname(item.lastname)}
-              {setUsername(item.username)}
-              {setPassword(item.password)}
-            </Text>
+            {setFname(item.firstname)} {setemail(item.email)}
+            {setLname(item.lastname)}
+            {setUsername(item.username)}
+            {setPassword(item.password)}
           </View>
         )}
       />
@@ -100,7 +100,7 @@ export default function Changepass({ navigation }) {
       <View
         style={{
           backgroundColor: "#00a46c",
-          height: "12%",
+          height: "13%",
           borderBottomLeftRadius: 20,
           borderBottomRightRadius: 20,
           paddingHorizontal: 20,
@@ -144,9 +144,19 @@ export default function Changepass({ navigation }) {
           paddingHorizontal: 20,
           marginBottom: 15,
           marginTop: 15,
-          paddingTop: 50,
+          paddingTop: 10,
         }}
       >
+        <Text
+          style={{
+            color: "red",
+            fontWeight: "bold",
+            textAlign: "center",
+            fontSize: 16,
+          }}
+        >
+          {error}
+        </Text>
         <View style={{ marginTop: 40, marginLeft: -10 }}>
           <View>
             <Text style={{ fontWeight: "bold", fontSize: 20 }}>
@@ -159,6 +169,7 @@ export default function Changepass({ navigation }) {
               // onChangeText={(text) => setValue({ ...value, firstname: text })}
               underlineColorAndroid="transparent"
               onChangeText={(text) => setOldPass(text)}
+              secureTextEntry={true}
             />
           </View>
           <View>
@@ -171,6 +182,7 @@ export default function Changepass({ navigation }) {
               //   placeholderTextColor="black" //     onChangeText={(text) => setValue({ ...value, lastname: text })}
               underlineColorAndroid="transparent"
               onChangeText={(text) => setNewPass(text)}
+              secureTextEntry={true}
             />
           </View>
 

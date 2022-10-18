@@ -23,16 +23,61 @@ import { getAuth } from "firebase/auth";
 import {
   addDoc,
   collection,
+  deleteDoc,
+  doc,
   getDocs,
   getFirestore,
   query,
+  updateDoc,
   where,
 } from "firebase/firestore";
+import { db } from "../../config/firebase";
 
 export default function BookInfoApi({ route, navigation }) {
   const book = route.params;
 
   let [update, setUpdate] = useState(false);
+  let DeleteBook = async () => {
+    await deleteDoc(doc(db, "Book", book.id));
+    DeleteBookRead();
+    DeleteBookFav();
+    DeleteBookWish();
+    Alert.alert("the book got deleted");
+    navigation.goBack();
+  };
+  let DeleteBookRead = async () => {
+    const q = query(collection(db, "readBookList"), where("id", "==", book.id));
+    const querySnapshot = await getDocs(q);
+    if (!querySnapshot.empty) {
+      querySnapshot.forEach(async (document) => {
+        let data = book;
+        data.deleted = true;
+        await updateDoc(doc(db, "readBookList", document.id), data);
+      });
+    }
+  };
+  let DeleteBookFav = async () => {
+    const q = query(collection(db, "favoriteList"), where("id", "==", book.id));
+    const querySnapshot = await getDocs(q);
+    if (!querySnapshot.empty) {
+      querySnapshot.forEach(async (document) => {
+        let data = book;
+        data.deleted = true;
+        await updateDoc(doc(db, "favoriteList", document.id), data);
+      });
+    }
+  };
+  let DeleteBookWish = async () => {
+    const q = query(collection(db, "wishList"), where("id", "==", book.id));
+    const querySnapshot = await getDocs(q);
+    if (!querySnapshot.empty) {
+      querySnapshot.forEach(async (document) => {
+        let data = book;
+        data.deleted = true;
+        await updateDoc(doc(db, "wishList", document.id), data);
+      });
+    }
+  };
 
   const showAlert = () =>
     Alert.alert(
@@ -46,7 +91,7 @@ export default function BookInfoApi({ route, navigation }) {
         },
         {
           text: "Delete",
-          onPress: () => Alert.alert("the book got deleted"),
+          onPress: () => DeleteBook(),
           style: "cancel",
         },
       ],
@@ -135,7 +180,7 @@ export default function BookInfoApi({ route, navigation }) {
               name="arrow-back-outline"
               size={40}
               style={{ color: "black", marginTop: 30, marginLeft: 10 }}
-              onPress={() => navigation.goBack()}
+              onPress={() => navigation.navigate("Discovery")}
             />
             <View
               style={{
@@ -244,6 +289,11 @@ export default function BookInfoApi({ route, navigation }) {
                 {"CATEGORY:"}
                 {"    "}
                 {book.category}
+                {"\n \n"}
+                {"price:"}
+                {"    "}
+                {book.pric}
+                {"$"}
                 {"\n "}
               </Text>
               <View style={{ flexDirection: "row" }}>
