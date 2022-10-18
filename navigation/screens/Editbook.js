@@ -98,7 +98,7 @@ export default function AddBookTest({ navigation, route }) {
           to: user.push_token,
           sound: "default",
           title: book.title,
-          body: 'Admin Updated the book',
+          body: 'The pdf verion is available now!',
         })
       }
     });

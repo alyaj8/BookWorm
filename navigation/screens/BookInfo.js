@@ -367,7 +367,7 @@ export default function BookInfo({ route, navigation }) {
               onPress={onClickNotifyMe}
             >
               <Text style={styles.buyit}>
-             {isNotified ? 'Notified' : 'Notify me'}
+             {isNotified ? 'Under Process' : 'Notify me'}
               </Text>
             </TouchableOpacity>
           </View>
