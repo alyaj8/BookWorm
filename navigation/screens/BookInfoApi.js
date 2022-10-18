@@ -180,7 +180,7 @@ export default function BookInfoApi({ route, navigation }) {
               name="arrow-back-outline"
               size={40}
               style={{ color: "black", marginTop: 30, marginLeft: 10 }}
-              onPress={() => navigation.goBack()}
+              onPress={() => navigation.pop(2)}
             />
             <View
               style={{
@@ -292,7 +292,7 @@ export default function BookInfoApi({ route, navigation }) {
                 {"\n \n"}
                 {"price:"}
                 {"    "}
-                {book.price}
+                {book.pric}
                 {"$"}
                 {"\n "}
               </Text>

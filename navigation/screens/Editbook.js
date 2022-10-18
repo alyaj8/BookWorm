@@ -34,11 +34,11 @@ import {
   where,
   deleteDoc,
   getDocs,
-  documentId
+  documentId,
 } from "firebase/firestore";
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import Toast, { BaseToast, ErrorToast } from "react-native-toast-message";
-import {sendPushNotification} from '../../util/Notifcations'
+import { sendPushNotification } from "../../util/Notifcations";
 import { AntDesign } from "@expo/vector-icons";
 
 import background_image from "./222.jpg";
@@ -86,32 +86,30 @@ export default function AddBookTest({ navigation, route }) {
       includeBase64: false,
     },
   };
-  const onClickSendNotification = async ()=>{
+  const onClickSendNotification = async () => {
     let notifications = [];
 
     const db = getFirestore();
     const q = query(
       collection(db, "users"),
-      where(documentId(), "in", book.notifiedUser),
+      where(documentId(), "in", book.notifiedUser)
     );
-    
+
     const usersDocsSnap = await getDocs(q);
-    
+
     usersDocsSnap.forEach((doc) => {
       const user = doc.data();
-      if(doc.exists){
-
+      if (doc.exists) {
         notifications.push({
           to: user.push_token,
           sound: "default",
           title: book.title,
-          body: 'The pdf verion is available now!',
-        })
+          body: "The pdf verion is available now!",
+        });
       }
     });
-    sendPushNotification(notifications)
-    
-  }
+    sendPushNotification(notifications);
+  };
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync(options);
 
@@ -140,7 +138,7 @@ export default function AddBookTest({ navigation, route }) {
   const [addDate, setAddData] = useState("");
 
   let checAuther = (text) => {
-    var letters = /^[A-Za-z" "]+$/;
+    var letters = /^[A-Za-z ]+$/;
     if (text.match(letters) && text.length < 30) {
       return true;
     } else {
@@ -157,7 +155,7 @@ export default function AddBookTest({ navigation, route }) {
   };
 
   let checC = (text) => {
-    var letters = /^[A-Za-z" "]+$/;
+    var letters = /^[A-Za-z ]+$/;
     if (text.match(letters)) {
       return true;
     } else {
@@ -166,7 +164,7 @@ export default function AddBookTest({ navigation, route }) {
   };
 
   let checT = (text) => {
-    var letters = /^[A-Za-z" "]+$/;
+    var letters = /^[A-Za-z ]+$/;
     if (text.match(letters)) {
       return true;
     } else {
@@ -301,9 +299,9 @@ export default function AddBookTest({ navigation, route }) {
           pric: value.pric,
           poster: image,
         };
-        if(book?.notifiedUser && book?.notifiedUser.length > 0 && value.pdf){ 
+        if (book?.notifiedUser && book?.notifiedUser.length > 0 && value.pdf) {
           onClickSendNotification();
-          data.notifiedUser= [];
+          data.notifiedUser = [];
         }
         await updateDoc(doc(db, "Book", book.id), data);
 
