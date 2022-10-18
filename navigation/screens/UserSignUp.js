@@ -75,6 +75,7 @@ export default function UserSignUp({ navigation }) {
         password: value.password,
         uid: user.uid,
         isAdmin: false,
+        push_token,
       };
       await setDoc(doc(db, "users", user.uid), data);
       alert("User Created please Login");

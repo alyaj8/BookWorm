@@ -54,7 +54,7 @@ export default function AddBookTest({ navigation, route }) {
     ISBN: "",
     author: "",
     poster: "",
-    virsion: "",
+    pdf: "",
     pric: "",
     error: "",
   });
@@ -69,7 +69,7 @@ export default function AddBookTest({ navigation, route }) {
     authortype3: true,
 
     poster: true,
-    virsion: true,
+    pdf: true,
     pric: true,
   });
 
@@ -85,6 +85,33 @@ export default function AddBookTest({ navigation, route }) {
       includeBase64: false,
     },
   };
+  const onClickSendNotification = async ()=>{
+    let notifications = [];
+
+    const db = getFirestore();
+    const q = query(
+      collection(db, "users"),
+      where(documentId(), "in", book.notifiedUser),
+    );
+    
+    const usersDocsSnap = await getDocs(q);
+    
+    usersDocsSnap.forEach((doc) => {
+      const user = doc.data();
+      if(doc.exists){
+
+        notifications.push({
+          to: user.push_token,
+          sound: "default",
+          title: book.title,
+          body: 'The pdf verion is available now!',
+        })
+      }
+    });
+
+    sendPushNotification(notifications)
+    
+  }
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync(options);
 
@@ -270,13 +297,15 @@ export default function AddBookTest({ navigation, route }) {
           category: value.category,
           ISBN: value.ISBN,
           author: value.author,
-          virsion: value.virsion,
+          pdf: value.pdf,
           pric: value.pric,
           poster: image,
         };
         console.log(book.id);
         await updateDoc(doc(db, "Book", book.id), data);
-
+        if(book?.notifiedUser && book?.notifiedUser.length > 0 && value.pdf){ 
+          onClickSendNotification();
+        }
         const q = query(
           collection(db, "readBookList"),
           where("id", "==", book.id)
@@ -291,7 +320,7 @@ export default function AddBookTest({ navigation, route }) {
         await showToast();
         setError({
           ...Error,
-          virsion: true,
+          pdf: true,
           author: true,
           ISBN: true,
           category: true,
@@ -310,7 +339,7 @@ export default function AddBookTest({ navigation, route }) {
           category: value.category,
           ISBN: value.ISBN,
           author: value.author,
-          virsion: value.virsion,
+          pdf: value.pdf,
           pric: value.pric,
           poster: image,
           id: book.id,
@@ -363,7 +392,7 @@ export default function AddBookTest({ navigation, route }) {
       ISBN: book.ISBN,
       author: book.author,
       poster: book.poster,
-      virsion: book.virsion,
+      pdf: book.pdf,
       pric: book.pric,
       error: "",
     });
@@ -597,8 +626,8 @@ export default function AddBookTest({ navigation, route }) {
             />
           </View>
           <View>
-            <Text style={styles.textD}>The book's electronic virsion</Text>
-            {!Error.virsion && (
+            <Text style={styles.textD}>The book's electronic pdf</Text>
+            {!Error.pdf && (
               <Text
                 style={{
                   color: "red",
@@ -611,15 +640,14 @@ export default function AddBookTest({ navigation, route }) {
             <TextInput
               style={[
                 styles.body,
-                { borderColor: !Error.virsion ? "red" : "black" },
+                { borderColor: !Error.pdf ? "red" : "black" },
               ]} //secureTextEntry={true}
               //placeholder="Password"
-              value={value.virsion}
-              onChangeText={(text) => setValue({ ...value, virsion: text })}
+              value={value.pdf}
+              onChangeText={(text) => setValue({ ...value, pdf: text })}
               underlineColorAndroid="transparent"
             />
           </View>
-
           <View>
             <Text style={styles.textD}>The book's price</Text>
             {!Error.pric && (

@@ -17,6 +17,8 @@ import { collection, getDoc, getDocs, query, where } from "firebase/firestore";
 import { doc, getFirestore, setDoc } from "firebase/firestore";
 import { db } from "../../config/firebase";
 import { withUser } from "../../config/UserContext";
+
+
 export default function Acc({ navigation }) {
   const [infoList, setinfoList] = useState([]);
   const [update, setupdate] = useState(true);

@@ -17,6 +17,7 @@ import { StripeProvider } from "@stripe/stripe-react-native";
 import react, { useEffect, useState } from "react";
 import { Rating, AirbnbRating } from "react-native-ratings";
 
+
 //import Map from './screens/Map';
 //import Fetch from './src/Fetch';
 //import {userSate,userEffect} from "react";
@@ -32,18 +33,67 @@ import {
   query,
   where,
   getDocs,
+  updateDoc,
 } from "firebase/firestore";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 
 export default function BookInfo({ route, navigation }) {
   const book = route.params;
+  var Auth = getAuth();
+  const uid = Auth?.currentUser?.uid;
 
   let [updateReadList, setupdateReadList] = useState(false);
   let [updateFavList, setupdateFavList] = useState(false);
   let [updateWishList, setupdateWishList] = useState(false);
   let [bookstar, setBookStar] = useState(0);
   let [reviewDone, setReviewDone] = useState(false);
-  var Auth = getAuth();
+  let [update, setUpdate] = useState(false);
+  const [isNotified, setIsNotified] = useState(false);
+ 
+  useEffect(() => {
+     (async function() {
+      const db = getFirestore();
+      // the book must be unique its up to you how you do it by id or by ISBN
+      const q = query(collection(db, "Book"), where("ISBN", "==", book.ISBN));
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach(async doc=>{
+        
+        const book = doc.data();
+        if(book?.notifiedUser && book?.notifiedUser?.length > 0){
+         const isUserExist = book?.notifiedUser?.some(item=>item === uid);
+         setIsNotified(isUserExist);
+        }else{
+          setIsNotified(false);
+        }
+        
+        
+      })
+     })()
+    
+   }, [])
+
+   const onClickNotifyMe = async ()=> {
+    const db = getFirestore();
+    // the book must be unique its up to you how you do it by id or by ISBN
+    const q = query(collection(db, "Book"), where("ISBN", "==", book.ISBN));
+    setIsNotified(true)
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach(async doc=>{
+      
+      const book = doc.data();
+      let data = [];
+      if(book?.notifiedUser && book?.notifiedUser?.length > 0){
+        data = [uid,...book.notifiedUser];
+      }else{
+        data.push(uid)
+      }
+      await updateDoc(doc.ref, {
+        notifiedUser: data
+      });
+      
+    })
+      
+  }
 
   let [disabled, setDisabled] = useState(false);
   let AddInfoToReadList = async () => {
@@ -167,6 +217,7 @@ export default function BookInfo({ route, navigation }) {
       CheckListedInFav();
       CheckListedInWish();
       checkReview();
+      onClickNotifyMe();
     });
 
     return unsubscribe;
@@ -490,11 +541,10 @@ export default function BookInfo({ route, navigation }) {
               </TouchableOpacity>
             </View>
 
-            <View style={{ margin: 5 }}>
+            <View>
               <TouchableOpacity
                 style={[
                   styles.fixToText,
-
                   {
                     backgroundColor: book.order ? "#aadecc" : "#00a46c",
                   },
@@ -509,6 +559,24 @@ export default function BookInfo({ route, navigation }) {
                 </Text>
               </TouchableOpacity>
             </View>
+            <View>
+            <TouchableOpacity
+                disabled={isNotified}
+
+                style={[
+                  styles.fixToText,
+                  {
+                    backgroundColor: isNotified ? "#aadecc" : "#00a46c",
+                  },
+                ]}
+              onPress={onClickNotifyMe}
+            >
+              <Text style={styles.buyit}>
+             {isNotified ? "Under Process" : "Notify me"}
+              </Text>
+            </TouchableOpacity>
+          </View>
+          
           </View>
         </ScrollView>
       </ImageBackground>

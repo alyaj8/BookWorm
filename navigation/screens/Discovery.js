@@ -12,6 +12,8 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import * as Notifications from 'expo-notifications';
+//import PushNotificationIOS from '@react-native-community/push-notification-ios';
 //import * as Notifications from 'expo-notifications';
 import Icon from "react-native-vector-icons/Ionicons";
 import { db } from "../../config/firebase";

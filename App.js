@@ -31,7 +31,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { UserProvider } from "./config/UserContext";
 import ReviewBook from "./navigation/screens/Reviewbook";
 import BookComment from "./navigation/screens/BookComment";
-
+import * as Notifications from "expo-notifications";
 const firebaseConfig = {
   apiKey: "AIzaSyCb8vT5-UmFZV-954feGAE2L0-T4Tgpqhs",
   authDomain: "group16-de98b.firebaseapp.com",
@@ -42,6 +42,13 @@ const firebaseConfig = {
   measurementId: "G-F5B7J7EDXR",
 };
 
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: false,
+    shouldSetBadge: false,
+  }),
+});
 export const Stack = createNativeStackNavigator();
 initializeApp(firebaseConfig);
 
