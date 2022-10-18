@@ -34,10 +34,11 @@ import {
   where,
   deleteDoc,
   getDocs,
+  documentId
 } from "firebase/firestore";
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import Toast, { BaseToast, ErrorToast } from "react-native-toast-message";
-
+import {sendPushNotification} from '../../util/Notifcations'
 import { AntDesign } from "@expo/vector-icons";
 
 import background_image from "./222.jpg";
@@ -108,7 +109,6 @@ export default function AddBookTest({ navigation, route }) {
         })
       }
     });
-
     sendPushNotification(notifications)
     
   }
@@ -301,11 +301,12 @@ export default function AddBookTest({ navigation, route }) {
           pric: value.pric,
           poster: image,
         };
-        console.log(book.id);
-        await updateDoc(doc(db, "Book", book.id), data);
         if(book?.notifiedUser && book?.notifiedUser.length > 0 && value.pdf){ 
           onClickSendNotification();
+          data.notifiedUser= [];
         }
+        await updateDoc(doc(db, "Book", book.id), data);
+
         const q = query(
           collection(db, "readBookList"),
           where("id", "==", book.id)

@@ -32,7 +32,7 @@ import {
   where,
 } from "firebase/firestore";
 import { db } from "../../config/firebase";
-
+import Discovery from "./Discovery";
 export default function BookInfoApi({ route, navigation }) {
   const book = route.params;
 
@@ -180,7 +180,7 @@ export default function BookInfoApi({ route, navigation }) {
               name="arrow-back-outline"
               size={40}
               style={{ color: "black", marginTop: 30, marginLeft: 10 }}
-              onPress={() => navigation.navigate("Discovery")}
+              onPress={() =>  navigation.goBack()}
             />
             <View
               style={{

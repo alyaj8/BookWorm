@@ -217,7 +217,6 @@ export default function BookInfo({ route, navigation }) {
       CheckListedInFav();
       CheckListedInWish();
       checkReview();
-      onClickNotifyMe();
     });
 
     return unsubscribe;
@@ -541,7 +540,7 @@ export default function BookInfo({ route, navigation }) {
               </TouchableOpacity>
             </View>
 
-            <View>
+           {book.pdf ? <View>
               <TouchableOpacity
                 style={[
                   styles.fixToText,
@@ -558,7 +557,7 @@ export default function BookInfo({ route, navigation }) {
                   {book.order ? "BOUGHT " : "BUY IT HERE"}
                 </Text>
               </TouchableOpacity>
-            </View>
+            </View> : 
             <View>
             <TouchableOpacity
                 disabled={isNotified}
@@ -575,7 +574,7 @@ export default function BookInfo({ route, navigation }) {
              {isNotified ? "Under Process" : "Notify me"}
               </Text>
             </TouchableOpacity>
-          </View>
+          </View>}
           
           </View>
         </ScrollView>
