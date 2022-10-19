@@ -38,10 +38,14 @@ export default function Acc({ navigation }) {
   });
   const [Error, setError] = useState({
     firstname: true,
+    firstname2: true, //////////////////////////////////////1,//////////////////////////////////////
     lastname: true,
+    lastname2: true,
     usernametype: true,
     usernameunique: true,
+    usernametype2: true,
     email: true,
+    email2: true,
   });
 
   // const [userDoc, setUserDoc] = useState([]);
@@ -57,7 +61,6 @@ export default function Acc({ navigation }) {
     try {
       const colRef = doc(db, "users", user.uid);
       const snapshot = await getDoc(colRef);
-      console.log(snapshot.id, "========>");
       let userdata = snapshot.data();
       setValue(userdata);
       setOldName(userdata.username);
@@ -82,14 +85,12 @@ export default function Acc({ navigation }) {
   };
 
   let saveChanges = async () => {
-    console.log(value.email);
-    // await checkEmail();
-    console.log(await checkEmail(), "======>check Email");
     if (
       value.firstname === "" ||
       value.lastname === "" ||
       value.username === "" ||
       value.email === "" ||
+      // checkFirstName2(value.firstname) === false ||
       checkFirstName(value.firstname) === false ||
       checklastName(value.lastname) === false ||
       checkUserName(value.username) === false ||
@@ -100,10 +101,16 @@ export default function Acc({ navigation }) {
         setError(Error);
         setupdate(!update);
       }
-      if (!checkFirstName(value.firstname) || value.firstname === "") {
-        Error.firstname = false;
+      if (value.firstname === "") {
+        Error.firstname2 = false;
         setError(Error);
         setupdate(!update);
+      } else {
+        if (!checkFirstName(value.firstname) || value.firstname === "") {
+          Error.firstname = false;
+          setError(Error);
+          setupdate(!update);
+        }
       }
 
       if (checklastName(value.lastname) && value.lastname !== "") {
@@ -111,10 +118,16 @@ export default function Acc({ navigation }) {
         setError(Error);
         setupdate(!update);
       }
-      if (!checklastName(value.lastname) || value.lastname === "") {
-        Error.lastname = false;
+      if (value.lastname === "") {
+        Error.lastname2 = false;
         setError(Error);
         setupdate(!update);
+      } else {
+        if (!checklastName(value.lastname) || value.lastname === "") {
+          Error.lastname = false;
+          setError(Error);
+          setupdate(!update);
+        }
       }
 
       if (checkUserName(value.username) && value.username !== "") {
@@ -122,23 +135,35 @@ export default function Acc({ navigation }) {
         setError(Error);
         setupdate(!update);
       }
-      if (!checkUserName(value.username) || value.username === "") {
-        Error.usernametype = false;
+      if (value.username === "") {
+        Error.usernametype2 = false;
+        setError(Error);
+        setupdate(!update);
+      } else {
+        if (!checkUserName(value.username) || value.username === "") {
+          Error.usernametype = false;
+          setError(Error);
+          setupdate(!update);
+        }
+      }
+      if (value.email == "") {
+        Error.email2 = false;
         setError(Error);
         setupdate(!update);
       }
-      if (await CheckUnique(value.username)) {
+      if (await CheckUnique()) {
         Error.usernameunique = true;
         setError(Error);
         setupdate(!update);
       }
-      if (!(await CheckUnique(value.username))) {
-        Error.usernametype = false;
+      if (!(await CheckUnique())) {
+        Error.usernameunique = false;
         setError(Error);
         setupdate(!update);
       }
     } else {
-      if (checkEmail()) {
+      if (oldEmail === value.email) {
+        setEmailError("");
         await setDoc(doc(db, "users", uid), value);
         alert("Profile Updated Successfully");
         setError({
@@ -148,16 +173,44 @@ export default function Acc({ navigation }) {
           usernameunique: true,
         });
         setOldName(value.username);
-        if (oldEmail !== value.email) {
-          navigation.navigate("Account");
-        }
       } else {
-        Error.usernametype = true;
-        setError(Error);
-        setupdate(!update);
+        try {
+          await updateEmail(user, value.email)
+            .then(async () => {
+              await setDoc(doc(db, "users", uid), value);
+              alert("Profile Updated Successfully");
+              setEmailError("");
+              setError({
+                firstname: true,
+                lastname: true,
+                usernametype: true,
+                usernameunique: true,
+              });
+              setOldName(value.username);
+              if (oldEmail !== value.email) {
+                navigation.navigate("Account"); ///////////////
+              } else {
+                navigation.navigate("Account"); ///////////////
+              }
+            })
+            .catch((error) => {
+              console.log(error.message);
+              setEmailError(error.message);
+            });
+        } catch (error) {
+          console.log(error);
+        }
       }
     }
   };
+  /*let checkFirstName2 = (value) => {
+    // var letters = /^[A-Za-z]+$/;
+    if (value.length == 0) {
+      return true;
+    } else {
+      return false;
+    }
+  };*/
 
   let checkFirstName = (value) => {
     var letters = /^[A-Za-z]+$/;
@@ -165,25 +218,6 @@ export default function Acc({ navigation }) {
       return true;
     } else {
       return false;
-    }
-  };
-
-  let checkEmail = async () => {
-    if (oldEmail === value.email) {
-      setEmailError("");
-      return true;
-    } else {
-      updateEmail(user, value.email)
-        .then(() => {
-          console.log("success");
-          setEmailError("");
-          return true;
-        })
-        .catch((error) => {
-          console.log("error", error.message);
-          setEmailError(error.message);
-          return "false";
-        });
     }
   };
 
@@ -212,7 +246,6 @@ export default function Acc({ navigation }) {
         where("username", "==", value.username)
       );
       const snapshot = await getDocs(q);
-      console.log(snapshot.empty, "========>empty");
       return snapshot.empty;
     }
   };
@@ -295,6 +328,17 @@ export default function Acc({ navigation }) {
           <View style={{ marginTop: 40, marginLeft: -10 }}>
             <View style={styles.InputContainer}>
               <Text style={{ fontWeight: "bold" }}>First Name</Text>
+
+              {!Error.firstname2 && (
+                <Text
+                  style={{
+                    color: "red",
+                    marginLeft: 10,
+                  }}
+                >
+                  This Field is mandatory
+                </Text>
+              )}
               {!Error.firstname && (
                 <Text
                   style={{
@@ -320,6 +364,16 @@ export default function Acc({ navigation }) {
             </View>
             <View style={styles.InputContainer}>
               <Text style={{ fontWeight: "bold" }}>{"\n"}Last Name</Text>
+              {!Error.lastname2 && (
+                <Text
+                  style={{
+                    color: "red",
+                    marginLeft: 10,
+                  }}
+                >
+                  This Field is mandatory
+                </Text>
+              )}
               {!Error.lastname && (
                 <Text
                   style={{
@@ -345,6 +399,16 @@ export default function Acc({ navigation }) {
             </View>
             <View style={styles.InputContainer}>
               <Text style={{ fontWeight: "bold" }}>{"\n"}User Name</Text>
+              {!Error.usernametype2 && (
+                <Text
+                  style={{
+                    color: "red",
+                    marginLeft: 10,
+                  }}
+                >
+                  This Field is mandatory
+                </Text>
+              )}
               {!Error.usernametype && (
                 <Text
                   style={{
@@ -363,7 +427,7 @@ export default function Acc({ navigation }) {
                     // marginLeft: 10,
                   }}
                 >
-                  This User Name is already Used please enter other
+                  This User Name is taken please enter another
                 </Text>
               )}
               <TextInput
@@ -377,7 +441,16 @@ export default function Acc({ navigation }) {
             </View>
             <View style={styles.InputContainer}>
               <Text style={{ fontWeight: "bold" }}>{"\n"}Email</Text>
-
+              {!Error.email2 && (
+                <Text
+                  style={{
+                    color: "red",
+                    marginLeft: 10,
+                  }}
+                >
+                  This Field is mandatory
+                </Text>
+              )}
               {emailError && (
                 <Text
                   style={{
@@ -452,3 +525,13 @@ const styles = StyleSheet.create({
     marginRight: 18,
   },
 });
+/*  {!Error.email2 && (
+                <Text
+                  style={{
+                    color: "red",
+                    marginLeft: 10,
+                  }}
+                >
+                  This Field is mandatory
+                </Text>
+              )}*/
