@@ -53,6 +53,14 @@ export default function Acc({ navigation }) {
         error.code = "Wrong email address";
         break;
 
+      case "auth/email-already-in-use":
+        error.code = "This email is already used";
+        break;
+
+      case "auth/requires-recent-login":
+        error.code = "this email is already used ";
+        break;
+
       default:
         return error.code;
     }
