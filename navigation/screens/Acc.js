@@ -327,7 +327,9 @@ export default function Acc({ navigation }) {
         >
           <View style={{ marginTop: 40, marginLeft: -10 }}>
             <View style={styles.InputContainer}>
-              <Text style={{ fontWeight: "bold" }}>First Name</Text>
+              <Text style={{ fontWeight: "bold", fontSize: 17 }}>
+                First Name
+              </Text>
 
               {!Error.firstname2 && (
                 <Text
@@ -363,7 +365,9 @@ export default function Acc({ navigation }) {
               />
             </View>
             <View style={styles.InputContainer}>
-              <Text style={{ fontWeight: "bold" }}>{"\n"}Last Name</Text>
+              <Text style={{ fontWeight: "bold", fontSize: 17 }}>
+                {"\n"}Last Name
+              </Text>
               {!Error.lastname2 && (
                 <Text
                   style={{
@@ -398,7 +402,9 @@ export default function Acc({ navigation }) {
               />
             </View>
             <View style={styles.InputContainer}>
-              <Text style={{ fontWeight: "bold" }}>{"\n"}User Name</Text>
+              <Text style={{ fontWeight: "bold", fontSize: 17 }}>
+                {"\n"}User Name
+              </Text>
               {!Error.usernametype2 && (
                 <Text
                   style={{
@@ -440,7 +446,9 @@ export default function Acc({ navigation }) {
               />
             </View>
             <View style={styles.InputContainer}>
-              <Text style={{ fontWeight: "bold" }}>{"\n"}Email</Text>
+              <Text style={{ fontWeight: "bold", fontSize: 17 }}>
+                {"\n"}Email
+              </Text>
               {!Error.email2 && (
                 <Text
                   style={{
