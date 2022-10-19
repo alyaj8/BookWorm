@@ -10,7 +10,7 @@ import {
   Alert,
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
-
+import { Rating, AirbnbRating } from "react-native-ratings"; 
 import { useEffect, useState } from "react";
 
 //import Map from './screens/Map';
@@ -35,6 +35,10 @@ import { db } from "../../config/firebase";
 import Discovery from "./Discovery";
 export default function BookInfoApi({ route, navigation }) {
   const book = route.params;
+  var Auth = getAuth();
+
+  let [bookstar, setBookStar] = useState(0);
+  let [reviewDone, setReviewDone] = useState(false);
 
   let [update, setUpdate] = useState(false);
   let DeleteBook = async () => {
@@ -166,9 +170,24 @@ export default function BookInfoApi({ route, navigation }) {
     });
   };
 
+  let checkReview = () => {
+    let countStar = 0;
+    book?.reviews?.length > 0 &&
+      Auth.onAuthStateChanged(async (user) => {
+        book.reviews?.map((val, ind) => {
+          countStar = countStar + +val.review;
+          if (user.uid === val.comenteuseruid) {
+            setReviewDone(true);
+          }
+        });
+        setBookStar(countStar);
+      });
+  };
+
   useEffect(() => {
     CheckListed();
     CheckOrder();
+    checkReview();
   }, []);
 
   return (
@@ -252,15 +271,38 @@ export default function BookInfoApi({ route, navigation }) {
                 by {book.author}
               </Text>
 
-              <View style={{ flex: 1, flexDirection: "row", paddingTop: 10 }}>
-                <Icon name="star" size={30} style={{ color: "gold" }} />
-                <Icon name="star" size={30} style={{ color: "gold" }} />
-                <Icon name="star" size={30} style={{ color: "gold" }} />
-                <Icon name="star" size={30} style={{ color: "gold" }} />
-                <Icon name="star-half" size={30} style={{ color: "gold" }} />
-              </View>
+              <Rating
+              startingValue={bookstar && bookstar / book.reviews?.length}
+              imageSize={30}
+              fractions={20}
+              showRating={false}
+              readonly={true}
+              tintColor="#EDF5F0"
+              style={{
+                marginVertical: 10,
+              }}
+            />
+
+            {book.reviews?.length > 0 ? (
               <Text
                 style={{
+                  color: "black",
+                  alignItems: "center",
+                  fontWeight: "bold",
+                }}
+              >
+                {"     "} {(bookstar / book.reviews?.length).toFixed(2)} out of
+                5 {"\n"}
+                {book.reviews?.length} People Reviewed
+              </Text>
+            ) : (
+              <Text style={{ color: "black" }}> No Reviews yet {"\n     0 Poeple "}
+              </Text>
+            )} 
+              <Text
+                style={{
+                  color: "black",
+                  alignItems: "center",
                   fontWeight: "bold",
                   alignSelf: "flex-start",
                   marginBottom: 15,

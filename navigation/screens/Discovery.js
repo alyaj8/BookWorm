@@ -254,21 +254,13 @@ function Discovry({ navigation, isAdmin }) {
                           style={{
                             textAlign: "left",
                             color: "grey",
-                            fontSize: 9,
+                            fontSize: 10,
                           }}
                         >
                           By:
                           {Datacat(item.author, 19)} {"\n"}{" "}
                         </Text>
-                        <Icon name="star" size={16} style={{ color: "gold" }} />
-                        <Icon name="star" size={16} style={{ color: "gold" }} />
-                        <Icon name="star" size={16} style={{ color: "gold" }} />
-                        <Icon name="star" size={16} style={{ color: "gold" }} />
-                        <Icon
-                          name="star-half"
-                          size={16}
-                          style={{ color: "gold" }}
-                        />
+                        
                       </Text>
                     </TouchableOpacity>
                   </View>
@@ -313,11 +305,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   card: {
-    height: "90%",
+    height: "80%",
     backgroundColor: "#EDF5F0",
     marginHorizontal: 10,
     borderRadius: 10,
-    margin: 10,
+    margin: 5,
     marginBottom: 30,
     padding: 10,
     borderColor: "#00a46c",
