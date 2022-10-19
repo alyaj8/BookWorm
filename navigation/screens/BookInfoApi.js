@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import Commentadmin from "./Commentadmin";
-import { Rating, AirbnbRating } from "react-native-ratings"; 
+import { Rating, AirbnbRating } from "react-native-ratings";
 import { useEffect, useState } from "react";
 
 //import Map from './screens/Map';
@@ -199,8 +199,8 @@ export default function BookInfoApi({ route, navigation }) {
             <Icon
               name="arrow-back-outline"
               size={40}
-              style={{ color: "black", marginTop: 30, marginLeft: 10 }}
-              onPress={() => navigation.pop(2)}
+              style={{ color: "green", marginTop: 30, marginLeft: 10 }}
+              onPress={() => navigation.goBack()}
             />
             <View
               style={{
@@ -273,55 +273,57 @@ export default function BookInfoApi({ route, navigation }) {
               </Text>
 
               <Rating
-              startingValue={bookstar && bookstar / book.reviews?.length}
-              imageSize={30}
-              fractions={20}
-              showRating={false}
-              readonly={true}
-              tintColor="#EDF5F0"
-              style={{
-                marginVertical: 10,
-              }}
-            />
+                startingValue={bookstar && bookstar / book.reviews?.length}
+                imageSize={30}
+                fractions={20}
+                showRating={false}
+                readonly={true}
+                tintColor="#EDF5F0"
+                style={{
+                  marginVertical: 10,
+                }}
+              />
 
-            {book.reviews?.length > 0 ? (
-              <Text
+              {book.reviews?.length > 0 ? (
+                <Text
+                  style={{
+                    color: "black",
+                    alignItems: "center",
+                    fontWeight: "bold",
+                  }}
+                >
+                  {"     "} {(bookstar / book.reviews?.length).toFixed(2)} out
+                  of 5 {"\n"}
+                  {book.reviews?.length} People Reviewed
+                </Text>
+              ) : (
+                <Text style={{ color: "black" }}>
+                  {" "}
+                  No Reviews yet {"\n     0 Poeple "}
+                </Text>
+              )}
+              <TouchableOpacity
                 style={{
-                  color: "black",
+                  width: 150,
+                  height: 50,
                   alignItems: "center",
-                  fontWeight: "bold",
+                  justifyContent: "center",
+                }}
+                onPress={() => {
+                  navigation.navigate("Commentadmin", book);
                 }}
               >
-                {"     "} {(bookstar / book.reviews?.length).toFixed(2)} out of
-                5 {"\n"}
-                {book.reviews?.length} People Reviewed
-              </Text>
-            ) : (
-              <Text style={{ color: "black" }}> No Reviews yet {"\n     0 Poeple "}
-              </Text>
-            )} 
-            <TouchableOpacity
-              style={{
-                width: 150,
-                height: 50,
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-              onPress={() => {
-                navigation.navigate("Commentadmin", book);
-              }}
-            >
-              <Text
-                style={{
-                  textDecorationLine: "underline",
-                  fontWeight: "bold",
-                  fontSize: 16,
-                  color:"green",
-                }}
-              >
-                See Reviews...
-              </Text>
-            </TouchableOpacity>
+                <Text
+                  style={{
+                    textDecorationLine: "underline",
+                    fontWeight: "bold",
+                    fontSize: 16,
+                    color: "green",
+                  }}
+                >
+                  See Reviews...
+                </Text>
+              </TouchableOpacity>
               <Text
                 style={{
                   color: "black",

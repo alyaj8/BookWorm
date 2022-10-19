@@ -138,7 +138,7 @@ export default function AddBookTest({ navigation, route }) {
   const [addDate, setAddData] = useState("");
 
   let checAuther = (text) => {
-    var letters = /^[A-Za-z ]+$/;
+    var letters = /^[\u0600-\u06FFA-Za-z ]+$/;
     if (text.match(letters) && text.length < 30) {
       return true;
     } else {
@@ -164,7 +164,7 @@ export default function AddBookTest({ navigation, route }) {
   };
 
   let checT = (text) => {
-    var letters = /^[A-Za-z ]+$/;
+    var letters = /^[\u0600-\u06FFA-Za-z ]+$/;
     if (text.match(letters)) {
       return true;
     } else {
@@ -189,7 +189,7 @@ export default function AddBookTest({ navigation, route }) {
       value.author === undefined ||
       checAuther(value.author) === false
     ) {
-      console.log(value.title);
+      //  console.log(value.title);
 
       /*  if (image === null) {
         Error.poster = false;
@@ -331,8 +331,7 @@ export default function AddBookTest({ navigation, route }) {
           authortype2: true,
           authortype3: true,
         });
-
-        await navigation.navigate("BookInfoApi", {
+        await navigation.navigate("Adminpage", {
           title: value.title,
           Description: value.Description,
           category: value.category,

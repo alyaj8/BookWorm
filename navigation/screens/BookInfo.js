@@ -17,7 +17,6 @@ import { StripeProvider } from "@stripe/stripe-react-native";
 import react, { useEffect, useState } from "react";
 import { Rating, AirbnbRating } from "react-native-ratings";
 
-
 //import Map from './screens/Map';
 //import Fetch from './src/Fetch';
 //import {userSate,userEffect} from "react";
@@ -49,51 +48,44 @@ export default function BookInfo({ route, navigation }) {
   let [reviewDone, setReviewDone] = useState(false);
   let [update, setUpdate] = useState(false);
   const [isNotified, setIsNotified] = useState(false);
- 
+
   useEffect(() => {
-     (async function() {
+    (async function () {
       const db = getFirestore();
       // the book must be unique its up to you how you do it by id or by ISBN
       const q = query(collection(db, "Book"), where("ISBN", "==", book.ISBN));
       const querySnapshot = await getDocs(q);
-      querySnapshot.forEach(async doc=>{
-        
+      querySnapshot.forEach(async (doc) => {
         const book = doc.data();
-        if(book?.notifiedUser && book?.notifiedUser?.length > 0){
-         const isUserExist = book?.notifiedUser?.some(item=>item === uid);
-         setIsNotified(isUserExist);
-        }else{
+        if (book?.notifiedUser && book?.notifiedUser?.length > 0) {
+          const isUserExist = book?.notifiedUser?.some((item) => item === uid);
+          setIsNotified(isUserExist);
+        } else {
           setIsNotified(false);
         }
-        
-        
-      })
-     })()
-    
-   }, [])
+      });
+    })();
+  }, []);
 
-   const onClickNotifyMe = async ()=> {
+  const onClickNotifyMe = async () => {
     const db = getFirestore();
     // the book must be unique its up to you how you do it by id or by ISBN
     const q = query(collection(db, "Book"), where("ISBN", "==", book.ISBN));
-    setIsNotified(true)
+    setIsNotified(true);
     const querySnapshot = await getDocs(q);
-    querySnapshot.forEach(async doc=>{
-      
+    querySnapshot.forEach(async (doc) => {
       const book = doc.data();
       let data = [];
-      if(book?.notifiedUser && book?.notifiedUser?.length > 0){
-        data = [uid,...book.notifiedUser];
-      }else{
-        data.push(uid)
+      if (book?.notifiedUser && book?.notifiedUser?.length > 0) {
+        data = [uid, ...book.notifiedUser];
+      } else {
+        data.push(uid);
       }
       await updateDoc(doc.ref, {
-        notifiedUser: data
+        notifiedUser: data,
       });
-      
-    })
-      
-  }
+    });
+  };
 
   let [disabled, setDisabled] = useState(false);
   let AddInfoToReadList = async () => {
@@ -354,7 +346,9 @@ export default function BookInfo({ route, navigation }) {
                 {book.reviews?.length} People Reviewed
               </Text>
             ) : (
-              <Text style={{ color: "black" }}> No Reviews yet {"\n     0 Poeple "}
+              <Text style={{ color: "black" }}>
+                {" "}
+                No Reviews yet {"\n     0 Poeple "}
               </Text>
             )}
             <TouchableOpacity
@@ -373,7 +367,7 @@ export default function BookInfo({ route, navigation }) {
                   textDecorationLine: "underline",
                   fontWeight: "bold",
                   fontSize: 16,
-                  color:"green",
+                  color: "green",
                 }}
               >
                 See Reviews...
@@ -416,97 +410,100 @@ export default function BookInfo({ route, navigation }) {
               {book.category}
               {"\n"} {"\n"}
               {"PRICE:"}
-              {book.price}
+              {"    "}
+              {book.pric}
               {"\n"} {"\n"}
             </Text>
-<Text style={{
+            <Text
+              style={{
                 flew: 1,
                 alignItems: "center",
                 justifyContent: "center",
                 marginTop: 9,
                 paddingLeft: 10,
                 paddingRight: 10,
-                paddingBottom:5,
+                paddingBottom: 5,
                 // fontSize: "15%",
                 fontSize: 20,
                 fontWeight: "bold",
                 color: "grey",
-              }}>Add Book to your list</Text>
-          <View style={{flexDirection:'row'}}>
-            <TouchableOpacity
-              style={{
-                flex: 1,
-                flexDirection: "row",
-                borderRadius: 25,
-                width:"48%",
-                height:50,
-                backgroundColor: book.listedInRead ? "#aadecc" : "#00a46c",
-                paddingHorizontal: 20,
-                
               }}
-              onPress={() => AddInfoToReadList()}
-              disabled={book.listedInRead || disabled}
             >
-              <Text
+              Add Book to your list
+            </Text>
+            <View style={{ flexDirection: "row" }}>
+              <TouchableOpacity
                 style={{
-                  fontWeight: "bold",
-                  paddingBottom: 1,
-                  fontSize: 18,
-                  marginTop:book.listedInRead ? 0 : 15,
-                  paddingLeft:book.listedInRead ? 0 : 18,
+                  flex: 1,
+                  flexDirection: "row",
+                  borderRadius: 25,
+                  width: "48%",
+                  height: 50,
+                  backgroundColor: book.listedInRead ? "#aadecc" : "#00a46c",
+                  paddingHorizontal: 20,
                 }}
+                onPress={() => AddInfoToReadList()}
+                disabled={book.listedInRead || disabled}
               >
-                {book.listedInRead ? "Added to Read" : "Read"}
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={{
-                flex: 1,
-                flexDirection: "row",
-                borderRadius: 25,
-                backgroundColor: book.listedInFav ? "#aadecc" : "#00a46c",
-                paddingHorizontal: 20,
-               
-              }}
-              onPress={() => AddInfoToFavList()}
-              disabled={book.listedInFav || disabled}
-            >
-              <Text
+                <Text
+                  style={{
+                    fontWeight: "bold",
+                    paddingBottom: 1,
+                    fontSize: 18,
+                    marginTop: book.listedInRead ? 0 : 15,
+                    paddingLeft: book.listedInRead ? 0 : 18,
+                  }}
+                >
+                  {book.listedInRead ? "Added to Read" : "Read"}
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
                 style={{
-                  fontWeight: "bold",
-                  paddingBottom: 1,
-                  fontSize: 18,
-                  marginTop:book.listedInFav ? 0 : 15,
-                  paddingLeft:book.listedInFav ? 0 : 10,
+                  flex: 1,
+                  flexDirection: "row",
+                  borderRadius: 25,
+                  backgroundColor: book.listedInFav ? "#aadecc" : "#00a46c",
+                  paddingHorizontal: 20,
                 }}
+                onPress={() => AddInfoToFavList()}
+                disabled={book.listedInFav || disabled}
               >
-                {book.listedInFav ? "Added to Favorite" : "Favorite"}
-              </Text>
-            </TouchableOpacity>
+                <Text
+                  style={{
+                    fontWeight: "bold",
+                    paddingBottom: 1,
+                    fontSize: 18,
+                    marginTop: book.listedInFav ? 0 : 15,
+                    paddingLeft: book.listedInFav ? 0 : 10,
+                  }}
+                >
+                  {book.listedInFav ? "Added to Favorite" : "Favorite"}
+                </Text>
+              </TouchableOpacity>
 
-            <TouchableOpacity
-              style={{
-                flex: 1,
-                flexDirection: "row",
-                borderRadius: 25,
-                backgroundColor: book.listedInWish ? "#aadecc" : "#00a46c",
-                paddingHorizontal: 20,
-              }}
-              onPress={() => AddInfoToWishList()}
-              disabled={book.listedInWish || disabled}
-            >
-              <Text
+              <TouchableOpacity
                 style={{
-                  fontWeight: "bold",
-                  paddingBottom: 1,
-                  fontSize: 18,
-                  marginTop:book.listedInWish ? 0 : 15,
-                  paddingLeft:book.listedInWish ? 0 : 18,
+                  flex: 1,
+                  flexDirection: "row",
+                  borderRadius: 25,
+                  backgroundColor: book.listedInWish ? "#aadecc" : "#00a46c",
+                  paddingHorizontal: 20,
                 }}
+                onPress={() => AddInfoToWishList()}
+                disabled={book.listedInWish || disabled}
               >
-                {book.listedInWish ? "Added to Wish" : "Wish"}
-              </Text>
-            </TouchableOpacity>
+                <Text
+                  style={{
+                    fontWeight: "bold",
+                    paddingBottom: 1,
+                    fontSize: 18,
+                    marginTop: book.listedInWish ? 0 : 15,
+                    paddingLeft: book.listedInWish ? 0 : 18,
+                  }}
+                >
+                  {book.listedInWish ? "Added to Wish" : "Wish"}
+                </Text>
+              </TouchableOpacity>
             </View>
             <View
               style={{
@@ -540,42 +537,43 @@ export default function BookInfo({ route, navigation }) {
               </TouchableOpacity>
             </View>
 
-           {book.pdf ? <View>
-              <TouchableOpacity
-                style={[
-                  styles.fixToText,
-                  {
-                    backgroundColor: book.order ? "#aadecc" : "#00a46c",
-                  },
-                ]}
-                onPress={() => {
-                  navigation.navigate("StripeApp", book);
-                }}
-                disabled={book.order}
-              >
-                <Text style={styles.buyit}>
-                  {book.order ? "BOUGHT " : "BUY IT HERE"}
-                </Text>
-              </TouchableOpacity>
-            </View> : 
-            <View>
-            <TouchableOpacity
-                disabled={isNotified}
-
-                style={[
-                  styles.fixToText,
-                  {
-                    backgroundColor: isNotified ? "#aadecc" : "#00a46c",
-                  },
-                ]}
-              onPress={onClickNotifyMe}
-            >
-              <Text style={styles.buyit}>
-             {isNotified ? "Under Process" : "Notify me"}
-              </Text>
-            </TouchableOpacity>
-          </View>}
-          
+            {book.pdf ? (
+              <View>
+                <TouchableOpacity
+                  style={[
+                    styles.fixToText,
+                    {
+                      backgroundColor: book.order ? "#aadecc" : "#00a46c",
+                    },
+                  ]}
+                  onPress={() => {
+                    navigation.navigate("StripeApp", book);
+                  }}
+                  disabled={book.order}
+                >
+                  <Text style={styles.buyit}>
+                    {book.order ? "BOUGHT " : "BUY IT HERE"}
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            ) : (
+              <View>
+                <TouchableOpacity
+                  disabled={isNotified}
+                  style={[
+                    styles.fixToText,
+                    {
+                      backgroundColor: isNotified ? "#aadecc" : "#00a46c",
+                    },
+                  ]}
+                  onPress={onClickNotifyMe}
+                >
+                  <Text style={styles.buyit}>
+                    {isNotified ? "Under Process" : "Notify me"}
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            )}
           </View>
         </ScrollView>
       </ImageBackground>
