@@ -10,6 +10,7 @@ import {
   Alert,
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
+import Commentadmin from "./Commentadmin";
 import { Rating, AirbnbRating } from "react-native-ratings"; 
 import { useEffect, useState } from "react";
 
@@ -299,6 +300,28 @@ export default function BookInfoApi({ route, navigation }) {
               <Text style={{ color: "black" }}> No Reviews yet {"\n     0 Poeple "}
               </Text>
             )} 
+            <TouchableOpacity
+              style={{
+                width: 150,
+                height: 50,
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+              onPress={() => {
+                navigation.navigate("Commentadmin", book);
+              }}
+            >
+              <Text
+                style={{
+                  textDecorationLine: "underline",
+                  fontWeight: "bold",
+                  fontSize: 16,
+                  color:"green",
+                }}
+              >
+                See Reviews...
+              </Text>
+            </TouchableOpacity>
               <Text
                 style={{
                   color: "black",
