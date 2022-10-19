@@ -47,7 +47,17 @@ export default function Acc({ navigation }) {
     email: true,
     email2: true,
   });
+  function msg(error) {
+    switch (error.code) {
+      case "auth/invalid-email":
+        error.code = "Wrong email address";
+        break;
 
+      default:
+        return error.code;
+    }
+    return error.code;
+  }
   // const [userDoc, setUserDoc] = useState([]);
 
   const auth = getAuth();
@@ -195,7 +205,7 @@ export default function Acc({ navigation }) {
             })
             .catch((error) => {
               console.log(error.message);
-              setEmailError(error.message);
+              setEmailError(msg(error));
             });
         } catch (error) {
           console.log(error);
