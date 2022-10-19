@@ -173,11 +173,13 @@ export default function Acc({ navigation }) {
           usernameunique: true,
         });
         setOldName(value.username);
+        navigation.navigate("Account"); ///////////////
       } else {
         try {
           await updateEmail(user, value.email)
             .then(async () => {
               await setDoc(doc(db, "users", uid), value);
+              //  navigation.navigate("Account"); ///////////////
               alert("Profile Updated Successfully");
               setEmailError("");
               setError({
@@ -188,8 +190,6 @@ export default function Acc({ navigation }) {
               });
               setOldName(value.username);
               if (oldEmail !== value.email) {
-                navigation.navigate("Account"); ///////////////
-              } else {
                 navigation.navigate("Account"); ///////////////
               }
             })
