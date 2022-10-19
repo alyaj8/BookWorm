@@ -79,13 +79,13 @@ export default function BookInfo({ route, navigation }) {
       if (book?.notifiedUser && book?.notifiedUser?.length > 0) {
         data = [uid, ...book.notifiedUser];
       } else {
-        data.push(uid);
+        data.push(uid)
       }
       await updateDoc(doc.ref, {
-        notifiedUser: data,
+        notifiedUser: data
       });
-    });
-  };
+    })
+  }
 
   let [disabled, setDisabled] = useState(false);
   let AddInfoToReadList = async () => {
