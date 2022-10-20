@@ -412,6 +412,7 @@ export default function BookInfo({ route, navigation }) {
               {"PRICE:"}
               {"    "}
               {book.pric}
+              {"$"}
               {"\n"} {"\n"}
             </Text>
             <Text
@@ -569,7 +570,7 @@ export default function BookInfo({ route, navigation }) {
                   onPress={onClickNotifyMe}
                 >
                   <Text style={styles.buyit}>
-                    {isNotified ? "Under Process" : "Notify me"}
+                    {isNotified ? "Under Process" : "Notify me for pdf"}
                   </Text>
                 </TouchableOpacity>
               </View>
