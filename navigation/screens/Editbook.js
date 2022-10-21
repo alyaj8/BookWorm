@@ -585,6 +585,7 @@ export default function AddBookTest({ navigation, route }) {
               value={value?.ISBN?.toString()}
               onChangeText={(text) => setValue({ ...value, ISBN: text })}
               underlineColorAndroid="transparent"
+              keyboardType="numeric"
             />
           </View>
 
@@ -684,7 +685,7 @@ export default function AddBookTest({ navigation, route }) {
               onPress={() => addField()}
             >
               <Text style={{ color: "white", fontWeight: "bold" }}>
-                ADD BUTTON
+                Save changes
               </Text>
             </TouchableOpacity>
           </View>

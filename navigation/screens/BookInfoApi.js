@@ -199,7 +199,7 @@ export default function BookInfoApi({ route, navigation }) {
             <Icon
               name="arrow-back-outline"
               size={40}
-              style={{ color: "green", marginTop: 30, marginLeft: 10 }}
+              style={{ color: "black", marginTop: 30, marginLeft: 10 }}
               onPress={() => navigation.goBack()}
             />
             <View

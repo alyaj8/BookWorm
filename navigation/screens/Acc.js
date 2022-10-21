@@ -50,7 +50,7 @@ export default function Acc({ navigation }) {
   function msg(error) {
     switch (error.code) {
       case "auth/invalid-email":
-        error.code = "Wrong email address";
+        error.code = "Wrong email format";
         break;
 
       case "auth/email-already-in-use":

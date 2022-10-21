@@ -66,10 +66,10 @@ export default function Changepass({ navigation }) {
             setError(error.message);
           });
       } else {
-        setError("Current Password is no correct");
+        setError("Current Password is not correct");
       }
     } else {
-      setError("Password will be more then 7 character");
+      setError("Password will be more than 7 character");
     }
   };
   return (
