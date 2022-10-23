@@ -395,7 +395,7 @@ export default function BookInfo({ route, navigation }) {
                 navigation.navigate("BookComment", book);
                 
               }}
-              disabled={book.reviews?.length == 0 }
+              disabled={book.reviews?.length == null?true:false }
              
             >
               <Text
