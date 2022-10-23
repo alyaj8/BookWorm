@@ -34,6 +34,7 @@ import ReviewBook from "./navigation/screens/Reviewbook";
 import BookComment from "./navigation/screens/BookComment";
 import * as Notifications from "expo-notifications";
 import Commentadmin from "./navigation/screens/Commentadmin";
+import CreateCustomList from "./navigation/screens/CreateCustomList";
 const firebaseConfig = {
   apiKey: "AIzaSyCb8vT5-UmFZV-954feGAE2L0-T4Tgpqhs",
   authDomain: "group16-de98b.firebaseapp.com",
@@ -92,6 +93,7 @@ function App() {
             <Stack.Screen name="Commentadmin" component={Commentadmin} />
             <Stack.Screen name="Discovery" component={Discovery} />
             <Stack.Screen name="RecViewall" component={RecViewall} />
+            <Stack.Screen name="CreateCustomList" component={CreateCustomList}/>
           </Stack.Navigator>
         </NavigationContainer>
       </StripeProvider>

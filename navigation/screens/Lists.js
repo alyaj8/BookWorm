@@ -166,6 +166,33 @@ export default function Lists({ navigation }) {
           </View>
         </View>
       </View>
+      <TouchableOpacity
+              style={{
+                width: 150,
+                height: 50,
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+              
+              onPress={() => {
+                navigation.navigate("CreateCustomList");
+                
+              }}
+             
+            >
+              <Text
+                style={{
+                  color: "green",
+                  textDecorationLine: "underline",
+                  fontWeight: "bold",
+                  fontSize: 16,
+                }}
+                
+                
+              >
+                Create custom list
+              </Text>
+            </TouchableOpacity>
 
       <View
         style={{
@@ -600,6 +627,8 @@ export default function Lists({ navigation }) {
           </Text>
         )}
       </ScrollView>
+   
+          
     </ScrollView> //for all the page
   );
 }
