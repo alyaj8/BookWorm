@@ -351,6 +351,7 @@ export default function BookInfo({ route, navigation }) {
                 No Reviews yet {"\n     0 Poeple "}
               </Text>
             )}
+            
             <TouchableOpacity
               style={{
                 width: 150,
@@ -358,19 +359,25 @@ export default function BookInfo({ route, navigation }) {
                 alignItems: "center",
                 justifyContent: "center",
               }}
+              
               onPress={() => {
                 navigation.navigate("BookComment", book);
+                disabled={reviewDone}
               }}
+              
+             
             >
               <Text
                 style={{
+                  color: reviewDone ? "green" : "grey",
                   textDecorationLine: "underline",
                   fontWeight: "bold",
                   fontSize: 16,
-                  color: "green",
                 }}
+                
+                
               >
-                See Reviews...
+                {reviewDone ? "See Reviews.." : "No Reviews.."}
               </Text>
             </TouchableOpacity>
 

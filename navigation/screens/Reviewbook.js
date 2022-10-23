@@ -82,7 +82,7 @@ export default function Reviewbook({ route, navigation }) {
               style={{
                 borderRadius: 25,
                 backgroundColor:
-                  review === 0 && comment === "" ? "#aadecc" : "#00a46c",
+                  review === 0 || comment === "" ? "#aadecc" : "#00a46c",
                 width: "48%",
                 alignSelf: "center",
                 marginTop: 30,
@@ -92,7 +92,7 @@ export default function Reviewbook({ route, navigation }) {
                 justifyContent: "center",
               }}
               onPress={() => PostReview()}
-              disabled={review === 0 && comment === "" ? true : false}
+              disabled={review === 0 || comment === "" ? true : false}
             >
               <Text
                 style={{
