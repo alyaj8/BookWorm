@@ -11,17 +11,18 @@ import Lists from "./screens/Lists";
 import Account from "./screens/Account";
 import Discovery from "./screens/Discovery";
 import More from "./screens/More";
+import RecViewall from "./screens/RecViewall";
 
 //Screen names
 const HomeName = "Home";
 const ListssName = "Lists";
+const RecViewall2 = "RecViewall";
 
 const MoreName = "More";
 const DiscovryName = "Discovery";
 const AccountName = "Account";
 
 const Tab = createBottomTabNavigator();
-//export default Maincontainer;
 const Stack = createNativeStackNavigator();
 
 export default function Maincontainer({ navigation }) {

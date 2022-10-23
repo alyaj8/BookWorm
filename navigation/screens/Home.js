@@ -84,20 +84,19 @@ export default function Home({ navigation }) {
           paddingHorizontal: 9,
         }}
       >
-       
-          <Text
-            style={{
-              fontWeight: "bold",
-              fontSize: 17,
-              color: "#585a61",
-              marginBottom: -18,
-              fontWeight: "bold",
-              marginTop: 8,
-            }}
-          >
-            Highest Rated Books
-          </Text>
-          <TouchableOpacity>
+        <Text
+          style={{
+            fontWeight: "bold",
+            fontSize: 17,
+            color: "#585a61",
+            marginBottom: -18,
+            fontWeight: "bold",
+            marginTop: 8,
+          }}
+        >
+          Highest Rated Books
+        </Text>
+        <TouchableOpacity>
           <View
             style={{
               backgroundColor: "#00a46c",
@@ -109,7 +108,6 @@ export default function Home({ navigation }) {
               height: 27,
             }}
           >
-
             <Text
               style={{
                 fontWeight: "bold",
@@ -192,20 +190,19 @@ export default function Home({ navigation }) {
           paddingHorizontal: 9,
         }}
       >
-        
-          <Text
-            style={{
-              fontWeight: "bold",
-              fontSize: 17,
-              color: "#585a61",
-              marginBottom: -18,
-              fontWeight: "bold",
-              marginTop: 8,
-            }}
-          >
-            Recommendation
-          </Text>
-          <TouchableOpacity>
+        <Text
+          style={{
+            fontWeight: "bold",
+            fontSize: 17,
+            color: "#585a61",
+            marginBottom: -18,
+            fontWeight: "bold",
+            marginTop: 8,
+          }}
+        >
+          Recommendation
+        </Text>
+        <TouchableOpacity onPress={() => navigation.navigate("recViewall")}>
           <View
             style={{
               backgroundColor: "#00a46c",
