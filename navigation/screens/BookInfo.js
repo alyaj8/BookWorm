@@ -9,10 +9,10 @@ import {
   TouchableOpacity,
   View,
   Button,
-  Share
+  Share,
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
-import React from 'react';
+import React from "react";
 import StripeApp from "./StripeApp";
 import BookComment from "./BookComment";
 import { StripeProvider } from "@stripe/stripe-react-native";
@@ -81,13 +81,13 @@ export default function BookInfo({ route, navigation }) {
       if (book?.notifiedUser && book?.notifiedUser?.length > 0) {
         data = [uid, ...book.notifiedUser];
       } else {
-        data.push(uid)
+        data.push(uid);
       }
       await updateDoc(doc.ref, {
-        notifiedUser: data
+        notifiedUser: data,
       });
-    })
-  }
+    });
+  };
 
   let [disabled, setDisabled] = useState(false);
   let AddInfoToReadList = async () => {
@@ -114,9 +114,15 @@ export default function BookInfo({ route, navigation }) {
       const data = book;
       data.favouriteListUserId = uid;
       await addDoc(collection(db, "favoriteList"), data);
+      const data2 = {
+        category: data.category,
+        ISBN: data.ISBN,
+        user_uid: uid,
+      };
       book.listedInFav = true;
       setupdateFavList(true);
       setDisabled(false);
+      await addDoc(collection(db, "Recommendation"), data2);
     } catch (error) {
       alert(error);
       setDisabled(false);
@@ -249,7 +255,7 @@ export default function BookInfo({ route, navigation }) {
     try {
       const result = await Share.share({
         message:
-          'React Native | A framework for building native apps using React',
+          "React Native | A framework for building native apps using React",
       });
       if (result.action === Share.sharedAction) {
         if (result.activityType) {
@@ -269,21 +275,20 @@ export default function BookInfo({ route, navigation }) {
     <SafeAreaView>
       <ImageBackground source={require("./222.jpg")} resizeMode="cover">
         <ScrollView>
-        <View style={{flexDirection:'row',justifyContent:'space-between'}}>
-          <Icon
-            name="arrow-back-outline"
-            justifyContent='space-between'
-            size={45}
-            style={{ color: "black", marginTop: 50, marginLeft: 10 }}
-            onPress={() => navigation.goBack()}
-          />
-          <View style={{ marginTop: 50,justifyContent:'space-between'}}>
-             <Icon 
-             name="share"
-             size={45}
-             onPress={onShare} title="Share" />
+          <View
+            style={{ flexDirection: "row", justifyContent: "space-between" }}
+          >
+            <Icon
+              name="arrow-back-outline"
+              justifyContent="space-between"
+              size={45}
+              style={{ color: "black", marginTop: 50, marginLeft: 10 }}
+              onPress={() => navigation.goBack()}
+            />
+            <View style={{ marginTop: 50, justifyContent: "space-between" }}>
+              <Icon name="share" size={45} onPress={onShare} title="Share" />
+            </View>
           </View>
-        </View>
           <View
             style={{
               alignItems: "center",
@@ -382,7 +387,7 @@ export default function BookInfo({ route, navigation }) {
                 No Reviews yet {"\n     0 Poeple "}
               </Text>
             )}
-            
+
             <TouchableOpacity
               style={{
                 width: 150,
@@ -390,13 +395,10 @@ export default function BookInfo({ route, navigation }) {
                 alignItems: "center",
                 justifyContent: "center",
               }}
-              
               onPress={() => {
                 navigation.navigate("BookComment", book);
-                
               }}
-              disabled={book.reviews?.length == null?true:false }
-             
+              disabled={book.reviews?.length == null ? true : false}
             >
               <Text
                 style={{
@@ -405,10 +407,8 @@ export default function BookInfo({ route, navigation }) {
                   fontWeight: "bold",
                   fontSize: 16,
                 }}
-                
-                
               >
-                {book.reviews?.length >0 ?  "See Reviews.." : "No Reviews.."}
+                {book.reviews?.length > 0 ? "See Reviews.." : "No Reviews.."}
               </Text>
             </TouchableOpacity>
 

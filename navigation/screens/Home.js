@@ -14,6 +14,8 @@ import {
   Alert,
   ImageBackground,
   TouchableOpacity,
+  Pressable,
+  Modal,
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 //import { LinearGradient } from "expo-linear-gradient";
@@ -22,6 +24,7 @@ import { LinearGradient } from "expo-linear-gradient";
 
 export default function Home({ navigation }) {
   let [rec, setrec] = useState([]);
+  let [modalVisible, setModalVisible] = useState(false);
 
   return (
     <View
@@ -202,29 +205,30 @@ export default function Home({ navigation }) {
         >
           Recommendation
         </Text>
-        <TouchableOpacity onPress={() => navigation.navigate("recViewall")}>
-          <View
-            style={{
-              backgroundColor: "#00a46c",
-              paddingHorizontal: 20,
-              paddingVertical: 5,
-              borderRadius: 15,
-              alignSelf: "flex-end",
-              width: 89,
-              height: 27,
-            }}
-          >
-            <Text
-              style={{
-                fontWeight: "bold",
-                fontSize: 13,
-                color: "#FFF",
-              }}
-            >
-              View all
-            </Text>
-          </View>
-        </TouchableOpacity>
+        <Icon
+          onPress={() => setModalVisible(true)}
+          name="information-circle-outline"
+          size={30}
+          style={{ color: "black", marginLeft: 230, marginBottom: -30 }}
+        />
+
+        <View
+          style={{
+            backgroundColor: "#00a46c",
+            paddingHorizontal: 20,
+            paddingVertical: 5,
+            borderRadius: 15,
+            alignSelf: "flex-end",
+            width: 89,
+            height: 27,
+          }}
+        >
+          <Button
+            onPress={() => navigation.navigate("RecViewall")}
+            title="View all"
+          ></Button>
+          <Text>View all</Text>
+        </View>
 
         <ScrollView
           horizontal
@@ -258,6 +262,35 @@ export default function Home({ navigation }) {
             }}
             //  disabled={val.deleted}
           >
+            <Modal
+              animationType="slide"
+              transparent={true}
+              visible={modalVisible}
+              /*onRequestClose={() => {
+                Alert.alert("Modal has been closed.");
+                setModalVisible(!modalVisible);
+              }}*/
+            >
+              <View>
+                <View
+                  style={{
+                    backgroundColor: "white",
+                    margin: 50,
+                    padding: 50,
+                    marginTop: 400,
+                  }}
+                >
+                  <Text> hhhhhhhereeeeeehhhhhh write category</Text>
+                  <Icon
+                    onPress={() => setModalVisible(false)}
+                    name="close-outline"
+                    size={30}
+                    style={{ color: "black", marginLeft: -20, marginTop: -40 }}
+                  />
+                </View>
+              </View>
+            </Modal>
+
             <View
               style={{
                 flexDirection: "row",
