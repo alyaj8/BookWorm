@@ -8,8 +8,12 @@ import {
   TextInput,
   TouchableOpacity,
   View,
+  Button,
+  Share
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
+import React from 'react';
+
 
 import StripeApp from "./StripeApp";
 import BookComment from "./BookComment";
@@ -249,18 +253,53 @@ export default function BookInfo({ route, navigation }) {
     CheckListedInFav();
     CheckListedInWish();
     CheckOrder();
+    
   }, [navigation]);
+
+
+
+  const onShare = async () => {
+    try {
+      const result = await Share.share({
+        message:
+          'React Native | A framework for building native apps using React',
+      });
+      if (result.action === Share.sharedAction) {
+        if (result.activityType) {
+          // shared with activity type of result.activityType
+        } else {
+          // shared
+        }
+      } else if (result.action === Share.dismissedAction) {
+        // dismissed
+      }
+    } catch (error) {
+      alert(error.message);
+    }
+  };
+  
+    
+
 
   return (
     <SafeAreaView>
       <ImageBackground source={require("./222.jpg")} resizeMode="cover">
         <ScrollView>
+        <View style={{flexDirection:'row',justifyContent:'space-between'}}>
           <Icon
             name="arrow-back-outline"
+            justifyContent='space-between'
             size={45}
             style={{ color: "black", marginTop: 50, marginLeft: 10 }}
             onPress={() => navigation.goBack()}
           />
+          <View style={{ marginTop: 50,justifyContent:'space-between'}}>
+             <Icon 
+             name="share"
+             size={45}
+             onPress={onShare} title="Share" />
+          </View>
+        </View>
           <View
             style={{
               alignItems: "center",
