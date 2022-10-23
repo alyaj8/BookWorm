@@ -369,7 +369,7 @@ export default function BookInfo({ route, navigation }) {
             >
               <Text
                 style={{
-                  color: reviewDone ? "green" : "grey",
+                  color: book.reviews?.length > 0 ? "green" : "grey",
                   textDecorationLine: "underline",
                   fontWeight: "bold",
                   fontSize: 16,
