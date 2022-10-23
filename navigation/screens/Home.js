@@ -85,7 +85,7 @@ export default function Home({ navigation }) {
           paddingHorizontal: 9,
         }}
       >
-        <TouchableOpacity>
+        
           <Text
             style={{
               fontWeight: "bold",
@@ -98,6 +98,7 @@ export default function Home({ navigation }) {
           >
             Recommendation
           </Text>
+          <TouchableOpacity>
           <View
             style={{
               backgroundColor: "#00a46c",
@@ -192,7 +193,7 @@ export default function Home({ navigation }) {
           paddingHorizontal: 9,
         }}
       >
-        <TouchableOpacity>
+       
           <Text
             style={{
               fontWeight: "bold",
@@ -203,8 +204,9 @@ export default function Home({ navigation }) {
               marginTop: 8,
             }}
           >
-            Most rated
+            Highest Rated Books
           </Text>
+          <TouchableOpacity>
           <View
             style={{
               backgroundColor: "#00a46c",
@@ -216,6 +218,7 @@ export default function Home({ navigation }) {
               height: 27,
             }}
           >
+
             <Text
               style={{
                 fontWeight: "bold",
