@@ -362,9 +362,9 @@ export default function BookInfo({ route, navigation }) {
               
               onPress={() => {
                 navigation.navigate("BookComment", book);
-                disabled={reviewDone}
+                
               }}
-              
+              disabled={book.reviews?.length == 0 }
              
             >
               <Text
@@ -377,7 +377,7 @@ export default function BookInfo({ route, navigation }) {
                 
                 
               >
-                {reviewDone ? "See Reviews.." : "No Reviews.."}
+                {book.reviews?.length >0 ?  "See Reviews.." : "No Reviews.."}
               </Text>
             </TouchableOpacity>
 
