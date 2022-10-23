@@ -161,7 +161,7 @@ function Discovry({ navigation, isAdmin }) {
         >
           <Icon name="ios-search" size={20} style={{ marginRight: 10 }} />
           <TextInput
-            placeholder="Search by title /author or user"
+            placeholder="Search by title /author"
             placeholderTextColor="#b1e5d3"
             onChangeText={(text) => searchBooks(text)}
             style={{

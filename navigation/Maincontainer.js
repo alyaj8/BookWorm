@@ -18,7 +18,7 @@ const HomeName = "Home";
 const ListssName = "Lists";
 const RecViewall2 = "RecViewall";
 
-const MoreName = "More";
+const MoreName = "Add Friends";
 const DiscovryName = "Discovery";
 const AccountName = "Account";
 
@@ -46,8 +46,8 @@ export default function Maincontainer({ navigation }) {
             iconName = focused ? "bookmarks" : "bookmarks-outline";
           } else if (rn === MoreName) {
             iconName = focused
-              ? "ellipsis-horizontal-circle-sharp"
-              : "ellipsis-horizontal-circle";
+              ? "person-add"
+              : "person-add-outline";
           } else if (rn === AccountName) {
             iconName = focused ? "person-circle" : "person-circle-outline";
           } else if (rn === DiscovryName) {

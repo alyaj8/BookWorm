@@ -66,7 +66,7 @@ export default function Home({ navigation }) {
           <Icon name="ios-search" size={20} style={{ marginRight: 10 }} />
 
           <TextInput
-            placeholder="Search by title or for a user"
+            placeholder="Search by title"
             placeholderTextColor="#b1e5d3"
             style={{
               fontWeight: "bold",
