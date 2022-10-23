@@ -76,115 +76,6 @@ export default function Home({ navigation }) {
           />
         </View>
       </View>
-
-      <View
-        style={{
-          width: "100%",
-          height: "35%",
-          backgroundColor: "#f6fff9",
-          paddingHorizontal: 9,
-        }}
-      >
-        
-          <Text
-            style={{
-              fontWeight: "bold",
-              fontSize: 17,
-              color: "#585a61",
-              marginBottom: -18,
-              fontWeight: "bold",
-              marginTop: 8,
-            }}
-          >
-            Recommendation
-          </Text>
-          <TouchableOpacity>
-          <View
-            style={{
-              backgroundColor: "#00a46c",
-              paddingHorizontal: 20,
-              paddingVertical: 5,
-              borderRadius: 15,
-              alignSelf: "flex-end",
-              width: 89,
-              height: 27,
-            }}
-          >
-            <Text
-              style={{
-                fontWeight: "bold",
-                fontSize: 13,
-                color: "#FFF",
-              }}
-            >
-              View all
-            </Text>
-          </View>
-        </TouchableOpacity>
-
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={true}
-          style={{ height: 300 }}
-        >
-          <LinearGradient
-            colors={["rgba(0,164,109,0.09)", "transparent"]}
-            style={{
-              position: "absolute",
-              left: 0,
-              right: 0,
-              height: 130,
-              marginTop: 170,
-              top: 0,
-              width: 9999,
-            }}
-          />
-          <TouchableOpacity
-            // key={ind}
-            //  onPress={() => OpenInfo(val)}
-            style={{
-              height: 250,
-              elevation: 2,
-              //   backgroundColor: "#FFF",
-              marginLeft: 20,
-              marginTop: 20,
-              borderRadius: 15,
-              marginBottom: 10,
-              width: 160,
-            }}
-            //  disabled={val.deleted}
-          >
-            <View
-              style={{
-                flexDirection: "row",
-                paddingTop: 10,
-                paddingHorizontal: 10,
-              }}
-            >
-              <Text
-                style={{
-                  fontWeight: "bold",
-                }}
-              ></Text>
-            </View>
-          </TouchableOpacity>
-          <Text
-            style={{
-              //  flex: 1,
-              //textAlign: "center",
-              marginTop: -10, ////////////////////////////////////////
-              marginLeft: 10, ////////////////////////////////////////
-              fontSize: 15,
-              fontWeight: "bold",
-              color: "grey",
-              alignSelf: "center",
-            }}
-          >
-            Empty
-          </Text>
-        </ScrollView>
-      </View>
-
       <View
         style={{
           width: "100%",
@@ -243,6 +134,113 @@ export default function Home({ navigation }) {
               left: 0,
               right: 0,
               height: 150,
+              marginTop: 170,
+              top: 0,
+              width: 9999,
+            }}
+          />
+          <TouchableOpacity
+            // key={ind}
+            //  onPress={() => OpenInfo(val)}
+            style={{
+              height: 250,
+              elevation: 2,
+              //   backgroundColor: "#FFF",
+              marginLeft: 20,
+              marginTop: 20,
+              borderRadius: 15,
+              marginBottom: 10,
+              width: 160,
+            }}
+            //  disabled={val.deleted}
+          >
+            <View
+              style={{
+                flexDirection: "row",
+                paddingTop: 10,
+                paddingHorizontal: 10,
+              }}
+            >
+              <Text
+                style={{
+                  fontWeight: "bold",
+                }}
+              ></Text>
+            </View>
+          </TouchableOpacity>
+          <Text
+            style={{
+              //  flex: 1,
+              //textAlign: "center",
+              marginTop: -10, ////////////////////////////////////////
+              marginLeft: 10, ////////////////////////////////////////
+              fontSize: 15,
+              fontWeight: "bold",
+              color: "grey",
+              alignSelf: "center",
+            }}
+          >
+            Empty
+          </Text>
+        </ScrollView>
+      </View>
+      <View
+        style={{
+          width: "100%",
+          height: "35%",
+          backgroundColor: "#f6fff9",
+          paddingHorizontal: 9,
+        }}
+      >
+        
+          <Text
+            style={{
+              fontWeight: "bold",
+              fontSize: 17,
+              color: "#585a61",
+              marginBottom: -18,
+              fontWeight: "bold",
+              marginTop: 8,
+            }}
+          >
+            Recommendation
+          </Text>
+          <TouchableOpacity>
+          <View
+            style={{
+              backgroundColor: "#00a46c",
+              paddingHorizontal: 20,
+              paddingVertical: 5,
+              borderRadius: 15,
+              alignSelf: "flex-end",
+              width: 89,
+              height: 27,
+            }}
+          >
+            <Text
+              style={{
+                fontWeight: "bold",
+                fontSize: 13,
+                color: "#FFF",
+              }}
+            >
+              View all
+            </Text>
+          </View>
+        </TouchableOpacity>
+
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={true}
+          style={{ height: 300 }}
+        >
+          <LinearGradient
+            colors={["rgba(0,164,109,0.09)", "transparent"]}
+            style={{
+              position: "absolute",
+              left: 0,
+              right: 0,
+              height: 130,
               marginTop: 170,
               top: 0,
               width: 9999,
