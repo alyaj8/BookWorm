@@ -21,7 +21,7 @@ import { withUser } from "../../config/UserContext";
 
 function Discovry({ navigation, isAdmin }) {
   const [catergoryIndex, setCategoryIndex] = useState(0);
-  const categories = ["ALL", "ADULT", "ROMANCE"];
+  //const categories = ["ALL", "ADULT", "ROMANCE"];
   const [refreshing, setRefreshing] = useState(false);
 
   console.log("isAdmin", isAdmin);
@@ -31,7 +31,7 @@ function Discovry({ navigation, isAdmin }) {
     getData();
     setRefreshing(false);
   };
-  const CategoryList = () => {
+  /*const CategoryList = () => {
     return (
       <View style={styles.categoryContainer}>
         {categories.map((item, index) => (
@@ -52,9 +52,9 @@ function Discovry({ navigation, isAdmin }) {
         ))}
       </View>
     );
-  };
-  const [books, setBooks] = useState([]);
-  const [allBooks, setAllBooks] = useState([]);
+  };*/
+  const [users, setUsers] = useState([]);
+  const [allUsers, setAllUsers] = useState([]);
   const [searchText, setSearchText] = useState("");
   const [url, setUrl] = useState("");
 
@@ -75,43 +75,42 @@ function Discovry({ navigation, isAdmin }) {
 
   const getData = async () => {
     try {
-      const colRef = collection(db, "Book");
+      const colRef = collection(db, "users");
       const snapshot = await getDocs(colRef);
       var myData = [];
       //store the data in an array myData
       snapshot.forEach((doc) => {
-        let book = doc.data();
-        book.id = doc.id;
-        myData.push(book);
+        let user = doc.data();
+        user.id = doc.id;
+        myData.push(user);
       });
       // Remove duplicate books by title
       myData = myData.filter(
-        (book, index, self) =>
-          index === self.findIndex((t) => t.title === book.title)
+        (user, index, self) =>
+          index === self.findIndex((n) => n.username === user.username)
       );
 
       //store data in AsyncStorage
-      myData.sort((a, b) => a.title.localeCompare(b.title));
-      setAllBooks(myData);
-      setBooks(myData);
+      myData.sort((a, b) => a.username.localeCompare(b.username));
+      setAllUsers(myData);
+      setUsers(myData);
     } catch (error) {
       console.log(error);
     }
   };
 
-  const searchBooks = (text) => {
+  const searchUsers = (text) => {
     console.log(text);
     const filter = [];
-    allBooks.forEach((e) => {
+    allUsers.forEach((e) => {
       if (
-        e.title.toLowerCase().includes(text.toLowerCase()) ||
-        e.author.toLowerCase().includes(text.toLowerCase())
+        e.username.toLowerCase().includes(text.toLowerCase()) 
       ) {
         filter.push(e);
       }
     });
-    setBooks(filter);
-    console.log(books);
+    setUsers(filter);
+    console.log(users);
   };
   /* const restUrl = (link1) => {
     setUrl(link1)  }*/
@@ -161,18 +160,100 @@ function Discovry({ navigation, isAdmin }) {
         >
           <Icon name="ios-search" size={20} style={{ marginRight: 10 }} />
           <TextInput
-            placeholder="Search for a user"
+            placeholder="Search for a User"
             placeholderTextColor="#b1e5d3"
-            onChangeText={(text) => searchBooks(text)}
+            onChangeText={(text) => searchUsers(text)}
             style={{
               fontWeight: "bold",
               fontSize: 18,
               width: 260,
             }}
           />
-        
-        
-          
+        </View>
+        <View
+          style={{
+            paddingVertical: 10,
+            paddingHorizontal: 10,
+            marginLeft: 20,
+            marginRight: 20,
+            borderRadius: 10,
+            marginTop: 25,
+            flexDirection: "row",
+            alignItems: "center",
+            borderColor: "#00a46c",
+            marginBottom: 40,
+          }}
+        >
+          {users.length < 1 ? (
+            <Text
+              style={{
+                marginTop: 200,
+                fontSize: 30,
+                marginLeft: 57,
+                color: "grey",
+                fontWeight: "bold",
+                //alignItems: "center",
+                alignSelf: "center",
+              }}
+            >
+              User not found!
+            </Text>
+          ) : (
+            <FlatList
+              columnWrapperStyle={{ justifyContent: "space-between" }}
+              numColumns={2}
+              data={users}
+              refreshing={refreshing}
+              onRefresh={onRefresh}
+              keyExtractor={(item) => item.id}
+              renderItem={({ item }) => (
+                //  restUrl(item.data.poster)
+                <View style={{ width: width1, height: hight1 }}>
+                  <View style={styles.card}>
+                    <View style={{ alignItems: "flex-end" }}>
+                      <View
+                        style={{
+                          width: 19,
+                          height: 19,
+                          alignItems: "center",
+                          justifyContent: "center",
+                          borderRadius: 10,
+                          marginTop: -12,
+                          marginRight: -12,
+                        }}
+                      ></View>
+                    </View>
+                    <TouchableOpacity
+                      onPress={() =>
+                        navigation.navigate(
+                          isAdmin ? "BookInfoApi" : "BookInfo",
+                          item
+                        )
+                      }
+                    >
+                    
+                      <Text>
+                        <Text
+                          style={{
+                            textAlign: "center",
+                            textAlignVertical:"center",
+                            fontWeight:"bold",
+                            fontSize: 12,
+                            //margin: 10,
+                          }}
+                        >
+                          {Datacat(item.username, 11)}
+                          {"\n"}
+                        </Text>
+                        
+                        
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              )} //here i want my data
+            />
+          )}
         </View>
       </ImageBackground>
     </SafeAreaView>
