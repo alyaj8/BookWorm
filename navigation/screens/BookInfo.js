@@ -285,9 +285,6 @@ export default function BookInfo({ route, navigation }) {
               style={{ color: "black", marginTop: 50, marginLeft: 10 }}
               onPress={() => navigation.goBack()}
             />
-            <View style={{ marginTop: 50, justifyContent: "space-between" }}>
-              <Icon name="share" size={45} onPress={onShare} title="Share" />
-            </View>
           </View>
           <View
             style={{
