@@ -15,18 +15,20 @@ import {
   import { Dropdown } from 'react-native-element-dropdown';
   import { db } from "../../config/firebase";
   export default function CreateCustomList({ navigation }) {
-   
+
+    const [PrivacyOption, setPrivacyOption] = useState(0);
+    const [ListName ,setListName] = useState("");
+    const [isFocus, setIsFocus] = useState(false);
     const auth = getAuth();
     const user = auth.currentUser;
+
     const data = [
         { label: 'Private List', value: '1' },
         { label: 'Public List', value: '2' },
       ];
-        const [value, setValue] = useState(null);
-        const [isFocus, setIsFocus] = useState(false);
     
         const renderLabel = () => {
-          if (value || isFocus) {
+          if (PrivacyOption || isFocus) {
             return (
               <Text style={[styles.label, isFocus && { color: "#00a46c" }]}>
                Privacy Options
@@ -69,7 +71,7 @@ import {
               <TextInput
                 style={styles.review}
                 placeholder="Write the name of your new custom list."
-                //onChangeText={(text) => setComment(text)}
+                onChangeText={(text) => setListName(text)}
               />
         <View style={styles.DDsyleC}>
         {renderLabel()}
@@ -82,11 +84,11 @@ import {
           labelField="label"
           valueField="value"
           placeholder={!isFocus ? 'Select privacy options' : '...'}
-          value={value}
+          value={PrivacyOption}
           onFocus={() => setIsFocus(true)}
           onBlur={() => setIsFocus(false)}
           onChange={item => {
-            setValue(item.value);
+            setPrivacyOption(item.value);
             setIsFocus(false);
           }}
          
@@ -105,9 +107,11 @@ import {
                   height: 50,
                   alignItems: "center",
                   justifyContent: "center",
+                  backgroundColor:
+                  PrivacyOption === null || ListName === "" ? "#aadecc" : "#00a46c",
                 }}
               //  onPress={() => PostReview()}
-               // disabled={review === 0 || comment === "" ? true : false}
+                disabled={ PrivacyOption === null  || ListName === "" ? true : false}
               >
                 <Text
                   style={{

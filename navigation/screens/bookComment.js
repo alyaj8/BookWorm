@@ -14,27 +14,7 @@ import Icon from "react-native-vector-icons/Ionicons";
 import Reviewbook from "./Reviewbook";
 
 export default class BookComment extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      data: [
-        {
-          id: 1,
-          name: "shatha",
-          comment:
-            "n short, this book is meant to help us all lead more meaningful lives. But it’s also a provocative social commentary. We live in a society, Brooks argues, that celebrates freedom, that tells us to be true to ourselves.",
-        },
-
-        {
-          id: 2,
-          name: "Reem",
-          comment:
-            "n short, this book is meant to help us all lead more meaningful lives. But it’s also a provocative social commentary. We live in a society, Brooks argues, that celebrates freedom, that tells us to be true to ourselves.",
-        },
-      ],
-    };
-  }
-
+ 
   render() {
     let book = this.props.route.params;
     console.log(book);
