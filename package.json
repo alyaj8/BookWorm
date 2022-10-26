@@ -32,7 +32,7 @@
     "react": "18.0.0",
     "react-dom": "18.0.0",
     "react-native": "0.69.6",
-    "react-native-element-dropdown": "^2.3.0",
+    "react-native-element-dropdown": "^2.3.1",
     "react-native-gesture-handler": "~2.5.0",
     "react-native-material-dropdown": "^0.11.1",
     "react-native-ratings": "^8.1.0",

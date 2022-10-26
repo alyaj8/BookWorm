@@ -21,7 +21,7 @@ import { withUser } from "../../config/UserContext";
 
 function Discovry({ navigation, isAdmin }) {
   const [catergoryIndex, setCategoryIndex] = useState(0);
-  const categories = ["ALL", "ADULT", "ROMANCE"];
+  //const categories = ["ALL", "ADULT", "ROMANCE"]; in order for search by category to work this must be disabled
   const [refreshing, setRefreshing] = useState(false);
 
   console.log("isAdmin", isAdmin);
@@ -105,7 +105,8 @@ function Discovry({ navigation, isAdmin }) {
     allBooks.forEach((e) => {
       if (
         e.title.toLowerCase().includes(text.toLowerCase()) ||
-        e.author.toLowerCase().includes(text.toLowerCase())
+        e.author.toLowerCase().includes(text.toLowerCase()) ||
+        e.category.toLowerCase().includes(text.toLowerCase())
       ) {
         filter.push(e);
       }
@@ -161,7 +162,7 @@ function Discovry({ navigation, isAdmin }) {
         >
           <Icon name="ios-search" size={20} style={{ marginRight: 10 }} />
           <TextInput
-            placeholder="Search by title /author"
+            placeholder="Search by title /author /category"
             placeholderTextColor="#b1e5d3"
             onChangeText={(text) => searchBooks(text)}
             style={{
@@ -260,6 +261,17 @@ function Discovry({ navigation, isAdmin }) {
                           By:
                           {Datacat(item.author, 19)} {"\n"}{" "}
                         </Text>
+
+                        <Text
+                          style={{
+                            textAlign: "left",
+                            color: "grey",
+                            fontSize: 10,
+                          }}
+                        >
+                          category:
+                          {Datacat(item.category, 10)} {"\n"}{" "}
+                        </Text>
                         
                       </Text>
                     </TouchableOpacity>
@@ -305,7 +317,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   card: {
-    height: "80%",
+    height: "90%",
     backgroundColor: "#EDF5F0",
     marginHorizontal: 10,
     borderRadius: 10,
