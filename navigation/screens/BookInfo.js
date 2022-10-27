@@ -381,7 +381,7 @@ export default function BookInfo({ route, navigation }) {
             ) : (
               <Text style={{ color: "black" }}>
                 {" "}
-                No Reviews yet {"\n     0 Poeple "}
+                No Reviews yet
               </Text>
             )}
 
