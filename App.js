@@ -13,6 +13,7 @@ import Editbook from "./navigation/screens/Editbook";
 import BookInfoApi from "./navigation/screens/BookInfoApi";
 import Discovery from "./navigation/screens/Discovery";
 import RecViewall from "./navigation/screens/RecViewall";
+import RatedViewAll from "./navigation/screens/RatedViewAll";
 
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -87,6 +88,7 @@ function App() {
             <Stack.Screen name="Orders" component={Orders} />
             <Stack.Screen name="ReviewBook" component={ReviewBook} />
             <Stack.Screen name="Acc" component={Acc} />
+            <Stack.Screen name="RatedViewAll" component={RatedViewAll} />
             <Stack.Screen name="Changepass" component={Changepass} />
             <Stack.Screen name="Editbook" component={Editbook} />
             <Stack.Screen name="BookInfoApi" component={BookInfoApi} />

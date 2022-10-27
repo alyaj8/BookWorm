@@ -15,17 +15,82 @@ import {
   ImageBackground,
   TouchableOpacity,
   Pressable,
-  Modal,
+  Modal, 
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 //import { LinearGradient } from "expo-linear-gradient";
 import { useEffect, useState } from "react";
 import { LinearGradient } from "expo-linear-gradient";
+import { getAuth } from "firebase/auth";
+import {
+  collection,
+  getDocs,
+  getFirestore,
+  query,
+  where,
+} from "firebase/firestore";
+import { Rating, AirbnbRating } from "react-native-ratings";
 
 export default function Home({ navigation }) {
   let [rec, setrec] = useState([]);
   let [modalVisible, setModalVisible] = useState(false);
+  let [highetRatedList, setHighetRatedListt] = useState([]);
+  let [categories, setCategories] = useState([]);
+  let [faveIds, setFavIds] = useState([]);
 
+  const Datacat = (str, num) => {
+    if (str.length > num) {
+      return str.substring(0, num) + "...";
+    }
+    return str;
+  };
+
+  let GetBookList = async (favoriteCatList) => {
+    try {
+      let list = [];
+      const db = getFirestore();
+      const q = query(collection(db, "Book"));
+      const querySnapshot = await getDocs(q);
+
+      if (!querySnapshot.empty) {
+        querySnapshot.forEach((doc) => {
+          let book = doc.data();
+          book.id = doc.id;
+          list.push(book);
+        });
+      }
+      list = list.filter(
+        (book, index, self) =>
+          index === self.findIndex((t) => t.title === book.title)
+      );
+      for (var i = 0; i < list.length; i++) {
+        let countStar = 0;
+        list[i]?.reviews?.length > 0 &&
+          list[i].reviews?.map((val, ind) => {
+            countStar = countStar + +val.review;
+          });
+        list[i].totalReview =
+          countStar === 0
+            ? countStar
+            : (countStar / list[i]?.reviews.length).toFixed(2);
+      }
+      list.sort(function (a, b) {
+        return a.title.localeCompare(b.title);
+      });
+      list = list.sort((a, b) => b.totalReview - a.totalReview);
+      setHighetRatedListt(list);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    navigation.addListener("focus", async () => {
+      await GetBookList();
+    });
+  }, []);
+
+  console.log(highetRatedList);
   return (
     <View
       style={{
@@ -82,9 +147,10 @@ export default function Home({ navigation }) {
       <View
         style={{
           width: "100%",
-          height: "35%",
+          height: "47%",
           backgroundColor: "#f6fff9",
           paddingHorizontal: 9,
+          marginBottom: 10,
         }}
       >
         <Text
@@ -97,10 +163,10 @@ export default function Home({ navigation }) {
             marginTop: 8,
           }}
         >
-          Highest Rated Books
+          Top 5 heightest Reviews 
         </Text>
         <TouchableOpacity>
-          <View
+          <TouchableOpacity
             style={{
               backgroundColor: "#00a46c",
               paddingHorizontal: 20,
@@ -110,9 +176,12 @@ export default function Home({ navigation }) {
               width: 89,
               height: 27,
             }}
+            
+            onPress={() => navigation.navigate("RatedViewAll", highetRatedList)}
           >
             <Text
               style={{
+                
                 fontWeight: "bold",
                 fontSize: 13,
                 color: "#FFF",
@@ -120,69 +189,95 @@ export default function Home({ navigation }) {
             >
               View all
             </Text>
-          </View>
+          </TouchableOpacity>
         </TouchableOpacity>
 
         <ScrollView
           horizontal
           showsHorizontalScrollIndicator={true}
-          style={{ height: 300 }}
+          style={{ height: 500, flex: 1 }}
         >
           <LinearGradient
             colors={["rgba(0,164,109,0.09)", "transparent"]}
             style={{
               position: "absolute",
+              elevation: 2,
               left: 0,
               right: 0,
-              height: 150,
+              height: "55%",
               marginTop: 170,
               top: 0,
               width: 9999,
             }}
           />
-          <TouchableOpacity
-            // key={ind}
-            //  onPress={() => OpenInfo(val)}
-            style={{
-              height: 250,
-              elevation: 2,
-              //   backgroundColor: "#FFF",
-              marginLeft: 20,
-              marginTop: 20,
-              borderRadius: 15,
-              marginBottom: 10,
-              width: 160,
-            }}
-            //  disabled={val.deleted}
-          >
-            <View
+          {highetRatedList.length > 0 ? (
+            highetRatedList.map((val, ind) => (
+              <TouchableOpacity
+                key={ind}
+                onPress={() => navigation.navigate("BookInfo", val)}
+                style={{
+                  height: 500,
+                  elevation: 2,
+                  borderRadius: 50,
+                  marginLeft: 20,
+                  marginTop: 20,
+                  borderRadius: 15,
+                  marginBottom: 10,
+                  width: 160,
+                }}
+                disabled={val.deleted}
+              >
+                <Image
+                  source={{ uri: val.poster }}
+                  style={{ width: "100%", height: 160 , borderRadius: 20, }}
+                />
+                 <View
+                style={{
+                  flexDirection: "row",
+                  paddingTop: 10,
+                  paddingHorizontal: 10,
+                }}
+              >
+                <Text
+                  style={{
+                    fontWeight: "bold",
+                  }}
+                >
+                  {Datacat(val.title, 15)}
+                  {"\n"}
+                </Text>
+                
+              </View>
+              <Rating
+                        startingValue={val.totalReview}
+                        imageSize={20}
+                        fractions={20}
+                        showRating={false}
+                        readonly={true}
+                        tintColor="#EDF5F0"
+                        style={{}}
+                      />
+                      <Text style={{ textAlign: "center", fontWeight:"bold" }}>
+                        {val.totalReview}
+                      </Text>
+
+                
+              </TouchableOpacity>
+            ))
+          ) : (
+            <Text
               style={{
-                flexDirection: "row",
-                paddingTop: 10,
-                paddingHorizontal: 10,
+                marginTop: -10,
+                marginLeft: 130,
+                fontSize: 15,
+                fontWeight: "bold",
+                color: "grey",
+                alignSelf: "center",
               }}
             >
-              <Text
-                style={{
-                  fontWeight: "bold",
-                }}
-              ></Text>
-            </View>
-          </TouchableOpacity>
-          <Text
-            style={{
-              //  flex: 1,
-              //textAlign: "center",
-              marginTop: -10, ////////////////////////////////////////
-              marginLeft: 10, ////////////////////////////////////////
-              fontSize: 15,
-              fontWeight: "bold",
-              color: "grey",
-              alignSelf: "center",
-            }}
-          >
-            Empty
-          </Text>
+              Empty
+            </Text>
+          )}
         </ScrollView>
       </View>
       <View
@@ -229,6 +324,7 @@ export default function Home({ navigation }) {
           ></Button>
           <Text>View all</Text>
         </View>
+       
 
         <ScrollView
           horizontal
@@ -290,7 +386,6 @@ export default function Home({ navigation }) {
                 </View>
               </View>
             </Modal>
-
             <View
               style={{
                 flexDirection: "row",
