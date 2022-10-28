@@ -15,7 +15,7 @@ import {
   ImageBackground,
   TouchableOpacity,
   Pressable,
-  Modal, 
+  Modal,
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 //import { LinearGradient } from "expo-linear-gradient";
@@ -163,7 +163,7 @@ export default function Home({ navigation }) {
             marginTop: 8,
           }}
         >
-          Top 5 heightest Reviews 
+          Top 5 heightest Reviews
         </Text>
         <TouchableOpacity>
           <TouchableOpacity
@@ -176,12 +176,10 @@ export default function Home({ navigation }) {
               width: 89,
               height: 27,
             }}
-            
             onPress={() => navigation.navigate("RatedViewAll", highetRatedList)}
           >
             <Text
               style={{
-                
                 fontWeight: "bold",
                 fontSize: 13,
                 color: "#FFF",
@@ -211,59 +209,62 @@ export default function Home({ navigation }) {
             }}
           />
           {highetRatedList.length > 0 ? (
-            highetRatedList.map((val, ind) => (
-              <TouchableOpacity
-                key={ind}
-                onPress={() => navigation.navigate("BookInfo", val)}
-                style={{
-                  height: 500,
-                  elevation: 2,
-                  borderRadius: 50,
-                  marginLeft: 20,
-                  marginTop: 20,
-                  borderRadius: 15,
-                  marginBottom: 10,
-                  width: 160,
-                }}
-                disabled={val.deleted}
-              >
-                <Image
-                  source={{ uri: val.poster }}
-                  style={{ width: "100%", height: 160 , borderRadius: 20, }}
-                />
-                 <View
-                style={{
-                  flexDirection: "row",
-                  paddingTop: 10,
-                  paddingHorizontal: 10,
-                }}
-              >
-                <Text
-                  style={{
-                    fontWeight: "bold",
-                  }}
-                >
-                  {Datacat(val.title, 15)}
-                  {"\n"}
-                </Text>
-                
-              </View>
-              <Rating
-                        startingValue={val.totalReview}
-                        imageSize={20}
-                        fractions={20}
-                        showRating={false}
-                        readonly={true}
-                        tintColor="#EDF5F0"
-                        style={{}}
-                      />
-                      <Text style={{ textAlign: "center", fontWeight:"bold" }}>
-                        {val.totalReview}
+            highetRatedList.map(
+              (val, ind) =>
+                ind < 5 && (
+                  <TouchableOpacity
+                    key={ind}
+                    onPress={() => navigation.navigate("BookInfo", val)}
+                    style={{
+                      height: 500,
+                      elevation: 2,
+                      borderRadius: 50,
+                      marginLeft: 20,
+                      marginTop: 20,
+                      borderRadius: 15,
+                      marginBottom: 10,
+                      width: 160,
+                    }}
+                    disabled={val.deleted}
+                  >
+                    <Image
+                      source={{ uri: val.poster }}
+                      style={{ width: "100%", height: 160, borderRadius: 20 }}
+                    />
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        paddingTop: 10,
+                        paddingHorizontal: 10,
+                      }}
+                    >
+                      <Text
+                        style={{
+                          fontWeight: "bold",
+                        }}
+                      >
+                        {Datacat(val.title, 15)}
+                        {"\n"}
                       </Text>
+                    </View>
+                    <Rating
+                      startingValue={val.totalReview}
+                      imageSize={20}
+                      fractions={20}
+                      showRating={false}
+                      readonly={true}
+                      tintColor="#EDF5F0"
+                      style={{}}
+                    />
+                    <Text style={{ textAlign: "center", fontWeight: "bold" }}>
+                      {val.totalReview}
+                    </Text>
+                  </TouchableOpacity>
+                  
 
-                
-              </TouchableOpacity>
-            ))
+                ) 
+            )
+            
           ) : (
             <Text
               style={{
@@ -277,7 +278,10 @@ export default function Home({ navigation }) {
             >
               Empty
             </Text>
+            
           )}
+          
+
         </ScrollView>
       </View>
       <View
@@ -324,7 +328,6 @@ export default function Home({ navigation }) {
           ></Button>
           <Text>View all</Text>
         </View>
-       
 
         <ScrollView
           horizontal
