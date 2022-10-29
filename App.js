@@ -21,7 +21,7 @@ import { initializeApp } from "firebase/app";
 import "firebase/auth";
 import Maincontainer from "./navigation/Maincontainer";
 import Adminpage from "./navigation/screens/Adminpage";
-
+import RatedViewAll from "./navigation/screens/RatedViewAll";
 import ReadBookList from "./navigation/screens/ReadBookList";
 import FavoriteList from "./navigation/screens/FavoriteList";
 import WishList from "./navigation/screens/WishList";
@@ -87,6 +87,7 @@ function App() {
             <Stack.Screen name="Orders" component={Orders} />
             <Stack.Screen name="ReviewBook" component={ReviewBook} />
             <Stack.Screen name="Acc" component={Acc} />
+            <Stack.Screen name="RatedViewAll" component={RatedViewAll} />
             <Stack.Screen name="Changepass" component={Changepass} />
             <Stack.Screen name="Editbook" component={Editbook} />
             <Stack.Screen name="BookInfoApi" component={BookInfoApi} />

@@ -105,7 +105,8 @@ function Discovry({ navigation, isAdmin }) {
     allBooks.forEach((e) => {
       if (
         e.title.toLowerCase().includes(text.toLowerCase()) ||
-        e.author.toLowerCase().includes(text.toLowerCase())
+        e.author.toLowerCase().includes(text.toLowerCase()) ||
+        e.category.toLowerCase().includes(text.toLowerCase())
       ) {
         filter.push(e);
       }
@@ -260,6 +261,17 @@ function Discovry({ navigation, isAdmin }) {
                           By:
                           {Datacat(item.author, 19)} {"\n"}{" "}
                         </Text>
+                        <Text
+                          style={{
+                            textAlign: "left",
+                            color: "grey",
+                            fontSize: 10,
+                          }}
+                        >
+                          category:
+                          {Datacat(item.category, 10)} {"\n"}{" "}
+                        </Text>
+
                         
                       </Text>
                     </TouchableOpacity>
