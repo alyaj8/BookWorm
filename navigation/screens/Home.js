@@ -280,7 +280,41 @@ export default function Home({ navigation }) {
             </Text>
             
           )}
-          
+          <TouchableOpacity
+                    
+                    onPress={() => navigation.navigate("RatedViewAll", highetRatedList)}
+                    style={{
+                      height: 500,
+                      elevation: 2,
+                      borderRadius: 50,
+                      marginLeft: 20,
+                      marginTop: 85,
+                      alignItems: "center",
+                      borderRadius: 15,
+                      marginBottom: 10,
+                      width: 160,
+                    }}
+                   
+                  >
+                   
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        paddingTop: 10,
+                        paddingHorizontal: 10,
+                      }}
+                    >
+                       <Text
+                        style={{
+                          fontWeight: "bold",
+                          textDecorationLine: "underline",
+                          color:"#EFCB46", 
+                        }}
+                      >
+                        View More.....
+                      </Text>
+                  </View>
+                  </TouchableOpacity>
 
         </ScrollView>
       </View>
@@ -435,3 +469,4 @@ const styles = StyleSheet.create({
     width: 180,
   },
 });
+
