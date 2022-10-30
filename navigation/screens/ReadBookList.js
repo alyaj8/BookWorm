@@ -11,15 +11,18 @@ import {
   Image,
   Dimensions,
   ImageBackground,
+  Alert,
 } from "react-native";
 import { useState, useEffect } from "react";
 
 import Icon from "react-native-vector-icons/Ionicons";
-import { doc, getDoc } from "firebase/firestore";
+import { deleteDoc, doc, getDoc } from "firebase/firestore";
 import { db } from "../../config/firebase";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 
 export default function ReadBookList({ navigation, route }) {
-  let books = route.params;
+  let [books, setBooks] = useState([]);
+  let [update, setUpdate] = useState(false);
   const Datacat = (str, num) => {
     if (str.length > num) {
       return str.substring(0, num) + "...";
@@ -33,6 +36,44 @@ export default function ReadBookList({ navigation, route }) {
     book.id = val.id;
     navigation.navigate("BookInfo", book);
   };
+
+  let DeleteReadBookList = async (val, ind) => {
+    await deleteDoc(doc(db, "readBookList", val.readId));
+    books.splice(ind, 1);
+    console.log(books);
+    setBooks(books);
+    setUpdate(!update);
+    Alert.alert("the book got deleted");
+  };
+  const DeleteFunc = (message, func, val, ind) =>
+    Alert.alert(
+      message,
+      "Are sure you want to delete",
+      [
+        {
+          text: "Cancel",
+          //  onPress: () => Alert.alert("Cancel Pressed"),
+          style: "cancel",
+        },
+        {
+          text: "Delete",
+          onPress: () => func(val, ind),
+          style: "cancel",
+        },
+      ],
+      {
+        cancelable: true,
+        onDismiss: () =>
+          Alert.alert(
+            "This alert was dismissed by tapping outside of the alert dialog."
+          ),
+      }
+    );
+
+  useState(() => {
+    setBooks(route.params);
+  }, []);
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <ImageBackground
@@ -57,69 +98,91 @@ export default function ReadBookList({ navigation, route }) {
           >
             {books.length > 0 ? (
               books.map((val, ind) => (
-                <TouchableOpacity
-                  key={ind}
-                  onPress={() => OpenInfo(val)}
-                  style={{
-                    height: 250,
-                    elevation: 2,
-                    backgroundColor: "#EFF3EF",
-                    marginLeft: 20,
-                    marginTop: 20,
-                    borderRadius: 15,
-                    marginBottom: 10,
-                    width: 160,
-                  }}
-                  disabled={val.deleted}
-                >
-                  {val.deleted && (
+                <View>
+                  <MaterialIcons
+                    name="close"
+                    size={30}
+                    style={{
+                      color: "black",
+                      marginTop: 30,
+                      marginLeft: 10,
+                      position: "absolute",
+                      left: 10,
+                      zIndex: 1,
+                    }}
+                    onPress={() =>
+                      DeleteFunc(
+                        "Deleting From Read Book List ",
+                        DeleteReadBookList,
+                        val,
+                        ind
+                      )
+                    }
+                  />
+                  <TouchableOpacity
+                    key={ind}
+                    onPress={() => OpenInfo(val)}
+                    style={{
+                      height: 250,
+                      elevation: 2,
+                      backgroundColor: "#EFF3EF",
+                      marginLeft: 20,
+                      marginTop: 20,
+                      borderRadius: 15,
+                      marginBottom: 10,
+                      width: 160,
+                    }}
+                    disabled={val.deleted}
+                  >
+                    {val.deleted && (
+                      <View
+                        style={{
+                          position: "absolute",
+                          zIndex: 1,
+                          alignSelf: "center",
+                          width: 160,
+                          opacity: 0.6,
+                          justifyContent: "center",
+                          alignItems: "center",
+                          backgroundColor: "#525454",
+                          height: 250,
+                        }}
+                      >
+                        <Text
+                          style={{
+                            color: "white",
+                            textAlign: "center",
+                            fontWeight: "bold",
+                            // backgroundColor: "black",
+                          }}
+                        >
+                          DELETED
+                        </Text>
+                      </View>
+                    )}
+
+                    <Image
+                      source={{ uri: val.poster }}
+                      style={{ width: "100%", height: 200 }}
+                    />
                     <View
                       style={{
-                        position: "absolute",
-                        zIndex: 1,
-                        alignSelf: "center",
-                        width: 160,
-                        opacity: 0.6,
-                        justifyContent: "center",
-                        alignItems: "center",
-                        backgroundColor: "#525454",
-                        height: 250,
+                        flexDirection: "row",
+                        paddingTop: 10,
+                        paddingHorizontal: 10,
                       }}
                     >
                       <Text
                         style={{
-                          color: "white",
-                          textAlign: "center",
                           fontWeight: "bold",
-                          // backgroundColor: "black",
                         }}
                       >
-                        DELETED
+                        {Datacat(val.title, 25)}
+                        {"\n"}{" "}
                       </Text>
                     </View>
-                  )}
-
-                  <Image
-                    source={{ uri: val.poster }}
-                    style={{ width: "100%", height: 200 }}
-                  />
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      paddingTop: 10,
-                      paddingHorizontal: 10,
-                    }}
-                  >
-                    <Text
-                      style={{
-                        fontWeight: "bold",
-                      }}
-                    >
-                      {Datacat(val.title, 25)}
-                      {"\n"}{" "}
-                    </Text>
-                  </View>
-                </TouchableOpacity>
+                  </TouchableOpacity>
+                </View>
               ))
             ) : (
               <Text
@@ -194,3 +257,4 @@ const styles = StyleSheet.create({
     borderBottomWidth: 2,
   },
 });
+

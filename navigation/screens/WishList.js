@@ -1,25 +1,29 @@
 import {
-    View,
-    Text,
-    TextInput,
-    StyleSheet,
-    Button,
-    FlatList,
-    ScrollView,
-    SafeAreaView,
-    TouchableOpacity,
-    Image,
-    Dimensions,
-    ImageBackground,
-  } from "react-native";
-  import { useState, useEffect } from "react";
-  
-  import Icon from "react-native-vector-icons/Ionicons";
-  import { doc, getDoc } from "firebase/firestore";
-  import { db } from "../../config/firebase";
+  View,
+  Text,
+  TextInput,
+  StyleSheet,
+  Button,
+  FlatList,
+  ScrollView,
+  SafeAreaView,
+  TouchableOpacity,
+  Image,
+  Dimensions,
+  ImageBackground,
+  Alert,
+} from "react-native";
+import { useState, useEffect } from "react";
+
+import Icon from "react-native-vector-icons/Ionicons";
+import { deleteDoc, doc, getDoc } from "firebase/firestore";
+import { db } from "../../config/firebase";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
   
   export default function WishList({ navigation, route }) {
-    let books = route.params;
+    let [books, setBooks] = useState([]);
+    let [update, setUpdate] = useState(false);
+
     const Datacat = (str, num) => {
       if (str.length > num) {
         return str.substring(0, num) + "...";
@@ -33,6 +37,43 @@ import {
       book.id = val.id;
       navigation.navigate("BookInfo", book);
     };
+    let DeleteWishBookList = async (val, ind) => {
+      await deleteDoc(doc(db, "wishList", val.wishId));
+      books.splice(ind, 1);
+      console.log(books);
+      setBooks(books);
+      setUpdate(!update);
+      Alert.alert("the book got deleted");
+    };
+    const DeleteFunc = (message, func, val, ind) =>
+      Alert.alert(
+        message,
+        "Are sure you want to delete",
+        [
+          {
+            text: "Cancel",
+            //  onPress: () => Alert.alert("Cancel Pressed"),
+            style: "cancel",
+          },
+          {
+            text: "Delete",
+            onPress: () => func(val, ind),
+            style: "cancel",
+          },
+        ],
+        {
+          cancelable: true,
+          onDismiss: () =>
+            Alert.alert(
+              "This alert was dismissed by tapping outside of the alert dialog."
+            ),
+        }
+      );
+  
+    useState(() => {
+      setBooks(route.params);
+    }, []);
+  
     return (
       <SafeAreaView style={{ flex: 1 }}>
         <ImageBackground
@@ -57,6 +98,27 @@ import {
             >
               {books.length > 0 ? (
                 books.map((val, ind) => (
+                  <View>
+                  <MaterialIcons
+                    name="close"
+                    size={30}
+                    style={{
+                      color: "black",
+                      marginTop: 30,
+                      marginLeft: 10,
+                      position: "absolute",
+                      left: 10,
+                      zIndex: 1,
+                    }}
+                    onPress={() =>
+                      DeleteFunc(
+                        "Deleting From Wish Book List ",
+                        DeleteWishBookList,
+                        val,
+                        ind
+                      )
+                    }
+                  />
                   <TouchableOpacity
                     key={ind}
                     onPress={() => OpenInfo(val)}
@@ -120,6 +182,7 @@ import {
                       </Text>
                     </View>
                   </TouchableOpacity>
+                  </View>
                 ))
               ) : (
                 <Text
