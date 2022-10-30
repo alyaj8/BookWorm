@@ -71,6 +71,7 @@ function WelcomePage({ navigation, isAdmin, setIsAdmin }) {
 
   // const UserSignUp = "UserSignUp";
   const auth = getAuth();
+  const db = getFirestore();
 
   async function signIn() {
     if (value.email === "" || value.password === "") {
@@ -87,34 +88,29 @@ function WelcomePage({ navigation, isAdmin, setIsAdmin }) {
         value.email,
         value.password
       );
-      const db = getFirestore();
-      const docRef = doc(db, "users", user.uid);
-      const docSnap = await getDoc(docRef);
-      // console.log("uid", user.uid);
-      // console.log("user", docSnap.data());
-      setValue({
-        email: "",
+      setValue({ email: "", password: "", error: "", });
+      getDoc(doc(db, "users", user.uid)).then(async (docSnap) => {
+        if (docSnap.data()?.isAdmin) {
+          setIsAdmin(true);
+          navigation.navigate("Adminpage");
+        } else {
+          setIsAdmin(false);
+          if (push_token) {
+            await updateDoc(docRef, { push_token });
+          }
+          navigation.navigate("Maincontainer");
+        }
+      })
 
-        password: "",
-
-        error: "",
-      });
-      if (docSnap.data().isAdmin) {
-        setIsAdmin(true);
-        navigation.navigate("Adminpage");
-      } else {
-        setIsAdmin(false);
-        await updateDoc(docRef, {
-          push_token
-        });
-        navigation.navigate("Maincontainer");
-      }
     } catch (er) {
       er = msg(er);
       setValue({
         ...value,
         error: er,
       });
+      console.log('====================================');
+      console.log(er);
+      console.log('====================================');
     }
   }
 
@@ -139,7 +135,7 @@ function WelcomePage({ navigation, isAdmin, setIsAdmin }) {
         <Text
           style={{
             fontSize: 35,
-            
+
             fontWeight: "500",
             color: "#333",
             marginBottom: 15,
