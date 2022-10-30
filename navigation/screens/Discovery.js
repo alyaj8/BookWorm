@@ -105,7 +105,8 @@ function Discovry({ navigation, isAdmin }) {
     allBooks.forEach((e) => {
       if (
         e.title.toLowerCase().includes(text.toLowerCase()) ||
-        e.author.toLowerCase().includes(text.toLowerCase())
+        e.author.toLowerCase().includes(text.toLowerCase()) ||
+        e.category.toLowerCase().includes(text.toLowerCase())
       ) {
         filter.push(e);
       }
@@ -118,10 +119,8 @@ function Discovry({ navigation, isAdmin }) {
   /////////////////////// notification
   /*  async function registerForPushNotificationsAsync() {
     let token;
-
     const { status: existingStatus } = await Notifications.getPermissionsAsync();
     let finalStatus = existingStatus;
-
     if (existingStatus !== 'granted') {
         const { status } = await Notifications.requestPermissionsAsync();
         finalStatus = status;
@@ -132,7 +131,6 @@ function Discovry({ navigation, isAdmin }) {
     }
     token = (await Notifications.getExpoPushTokenAsync()).data;
     console.log(token);
-
     return token;
 }*/
 
@@ -161,7 +159,7 @@ function Discovry({ navigation, isAdmin }) {
         >
           <Icon name="ios-search" size={20} style={{ marginRight: 10 }} />
           <TextInput
-            placeholder="Search by title /author"
+            placeholder="Search by title /author /category"
             placeholderTextColor="#b1e5d3"
             onChangeText={(text) => searchBooks(text)}
             style={{
@@ -260,6 +258,17 @@ function Discovry({ navigation, isAdmin }) {
                           By:
                           {Datacat(item.author, 19)} {"\n"}{" "}
                         </Text>
+                        <Text
+                          style={{
+                            textAlign: "left",
+                            color: "grey",
+                            fontSize: 10,
+                          }}
+                        >
+                          category:
+                          {Datacat(item.category, 10)} {"\n"}{" "}
+                        </Text>
+
                         
                       </Text>
                     </TouchableOpacity>
@@ -341,11 +350,8 @@ const styles = StyleSheet.create({
       );
     });
   }, []);
-
-
   const Create = () => {
     const myDoc = doc(db, "as", "ss");
-
     const docData = {
       name: "ali",
       username: "alii",
@@ -359,12 +365,8 @@ const styles = StyleSheet.create({
     <Button title="click" onPress={Read}></Button>
       {books != null && <Text>{books.name}</Text>}
   
-
-
-
   const Read = () => {
     const myDoc = doc(db, "as", "ss");
-
     getDoc(myDoc).then((snapshot) => {
       //if (snapshot.exists)
       setBooks(snapshot.data());
@@ -373,9 +375,7 @@ const styles = StyleSheet.create({
 
 /*
 const [books1, setBooks1] = useState([]);
-
   const Doc = query(collection(db, "as"));
-
   getDocs(Doc).then((querySnapshot) => {
     let values = null;
     querySnapshot.forEach((doc) => {
