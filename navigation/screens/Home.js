@@ -297,17 +297,18 @@ export default function Home({ navigation }) {
                 (val, ind) =>
                   ind < 5 && (
                     <TouchableOpacity
+                      //////////////////////////////////////////////////////////////here book 
                       key={ind}
                       onPress={() => navigation.navigate("BookInfo", val)}
                       style={{
-                        height: 500,
+                        height: 246,
                         elevation: 2,
-                        borderRadius: 50,
                         marginLeft: 20,
-                        marginTop: 20,
-                        borderRadius: 15,
-                        marginBottom: 10,
+                        marginTop: 10,
                         width: 160,
+                        // backgroundColor: "#f3f6f4",
+                        borderRadius: 15,
+                        marginBottom: 40,
                       }}
                       disabled={val.deleted}
                     >
@@ -403,10 +404,19 @@ export default function Home({ navigation }) {
           </ScrollView>
         </View>
 
+
+
+
+
+
+
+
+
         <View
+          //////////////////////////////////////////////////// recommendation
           style={{
             width: "100%",
-            height: "35%",
+            height: "47%",
             backgroundColor: "#f6fff9",
             paddingHorizontal: 9,
           }}
@@ -508,7 +518,7 @@ export default function Home({ navigation }) {
                       style={{
                         height: 250,
                         elevation: 2,
-                        backgroundColor: "#FFF",
+                        // backgroundColor: "#f3f6f4",
                         marginLeft: 20,
                         marginTop: 20,
                         borderRadius: 15,
@@ -547,6 +557,10 @@ export default function Home({ navigation }) {
                         source={{ uri: val.poster }}
                         style={{ width: "100%", height: 200 }}
                       />
+
+
+
+
                       <View
                         style={{
                           flexDirection: "row",
@@ -563,6 +577,7 @@ export default function Home({ navigation }) {
                           {"\n"}
                         </Text>
                       </View>
+
                     </TouchableOpacity>
                   )
                 );
@@ -581,6 +596,7 @@ export default function Home({ navigation }) {
                 Please add some book to your favorit list
               </Text>
             )}
+
           </ScrollView>
         </View>
       </ScrollView>
