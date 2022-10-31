@@ -197,33 +197,7 @@ export default function Home({ navigation }) {
           marginTop: -45,
         }}
       >
-        <View
-          style={{
-            backgroundColor: "#FFF",
-            paddingVertical: 10,
-            paddingHorizontal: 20,
-            marginHorizontal: 20,
-            borderRadius: 20,
-            marginTop: "3.5%",
-            flexDirection: "row",
-            alignItems: "center",
-            borderColor: "black",
-            borderWidth: 0.2,
-            height: 46,
-          }}
-        >
-          <Icon name="ios-search" size={20} style={{ marginRight: 10 }} />
 
-          <TextInput
-            placeholder="Search by title"
-            placeholderTextColor="#b1e5d3"
-            style={{
-              fontWeight: "bold",
-              fontSize: 18,
-              width: 260,
-            }}
-          />
-        </View>
       </View>
 
       <ScrollView>
