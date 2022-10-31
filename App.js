@@ -13,7 +13,6 @@ import Editbook from "./navigation/screens/Editbook";
 import BookInfoApi from "./navigation/screens/BookInfoApi";
 import Discovery from "./navigation/screens/Discovery";
 import RecViewall from "./navigation/screens/RecViewall";
-import RatedViewAll from "./navigation/screens/RatedViewAll";
 
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -36,6 +35,8 @@ import BookComment from "./navigation/screens/BookComment";
 import * as Notifications from "expo-notifications";
 import Commentadmin from "./navigation/screens/Commentadmin";
 import CreateCustomList from "./navigation/screens/CreateCustomList";
+import MyFriend from "./navigation/screens/MyFriend";
+import FriendProfile from "./navigation/screens/FriendProfile";
 const firebaseConfig = {
   apiKey: "AIzaSyCb8vT5-UmFZV-954feGAE2L0-T4Tgpqhs",
   authDomain: "group16-de98b.firebaseapp.com",
@@ -96,6 +97,13 @@ function App() {
             <Stack.Screen name="Discovery" component={Discovery} />
             <Stack.Screen name="RecViewall" component={RecViewall} />
             <Stack.Screen name="CreateCustomList" component={CreateCustomList}/>
+            <Stack.Screen name="myfriend" component={MyFriend} />
+            <Stack.Screen name="friendProfile" component={FriendProfile} />
+
+            <Stack.Screen
+              name="CreateCustomList"
+              component={CreateCustomList}
+            />
           </Stack.Navigator>
         </NavigationContainer>
       </StripeProvider>

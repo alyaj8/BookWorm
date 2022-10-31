@@ -1,4 +1,14 @@
-import { collection, getDocs } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  deleteDoc,
+  doc,
+  Firestore,
+  getDocs,
+  onSnapshot,
+  setDoc,
+  where,
+} from "firebase/firestore";
 import { useEffect, useState } from "react";
 import {
   Dimensions,
@@ -12,11 +22,11 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import * as Notifications from 'expo-notifications';
+import * as Notifications from "expo-notifications";
 //import PushNotificationIOS from '@react-native-community/push-notification-ios';
 //import * as Notifications from 'expo-notifications';
 import Icon from "react-native-vector-icons/Ionicons";
-import { db } from "../../config/firebase";
+import { auth, db } from "../../config/firebase";
 import { withUser } from "../../config/UserContext";
 
 function Discovry({ navigation, isAdmin }) {
@@ -57,10 +67,22 @@ function Discovry({ navigation, isAdmin }) {
   const [allUsers, setAllUsers] = useState([]);
   const [searchText, setSearchText] = useState("");
   const [url, setUrl] = useState("");
-
+  const [follow, setFollow] = useState(false);
+  const [following, setFollowing] = useState([]);
   useEffect(() => {
     getData();
-  }, []);
+    fetchUserFollowing();
+    console.log("folowwwwwwwwwwwwwww", following);
+    console.log(
+      "folwwwoswsss",
+      users.filter((item) => item.uid != following.map((i) => i))
+    );
+    if (following.indexOf(auth.currentUser.uid) > -1) {
+      setFollow(true);
+    } else {
+      setFollow(false);
+    }
+  }, [following.length, users.length]);
 
   const width1 = Dimensions.get("screen").width / 2 - 35;
   const hight1 = Dimensions.get("screen").height / 3 - 70;
@@ -93,7 +115,11 @@ function Discovry({ navigation, isAdmin }) {
       //store data in AsyncStorage
       myData.sort((a, b) => a.username.localeCompare(b.username));
       setAllUsers(myData);
-      setUsers(myData);
+      const data2 = myData
+        .filter((i) => i.isAdmin == false && i.uid != following.map((i) => i))
+        .map((item) => item);
+
+      setUsers(data2);
     } catch (error) {
       console.log(error);
     }
@@ -103,10 +129,9 @@ function Discovry({ navigation, isAdmin }) {
     console.log(text);
     const filter = [];
     allUsers.forEach((e) => {
-      if (
-        e.username.toLowerCase().includes(text.toLowerCase()) 
-      ) {
-        filter.push(e);
+      console.log("For Eeach", e.isAdmin);
+      if (e.username.toLowerCase().includes(text.toLowerCase())) {
+        e.isAdmin == false ? filter.push(e) : null;
       }
     });
     setUsers(filter);
@@ -134,6 +159,46 @@ function Discovry({ navigation, isAdmin }) {
 
     return token;
 }*/
+  const onFollow = async (userId, item) => {
+    // console.log("item", item);
+
+    const dataRef = collection(
+      db,
+      "following",
+      auth.currentUser.uid,
+      "userFollowing"
+    );
+    setDoc(doc(dataRef, userId), {})
+      .then((res) => {})
+      .finally(() => {
+        getData();
+        fetchUserFollowing();
+      });
+
+    // const docRef = doc(db, "following", currentUser.uid,);
+    // const docSnap = await getDocs(collection(docRef, "userFollowing", userId));
+    // console.log()
+  };
+  const onUnfollow = (userId) => {
+    const dataRef = collection(
+      db,
+      "following",
+      auth.currentUser.uid,
+      "userFollowing"
+    );
+    deleteDoc(doc(dataRef, userId));
+  };
+  const fetchUserFollowing = () => {
+    const dataRef = doc(db, "following", auth.currentUser.uid);
+    const q = collection(dataRef, "userFollowing");
+    onSnapshot(q, (snapshot) => {
+      let data = snapshot.docs.map((doc) => {
+        const id = doc.id;
+        return id;
+      });
+      setFollowing(data);
+    });
+  };
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -208,49 +273,91 @@ function Discovry({ navigation, isAdmin }) {
               keyExtractor={(item) => item.id}
               renderItem={({ item }) => (
                 //  restUrl(item.data.poster)
-                <View style={{ width: width1, height: hight1 }}>
-                  <View style={styles.card}>
-                    <View style={{ alignItems: "flex-end" }}>
-                      <View
+                <TouchableOpacity
+                  style={{
+                    width: width1,
+                    height: hight1,
+                    borderWidth: 1,
+                    borderRadius: 5,
+                    marginBottom: 10,
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                  activeOpacity={0.6}
+                  onPress={() => navigation.navigate("friendProfile", item)}
+                >
+                  <View
+                    style={{
+                      height: 70,
+                      width: 70,
+                      // borderWidth: 1,
+                      borderRadius: 100,
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <Image
+                      source={require("./profile1.jpg")}
+                      style={{
+                        height: 70,
+                        width: 70,
+                        marginTop: -9,
+                        marginLeft: -9,
+                      }}
+                    ></Image>
+                  </View>
+                  <TouchableOpacity
+                    style={{
+                      marginTop: 10,
+                    }}
+                  >
+                    <Text>
+                      <Text
                         style={{
-                          width: 19,
-                          height: 19,
+                          textAlign: "center",
+                          textAlignVertical: "center",
+                          fontWeight: "bold",
+                          fontSize: 12,
+                          //margin: 10,
+                        }}
+                      >
+                        {Datacat(item.username, 11)}
+                        {"\n"}
+                      </Text>
+                    </Text>
+                  </TouchableOpacity>
+                  {item?.id !== auth.currentUser.uid ? (
+                    follow ? (
+                      <TouchableOpacity
+                        style={{
+                          backgroundColor: "green",
+                          height: 30,
+                          width: 80,
                           alignItems: "center",
                           justifyContent: "center",
                           borderRadius: 10,
-                          marginTop: -12,
-                          marginRight: -12,
                         }}
-                      ></View>
-                    </View>
-                    <TouchableOpacity
-                      onPress={() =>
-                        navigation.navigate(
-                          isAdmin ? "BookInfoApi" : "BookInfo",
-                          item
-                        )
-                      }
-                    >
-                    
-                      <Text>
-                        <Text
-                          style={{
-                            textAlign: "center",
-                            textAlignVertical:"center",
-                            fontWeight:"bold",
-                            fontSize: 12,
-                            //margin: 10,
-                          }}
-                        >
-                          {Datacat(item.username, 11)}
-                          {"\n"}
-                        </Text>
-                        
-                        
-                      </Text>
-                    </TouchableOpacity>
-                  </View>
-                </View>
+                        onPress={() => onUnfollow(item.id)}
+                      >
+                        <Text style={{ color: "#fff" }}>Following</Text>
+                      </TouchableOpacity>
+                    ) : (
+                      <TouchableOpacity
+                        style={{
+                          backgroundColor: "green",
+                          height: 30,
+                          width: 80,
+                          alignItems: "center",
+                          justifyContent: "center",
+                          borderRadius: 10,
+                        }}
+                        onPress={() => onFollow(item.id, item)}
+                      >
+                        <Text style={{ color: "#fff" }}>Follow</Text>
+                      </TouchableOpacity>
+                    )
+                  ) : null}
+                </TouchableOpacity>
               )} //here i want my data
             />
           )}

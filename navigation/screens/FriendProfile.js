@@ -18,15 +18,20 @@ import {
   getFirestore,
   doc,
   getDoc,
+  onSnapshot,
 } from "firebase/firestore";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-import { db } from "../../config/firebase";
+import { auth, db } from "../../config/firebase";
 
-export default function Lists({ navigation }) {
+export default function FriendProfile({ navigation, route }) {
   let [BookList, setBookList] = useState([]);
   let [BookFavList, setBookFavList] = useState([]);
   let [BookWishList, setBookWishList] = useState([]);
   let [numberOfBook, setNumberOfBook] = useState(0);
+  const [users, setUsers] = useState([]);
+  const [allUsers, setAllUsers] = useState([]);
+  const [following, setFollowing] = useState([]);
+  const item = route.params;
   const Datacat = (str, num) => {
     if (str.length > num) {
       return str.substring(0, num) + "...";
@@ -121,12 +126,58 @@ export default function Lists({ navigation }) {
     console.log(book);
     navigation.navigate("BookInfo", book);
   };
+  const fetchUserFollowing = () => {
+    const dataRef = doc(db, "following", auth.currentUser.uid);
+    const q = collection(dataRef, "userFollowing");
+    onSnapshot(q, (snapshot) => {
+      let data = snapshot.docs.map((doc) => {
+        const id = doc.id;
+        return id;
+      });
+      console.log("dataassasss", data);
+      setFollowing(data);
+    });
+  };
+  const getData = async () => {
+    try {
+      const colRef = collection(db, "users");
+      const snapshot = await getDocs(colRef);
+      var myData = [];
+      //store the data in an array myData
+      snapshot.forEach((doc) => {
+        let user = doc.data();
+        user.id = doc.id;
+        myData.push(user);
+      });
+      // Remove duplicate books by title
+      myData = myData.filter(
+        (user, index, self) =>
+          index === self.findIndex((n) => n.username === user.username)
+      );
+
+      //store data in AsyncStorage
+      myData.sort((a, b) => a.username.localeCompare(b.username));
+      setAllUsers(myData);
+      const data2 = myData
+        .filter((i) => i.isAdmin == false && item.id == following.map((i) => i))
+        .map((item) => item);
+
+      setUsers(data2);
+
+      console.log("data", users.length);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   useEffect(() => {
     navigation.addListener("focus", () => {
       GetBookList();
       GetBookFavList();
       GetBookWishList();
     });
+    getData();
+    fetchUserFollowing();
+    console.log("Route Params", item);
   }, []);
   //console.log(BookList, "========>bookList");
   return (
@@ -137,61 +188,61 @@ export default function Lists({ navigation }) {
       }}
     >
       <View style={{ padding: 10, width: "100%", height: 150 }}>
-          <TouchableOpacity>
-            <Image
-              source={require("./profile2.jpg")}
-              style={{ width: 400, height: 170, marginTop: -9, marginLeft: -9 }}
-            ></Image>
-            <View></View>
-            <View></View>
-          </TouchableOpacity>
+        <TouchableOpacity>
+          <Image
+            source={require("./profile2.jpg")}
+            style={{ width: 400, height: 170, marginTop: -9, marginLeft: -9 }}
+          ></Image>
+          <View></View>
+          <View></View>
+        </TouchableOpacity>
       </View>
       <View style={{ alignItems: "center" }}>
-          <Image
-            source={require("./profile1.jpg")}
+        <Image
+          source={require("./profile1.jpg")}
+          style={{
+            width: 140,
+            height: 140,
+            borderRadius: 100,
+            marginTop: -50,
+          }}
+        ></Image>
+        <Text style={{ fontSize: 23, fontWeight: "bold", padding: 10 }}>
+          {`${item.firstname + " " + item.lastname}`}
+        </Text>
+        <Text style={{ fontSize: 15, fontWeight: "bold", marginTop: -15 }}>
+          {`following:${users.length} followers:9`}
+        </Text>
+        <Text
+          style={{ fontSize: 15, fontWeight: "bold", color: "grey" }}
+        ></Text>
+      </View>
+      <View style={{ width: "102%", alignItems: "center" }}>
+        <TouchableOpacity>
+          <View
             style={{
-              width: 140,
-              height: 140,
-              borderRadius: 100,
-              marginTop: -50,
+              alignSelf: "center",
+              alignItems: "center",
+              backgroundColor: "#00a46c",
+              paddingHorizontal: 70,
+              paddingVertical: 15,
+              borderRadius: 15,
+              marginBottom: 20,
+              marginTop: -10,
             }}
-          ></Image>
-          <Text style={{ fontSize: 23, fontWeight: "bold", padding: 10 }}>
-            Mashael
-          </Text>
-          <Text style={{ fontSize: 29, fontWeight: "bold" }}></Text>
-          <Text
-            style={{ fontSize: 15, fontWeight: "bold", color: "grey" }}
-          ></Text>
-        </View>
-        <View style={{ width: "102%", alignItems: "center" }}>
-          <TouchableOpacity
           >
-            <View
+            <Text
               style={{
-                alignSelf:"center",
-                alignItems:"center",
-                backgroundColor: "#00a46c",
-                paddingHorizontal: 70,
-                paddingVertical: 15,
-                borderRadius: 15,
-                marginBottom:20,
-                marginTop:-50
+                fontWeight: "bold",
+                fontSize: 13,
+                color: "#FFF",
               }}
             >
-              <Text
-                style={{
-                  fontWeight: "bold",
-                  fontSize: 13,
-                  color: "#FFF",
-                }}
-              >
-                Follow
-              </Text>
-            </View>
-          </TouchableOpacity>
-        </View>
-      
+              Follow
+            </Text>
+          </View>
+        </TouchableOpacity>
+      </View>
 
       <View
         style={{
@@ -337,7 +388,7 @@ export default function Lists({ navigation }) {
           </Text>
         )}
       </ScrollView>
-     
+
       <View
         style={{
           flexDirection: "row",
@@ -626,8 +677,6 @@ export default function Lists({ navigation }) {
           </Text>
         )}
       </ScrollView>
-   
-          
     </ScrollView> //for all the page
   );
 }
