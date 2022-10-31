@@ -86,7 +86,6 @@ export default function Maincontainer() {
         },
       })}
     >
-      <Tab.Screen name={MoreName} component={More} />
       <Tab.Screen name={DiscovryName2} component={DiscovryStack} />
 
       <Tab.Screen name={addbook1} component={AddBookStack} />

@@ -1,8 +1,38 @@
 import * as React from "react";
-import { View, Text, ScrollView, TouchableOpacity, Image } from "react-native";
+import { View, Text, ScrollView, TouchableOpacity, Image, Alert } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import { getAuth, signOut } from "firebase/auth";
 export default function AdminAccount({ navigation }) {
+  const showAlert = () =>
+
+    Alert.alert(
+      "Loging out ",
+      "Are sure you want to log out?",
+      [
+        {
+          text: "Cancel",
+          //  onPress: () => Alert.alert("Cancel Pressed"),
+          style: "cancel",
+        },
+        {
+          text: "Yes",
+          style: "cancel",
+          onPress: async () => {
+            const auth = getAuth();
+            await signOut(auth);
+            navigation.navigate("WelcomePage");
+          },
+
+        },
+      ],
+      {
+        cancelable: true,
+        onDismiss: () =>
+          Alert.alert(
+            "This alert was dismissed by tapping outside of the alert dialog."
+          ),
+      }
+    );
   return (
     <View>
       <ScrollView>
@@ -57,11 +87,7 @@ export default function AdminAccount({ navigation }) {
         </View>
 
         <TouchableOpacity
-            onPress={async ()=>{
-              const auth =getAuth()
-              await signOut(auth);
-              navigation.navigate('WelcomePage')
-            }}
+          onPress={showAlert}
           style={{
             alignSelf: "center",
             flexDirection: "row",

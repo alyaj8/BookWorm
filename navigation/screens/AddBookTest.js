@@ -511,6 +511,7 @@ export default function AddBookTest({ navigation }) {
               value={value.ISBN}
               onChangeText={(text) => setValue({ ...value, ISBN: text })}
               underlineColorAndroid="transparent"
+              keyboardType="numeric"
             />
           </View>
 

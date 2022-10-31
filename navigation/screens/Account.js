@@ -10,6 +10,7 @@ import {
   SafeAreaView,
   Button,
   FlatList,
+  Alert
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import {
@@ -29,6 +30,35 @@ export default function Account({ navigation }) {
   const auth = getAuth();
   const user = auth.currentUser;
 
+  const showAlert = () =>
+    Alert.alert(
+      "Loging out ",
+      "Are sure you want to log out?",
+      [
+        {
+          text: "Cancel",
+          //  onPress: () => Alert.alert("Cancel Pressed"),
+          style: "cancel",
+        },
+        {
+          text: "Yes",
+          style: "cancel",
+          onPress: async () => {
+            const auth = getAuth();
+            await signOut(auth);
+            navigation.navigate("WelcomePage");
+          },
+
+        },
+      ],
+      {
+        cancelable: true,
+        onDismiss: () =>
+          Alert.alert(
+            "This alert was dismissed by tapping outside of the alert dialog."
+          ),
+      }
+    );
   useEffect(() => {
     getData();
   }, []);
@@ -185,11 +215,7 @@ export default function Account({ navigation }) {
           <Text style={{ fontSize: 16, marginTop: 7 }}>My friends</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={async () => {
-            const auth = getAuth();
-            await signOut(auth);
-            navigation.navigate("WelcomePage");
-          }}
+          onPress={showAlert}
           style={{
             alignSelf: "center",
             flexDirection: "row",

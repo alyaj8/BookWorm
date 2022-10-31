@@ -348,20 +348,11 @@ export default function BookInfoApi({ route, navigation }) {
                 {"\n"}
                 {"Book Details: "}
               </Text>
+
               <Text style={{ alignSelf: "flex-start", fontWeight: "bold" }}>
-                {"ISBN:"}
-                {"    "}
-                {book.ISBN}
-                {"\n\n"}
-                {"CATEGORY:"}
-                {"    "}
-                {book.category}
-                {"\n \n"}
-                {"price:"}
-                {"    "}
-                {book.pric}
-                {"$"}
-                {"\n "}
+                {`ISBN: ${book.ISBN}\n\n`}
+                {`CATEGORY: ${book.category}\n\n`}
+                {!!book.pric && `PRICE: ${book.pric}$\n\n`}
               </Text>
               <View style={{ flexDirection: "row" }}>
                 <View style={styles.buttonCont}>
