@@ -227,181 +227,181 @@ export default function Home({ navigation }) {
       </View>
 
       <ScrollView>
-        
-<View
-        style={{
-          width: "100%",
-          height: "47%",
-          backgroundColor: "#f6fff9",
-          paddingHorizontal: 9,
-          marginBottom: 10,
-        }}
-      >
-        <Text
+
+        <View
           style={{
-            fontWeight: "bold",
-            fontSize: 17,
-            color: "#585a61",
-            marginBottom: -18,
-            fontWeight: "bold",
-            marginTop: 8,
+            width: "100%",
+            height: "47%",
+            backgroundColor: "#f6fff9",
+            paddingHorizontal: 9,
+            marginBottom: 10,
           }}
         >
-          Top 5 heightest Reviews
-        </Text>
-        <TouchableOpacity>
-          <TouchableOpacity
+          <Text
             style={{
-              backgroundColor: "#00a46c",
-              paddingHorizontal: 20,
-              paddingVertical: 5,
-              borderRadius: 15,
-              alignSelf: "flex-end",
-              width: 89,
-              height: 27,
+              fontWeight: "bold",
+              fontSize: 17,
+              color: "#585a61",
+              marginBottom: -18,
+              fontWeight: "bold",
+              marginTop: 8,
             }}
-            onPress={() => navigation.navigate("RatedViewAll", highetRatedList)}
           >
-            <Text
+            Top 5 heightest Reviews
+          </Text>
+          <TouchableOpacity>
+            <TouchableOpacity
               style={{
-                fontWeight: "bold",
-                fontSize: 13,
-                color: "#FFF",
+                backgroundColor: "#00a46c",
+                paddingHorizontal: 20,
+                paddingVertical: 5,
+                borderRadius: 15,
+                alignSelf: "flex-end",
+                width: 89,
+                height: 27,
               }}
+              onPress={() => navigation.navigate("RatedViewAll", highetRatedList)}
             >
-              View all
-            </Text>
+              <Text
+                style={{
+                  fontWeight: "bold",
+                  fontSize: 13,
+                  color: "#FFF",
+                }}
+              >
+                View all
+              </Text>
+            </TouchableOpacity>
           </TouchableOpacity>
-        </TouchableOpacity>
 
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={true}
-          style={{ height: 90, flex: 1 }}
-        >
-          <LinearGradient
-            colors={["rgba(0,164,109,0.09)", "transparent"]}
-            style={{
-              position: "absolute",
-              elevation: 2,
-              left: 0,
-              right: 0,
-              height: "55%",
-              marginTop: 170,
-              top: 0,
-              width: 9999,
-            }}
-          />
-          {highetRatedList.length > 0 ? (
-            highetRatedList.map(
-              (val, ind) =>
-                ind < 5 && (
-                  <TouchableOpacity
-                    key={ind}
-                    onPress={() => navigation.navigate("BookInfo", val)}
-                    style={{
-                      height: 500,
-                      elevation: 2,
-                      borderRadius: 50,
-                      marginLeft: 20,
-                      marginTop: 20,
-                      borderRadius: 15,
-                      marginBottom: 10,
-                      width: 160,
-                    }}
-                    disabled={val.deleted}
-                  >
-                    <Image
-                      source={{ uri: val.poster }}
-                      style={{ width: "100%", height: 160, borderRadius: 20 }}
-                    />
-                    <View
-                      style={{
-                        flexDirection: "row",
-                        paddingTop: 10,
-                        paddingHorizontal: 10,
-                      }}
-                    >
-                      <Text
-                        style={{
-                          fontWeight: "bold",
-                        }}
-                      >
-                        {Datacat(val.title, 15)}
-                        {"\n"}
-                      </Text>
-                    </View>
-                    <Rating
-                      startingValue={val.totalReview}
-                      imageSize={20}
-                      fractions={20}
-                      showRating={false}
-                      readonly={true}
-                      tintColor="#EDF5F0"
-                      style={{}}
-                    />
-                    <Text style={{ textAlign: "center", fontWeight: "bold" }}>
-                      {val.totalReview}
-                    </Text>
-                  </TouchableOpacity>
-                  
-
-                ) 
-            )
-            
-          ) : (
-            <Text
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={true}
+            style={{ height: 90, flex: 1 }}
+          >
+            <LinearGradient
+              colors={["rgba(0,164,109,0.09)", "transparent"]}
               style={{
-                marginTop: -10,
-                marginLeft: 130,
-                fontSize: 15,
-                fontWeight: "bold",
-                color: "grey",
-                alignSelf: "center",
+                position: "absolute",
+                elevation: 2,
+                left: 0,
+                right: 0,
+                height: "55%",
+                marginTop: 170,
+                top: 0,
+                width: 9999,
               }}
-            >
-              Empty
-            </Text>
-            
-          )}
-          <TouchableOpacity
-                    
-                    onPress={() => navigation.navigate("RatedViewAll", highetRatedList)}
-                    style={{
-                      height: 500,
-                      elevation: 2,
-                      borderRadius: 50,
-                      marginLeft: 20,
-                      marginTop: 85,
-                      alignItems: "center",
-                      borderRadius: 15,
-                      marginBottom: 10,
-                      width: 160,
-                    }}
-                   
-                  >
-                   
-                    <View
+            />
+            {highetRatedList.length > 0 ? (
+              highetRatedList.map(
+                (val, ind) =>
+                  ind < 5 && (
+                    <TouchableOpacity
+                      key={ind}
+                      onPress={() => navigation.navigate("BookInfo", val)}
                       style={{
-                        flexDirection: "row",
-                        paddingTop: 10,
-                        paddingHorizontal: 10,
+                        height: 500,
+                        elevation: 2,
+                        borderRadius: 50,
+                        marginLeft: 20,
+                        marginTop: 20,
+                        borderRadius: 15,
+                        marginBottom: 10,
+                        width: 160,
                       }}
+                      disabled={val.deleted}
                     >
-                       <Text
+                      <Image
+                        source={{ uri: val.poster }}
+                        style={{ width: "100%", height: 160, borderRadius: 20 }}
+                      />
+                      <View
                         style={{
-                          fontWeight: "bold",
-                          textDecorationLine: "underline",
-                          color:"#EFCB46", 
+                          flexDirection: "row",
+                          paddingTop: 10,
+                          paddingHorizontal: 10,
                         }}
                       >
-                        View More.....
+                        <Text
+                          style={{
+                            fontWeight: "bold",
+                          }}
+                        >
+                          {Datacat(val.title, 15)}
+                          {"\n"}
+                        </Text>
+                      </View>
+                      <Rating
+                        startingValue={val.totalReview}
+                        imageSize={20}
+                        fractions={20}
+                        showRating={false}
+                        readonly={true}
+                        tintColor="#EDF5F0"
+                        style={{}}
+                      />
+                      <Text style={{ textAlign: "center", fontWeight: "bold" }}>
+                        {val.totalReview}
                       </Text>
-                  </View>
-                  </TouchableOpacity>
+                    </TouchableOpacity>
 
-        </ScrollView>
-      </View>
+
+                  )
+              )
+
+            ) : (
+              <Text
+                style={{
+                  marginTop: -10,
+                  marginLeft: 130,
+                  fontSize: 15,
+                  fontWeight: "bold",
+                  color: "grey",
+                  alignSelf: "center",
+                }}
+              >
+                Empty
+              </Text>
+
+            )}
+            <TouchableOpacity
+
+              onPress={() => navigation.navigate("RatedViewAll", highetRatedList)}
+              style={{
+                height: 500,
+                elevation: 2,
+                borderRadius: 50,
+                marginLeft: 20,
+                marginTop: 85,
+                alignItems: "center",
+                borderRadius: 15,
+                marginBottom: 10,
+                width: 160,
+              }}
+
+            >
+
+              <View
+                style={{
+                  flexDirection: "row",
+                  paddingTop: 10,
+                  paddingHorizontal: 10,
+                }}
+              >
+                <Text
+                  style={{
+                    fontWeight: "bold",
+                    textDecorationLine: "underline",
+                    color: "#EFCB46",
+                  }}
+                >
+                  View More.....
+                </Text>
+              </View>
+            </TouchableOpacity>
+
+          </ScrollView>
+        </View>
 
         <View
           style={{
@@ -427,7 +427,7 @@ export default function Home({ navigation }) {
             onPress={() => setModalVisible(true)}
             name="information-circle-outline"
             size={30}
-            style={{ color: "black", marginLeft: 230, marginBottom: -30 }}
+            style={{ color: "black", marginLeft: 245, marginBottom: -30 }}
           />
 
           <View
@@ -438,15 +438,18 @@ export default function Home({ navigation }) {
               borderRadius: 15,
               alignSelf: "flex-end",
               width: 89,
-              height: 27,            }}
+              height: 27,
+            }}
           >
-            <Button
+            <TouchableOpacity
               onPress={() =>
                 navigation.navigate("RecViewall", RecommendationList)
               }
+              disabled={RecommendationList.length > 0 ? false : true}
               title="View all"
-            ></Button>
-            <Text>View all</Text>
+            >
+              <Text style={{ color: "white", fontWeight: "bold", fontSize: 13 }}>View all</Text>
+            </TouchableOpacity>
           </View>
           <Modal
             animationType="slide"
@@ -458,7 +461,8 @@ export default function Home({ navigation }) {
                 style={{
                   backgroundColor: "white",
                   margin: 50,
-                  padding: 50,
+                  padding: 15,
+                  paddingTop: 7,
                   marginTop: 400,
                   borderRadius: 5,
                   elevation: 5,
@@ -470,7 +474,8 @@ export default function Home({ navigation }) {
                   size={30}
                   style={{ color: "red", textAlign: "right" }}
                 />
-                <Text>Categories Are {categories.join("_-")}</Text>
+                <Text style={{ fontWeight: "bold" }}>Categories Are:</Text>
+                <Text>{categories.join("-")}</Text>
               </View>
             </View>
           </Modal>
@@ -573,7 +578,7 @@ export default function Home({ navigation }) {
                   alignSelf: "center",
                 }}
               >
-                Empty
+                Please add some book to your favorit list
               </Text>
             )}
           </ScrollView>
