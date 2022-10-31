@@ -13,6 +13,7 @@ import Editbook from "./navigation/screens/Editbook";
 import BookInfoApi from "./navigation/screens/BookInfoApi";
 import Discovery from "./navigation/screens/Discovery";
 import RecViewall from "./navigation/screens/RecViewall";
+import RatedViewAll from "./navigation/screens/RatedViewAll";
 
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -96,14 +97,11 @@ function App() {
             <Stack.Screen name="Commentadmin" component={Commentadmin} />
             <Stack.Screen name="Discovery" component={Discovery} />
             <Stack.Screen name="RecViewall" component={RecViewall} />
-            <Stack.Screen name="CreateCustomList" component={CreateCustomList}/>
+            <Stack.Screen name="CreateCustomList" component={CreateCustomList} />
             <Stack.Screen name="myfriend" component={MyFriend} />
             <Stack.Screen name="friendProfile" component={FriendProfile} />
 
-            <Stack.Screen
-              name="CreateCustomList"
-              component={CreateCustomList}
-            />
+
           </Stack.Navigator>
         </NavigationContainer>
       </StripeProvider>
