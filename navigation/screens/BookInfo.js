@@ -81,13 +81,13 @@ export default function BookInfo({ route, navigation }) {
       if (book?.notifiedUser && book?.notifiedUser?.length > 0) {
         data = [uid, ...book.notifiedUser];
       } else {
-        data.push(uid)
+        data.push(uid);
       }
       await updateDoc(doc.ref, {
-        notifiedUser: data
+        notifiedUser: data,
       });
-    })
-  }
+    });
+  };
 
   let [disabled, setDisabled] = useState(false);
   let AddInfoToReadList = async () => {
@@ -285,6 +285,9 @@ export default function BookInfo({ route, navigation }) {
               style={{ color: "black", marginTop: 50, marginLeft: 10 }}
               onPress={() => navigation.goBack()}
             />
+            <View style={{ marginTop: 50, justifyContent: "space-between" }}>
+              <Icon name="share" size={45} onPress={onShare} title="Share" />
+            </View>
           </View>
           <View
             style={{
@@ -381,7 +384,7 @@ export default function BookInfo({ route, navigation }) {
             ) : (
               <Text style={{ color: "black" }}>
                 {" "}
-                No Reviews yet
+                No Reviews yet {"\n     0 Poeple "}
               </Text>
             )}
 
