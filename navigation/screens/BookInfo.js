@@ -439,19 +439,9 @@ export default function BookInfo({ route, navigation }) {
               {"Book Details: "}
             </Text>
             <Text style={{ alignSelf: "flex-start", fontWeight: "bold" }}>
-              {"ISBN:"}
-              {"    "}
-              {book.ISBN}
-              {"\n\n"}
-              {"CATEGORY:"}
-              {"    "}
-              {book.category}
-              {"\n"} {"\n"}
-              {"PRICE:"}
-              {"    "}
-              {book.pric}
-              {"$"}
-              {"\n"} {"\n"}
+              {`ISBN: ${book.ISBN}\n\n`}
+              {`CATEGORY: ${book.category}\n\n`}
+              {!!book.pric && `PRICE: ${book.pric}$\n\n`}
             </Text>
             <Text
               style={{

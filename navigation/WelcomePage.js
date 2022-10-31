@@ -88,6 +88,9 @@ function WelcomePage({ navigation, isAdmin, setIsAdmin }) {
         value.email,
         value.password
       );
+      console.log('====================================');
+      console.log("user.uid", user.uid);
+      console.log('====================================');
       setValue({ email: "", password: "", error: "", });
       getDoc(doc(db, "users", user.uid)).then(async (docSnap) => {
         if (docSnap.data()?.isAdmin) {
@@ -96,10 +99,14 @@ function WelcomePage({ navigation, isAdmin, setIsAdmin }) {
         } else {
           setIsAdmin(false);
           if (push_token) {
-            await updateDoc(docRef, { push_token });
+            await updateDoc(doc(db, "users", user.uid), { push_token });
           }
           navigation.navigate("Maincontainer");
         }
+      }).catch(e => {
+        console.log('====================================');
+        console.log(e, " e");
+        console.log('====================================');
       })
 
     } catch (er) {

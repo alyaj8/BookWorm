@@ -15,6 +15,7 @@ import Icon from "react-native-vector-icons/Ionicons";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { collection, doc, getFirestore, setDoc } from "firebase/firestore";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { registerForPushNotificationsAsync } from "../../util/Notifcations";
 
 function msg(error) {
   switch (error.code) {
@@ -37,6 +38,12 @@ function msg(error) {
   return error.code;
 }
 export default function UserSignUp({ navigation }) {
+  const [push_token, setPushToken] = useState("");
+  useEffect(() => {
+    registerForPushNotificationsAsync().then((token) => {
+      setPushToken(token === undefined ? "" : token);
+    });
+  }, []);
   const [value, setValue] = React.useState({
     email: "",
     password: "",
@@ -46,6 +53,8 @@ export default function UserSignUp({ navigation }) {
     error: "",
   });
   const auth = getAuth();
+  const db = getFirestore();
+
   async function signUp() {
     if (
       value.firstname === "" ||
@@ -60,13 +69,14 @@ export default function UserSignUp({ navigation }) {
       return;
     }
     try {
+
       const { user } = await createUserWithEmailAndPassword(
         auth,
         value.email,
         value.password
       );
       console.log("user", user.uid);
-      const db = getFirestore();
+
       const data = {
         email: value.email,
         username: value.username,
@@ -75,12 +85,17 @@ export default function UserSignUp({ navigation }) {
         password: value.password,
         uid: user.uid,
         isAdmin: false,
-        push_token,
+        push_token: push_token || "",
       };
-      await setDoc(doc(db, "users", user.uid), data);
-      alert("User Created please Login");
-      navigation.navigate("WelcomePage");
+
+      setDoc(doc(db, "users", user.uid), data).then(() => {
+        alert("User Created please Login");
+        navigation.navigate("WelcomePage");
+      })
     } catch (er) {
+      console.log('====================================');
+      console.log("er", er);
+      console.log('====================================');
       er = msg(er);
       setValue({
         ...value,

@@ -141,7 +141,7 @@ const StripeApp = ({ route, navigation }) => {
               marginLeft: 10,
             }}
           >
-            Total :{book.price}$
+            Total :{book.pric}$
           </Text>
           <CardField
             postalCodeEnabled={true}
