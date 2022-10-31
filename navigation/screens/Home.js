@@ -360,7 +360,7 @@ export default function Home({ navigation }) {
                   alignSelf: "center",
                 }}
               >
-                Empty
+                There is no review yet
               </Text>
 
             )}

@@ -96,80 +96,84 @@ const StripeApp = ({ route, navigation }) => {
   };
 
   return (
-    <ScrollView>
-      <View
-        style={{
-          backgroundColor: "white",
-          //   flex: 1,
-        }}
-      >
+    <SafeAreaView>
+      <ScrollView>
         <View
           style={{
             backgroundColor: "white",
+            //   flex: 1,
           }}
         >
-          <Text>
-            {"\n"}
-            {"\n"}
-          </Text>
-        </View>
-        <View
-          style={{
-            backgroundColor: "#00a46c",
-            height: "14%",
-            borderBottomLeftRadius: 20,
-            borderBottomRightRadius: 20,
-            paddingHorizontal: 20,
-            marginBottom: 15,
-          }}
-        >
-          <Text style={styles.check}>Checkout</Text>
-          <Icon
-            name="arrow-back-outline"
-            size={45}
-            style={{ color: "black", marginTop: -44, marginLeft: -15 }}
-            onPress={() => navigation.goBack()}
-          />
-        </View>
-        <Image source={require("./pay.png")} style={styles.picc}></Image>
-        <View style={styles.dd}>
-          <Text
+
+          <View
             style={{
-              fontWeight: "bold",
-              fontSize: 28,
-              marginTop: 15,
-              marginLeft: 10,
+              backgroundColor: "#00a46c",
+              height: "14%",
+              borderBottomLeftRadius: 20,
+              borderBottomRightRadius: 20,
+              paddingHorizontal: 20,
+              marginBottom: 15,
             }}
           >
-            Total :{book.pric}$
-          </Text>
-          <CardField
-            postalCodeEnabled={true}
-            cardStyle={{
-              placeholderColor: cardError ? "#ff0000" : "#0000",
-            }}
-            style={styles.cardContainer}
-            onCardChange={(cardDetails) => {
-              setCardError(false);
-              setCardDetails(cardDetails);
-            }}
-          />
-          {loading ? (
-            <ActivityIndicator size={"large"} color="green" />
-          ) : (
-            <View>
-              <TouchableOpacity
-                onPress={handlePayPress}
-                style={styles.fixToText}
-                color="black"
-              >
-                <Text style={styles.buyit}>PAY NOW</Text>
-              </TouchableOpacity>
-            </View>
-          )}
+            <Text style={styles.check}>Checkout</Text>
+            <Icon
+              name="arrow-back-outline"
+              size={45}
+              style={{ color: "black", marginTop: -44, marginLeft: -15 }}
+              onPress={() => navigation.goBack()}
+            />
+          </View>
+          <Image source={require("./pay.png")} style={styles.picc}></Image>
+          <View style={styles.dd}>
+            <Text
+              style={{
+                fontWeight: "bold",
+                fontSize: 23,
+                marginTop: 15,
+                marginLeft: 10,
+              }}
+            >
+              Book: {book.title}
+            </Text>
+            <Text
+              style={{
+                fontWeight: "bold",
+                fontSize: 23,
+                marginTop: 15,
+                marginLeft: 10,
+              }}
+            >
+              Total: {book.pric}$
+            </Text>
+
+            <CardField
+              postalCodeEnabled={true}
+              cardStyle={{
+                placeholderColor: cardError ? "#ff0000" : "#0000",
+              }}
+              style={styles.cardContainer}
+              onCardChange={(cardDetails) => {
+                setCardError(false);
+                setCardDetails(cardDetails);
+              }}
+            />
+            {loading ? (
+              <ActivityIndicator size={"large"} color="green" />
+            ) : (
+              <View>
+                <TouchableOpacity
+                  onPress={handlePayPress}
+                  style={styles.fixToText}
+                  color="black"
+                >
+                  <Text style={styles.buyit}>PAY NOW</Text>
+                </TouchableOpacity>
+              </View>
+            )}
+          </View>
         </View>
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 export default StripeApp;
@@ -212,9 +216,9 @@ const styles = StyleSheet.create({
     alignContent: "center",
     borderRadius: 50,
     backgroundColor: "#00a46c",
-    marginTop: 18,
+    marginTop: 1,
     paddingLeft: 10,
-    marginBottom: 15,
+    marginBottom: 29,
     alignSelf: "center",
   },
   dd: {
