@@ -210,6 +210,21 @@ export default function Lists({ navigation }) {
               You have read {numberOfBook} books
             </Text>
           </View>
+          <View style={{ width: "30%" }} >
+          <MaterialIcons
+              name="settings"
+              size={30}
+              style={{
+                color: "white",
+                position:"absolute",
+                right:10,
+              }}
+              onPress={() => {
+                navigation.navigate("EditListPrivacy");
+                
+              }}
+            />
+          </View>
         </View>
       </View>
       <TouchableOpacity
