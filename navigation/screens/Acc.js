@@ -252,6 +252,8 @@ export default function Acc({ navigation }) {
     var letters = /^[0-9a-zA-Z-_]+$/;
     if (value.match(letters) && value.length < 26) {
       return true;
+    } else {
+      return false;
     }
   };
 
