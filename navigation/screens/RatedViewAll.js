@@ -67,15 +67,15 @@ export default function RatedViewAll({ navigation, route }) {
           >
             <Text
               style={{
-                marginLeft: 48,
+                marginLeft: 60,
                 marginTop: -35,
-                fontSize: 29,
+                fontSize: 30,
                 color: "#FFF",
                 fontWeight: "bold",
                 alignSelf: "center",
               }}
             >
-              Books ordered by rate         </Text>
+              Top rated books    </Text>
           </View>
         </View>
 
