@@ -11,13 +11,13 @@ import {
   Button,
   Share,
 } from "react-native";
-import Icon from "react-native-vector-icons/Ionicons";
 import React from "react";
 import StripeApp from "./StripeApp";
 import BookComment from "./BookComment";
 import { StripeProvider } from "@stripe/stripe-react-native";
 import react, { useEffect, useState } from "react";
 import { Rating, AirbnbRating } from "react-native-ratings";
+import Icon from "react-native-vector-icons/Ionicons";
 
 //import Map from './screens/Map';
 //import Fetch from './src/Fetch';
@@ -411,7 +411,47 @@ export default function BookInfo({ route, navigation }) {
                 {book.reviews?.length > 0 ? "See Reviews.." : "No Reviews.."}
               </Text>
             </TouchableOpacity>
+            <Text
+              style={{
+                flew: 1,
+                alignItems: "center",
+                justifyContent: "center",
+                marginTop: 9,
+                paddingLeft: 10,
+                paddingRight: 10,
+                paddingBottom: 5,
+                // fontSize: "15%",
+                fontSize: 20,
+                fontWeight: "bold",
+                color: "grey",
+              }}
+            >
+              Add Book to your list
+            </Text>
+            <View style={{ flexDirection: "row" }}>
 
+              <Icon
+                name={book.listedInRead ? "book" : "book-outline"}
+                size={30}
+                style={{ marginRight: 19 }}
+                onPress={() => AddInfoToReadList()}
+                disabled={book.listedInRead || disabled}
+              />
+              <Icon
+                name={book.listedInFav ? "heart" : "heart-outline"}
+                size={30}
+                style={{ marginRight: 19 }}
+                onPress={() => AddInfoToFavList()}
+                disabled={book.listedInFav || disabled}
+              />
+              <Icon
+                name={book.listedInWish ? "bookmark" : "bookmark-outline"}
+                size={30}
+                style={{ marginRight: 19 }}
+                onPress={() => AddInfoToWishList()}
+                disabled={book.listedInWish || disabled}
+              />
+            </View>
             <Text
               style={{
                 fontWeight: "bold",
@@ -443,97 +483,8 @@ export default function BookInfo({ route, navigation }) {
               {`CATEGORY: ${book.category}\n\n`}
               {!!book.pric && `PRICE: ${book.pric}$\n\n`}
             </Text>
-            <Text
-              style={{
-                flew: 1,
-                alignItems: "center",
-                justifyContent: "center",
-                marginTop: 9,
-                paddingLeft: 10,
-                paddingRight: 10,
-                paddingBottom: 5,
-                // fontSize: "15%",
-                fontSize: 20,
-                fontWeight: "bold",
-                color: "grey",
-              }}
-            >
-              Add Book to your list
-            </Text>
-            <View style={{ flexDirection: "row" }}>
-              <TouchableOpacity
-                style={{
-                  flex: 1,
-                  flexDirection: "row",
-                  borderRadius: 25,
-                  width: "48%",
-                  height: 50,
-                  backgroundColor: book.listedInRead ? "#aadecc" : "#00a46c",
-                  paddingHorizontal: 20,
-                }}
-                onPress={() => AddInfoToReadList()}
-                disabled={book.listedInRead || disabled}
-              >
-                <Text
-                  style={{
-                    fontWeight: "bold",
-                    paddingBottom: 1,
-                    fontSize: 18,
-                    marginTop: book.listedInRead ? 0 : 15,
-                    paddingLeft: book.listedInRead ? 0 : 18,
-                  }}
-                >
-                  {book.listedInRead ? "Added to Read" : "Read"}
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={{
-                  flex: 1,
-                  flexDirection: "row",
-                  borderRadius: 25,
-                  backgroundColor: book.listedInFav ? "#aadecc" : "#00a46c",
-                  paddingHorizontal: 20,
-                }}
-                onPress={() => AddInfoToFavList()}
-                disabled={book.listedInFav || disabled}
-              >
-                <Text
-                  style={{
-                    fontWeight: "bold",
-                    paddingBottom: 1,
-                    fontSize: 18,
-                    marginTop: book.listedInFav ? 0 : 15,
-                    paddingLeft: book.listedInFav ? 0 : 10,
-                  }}
-                >
-                  {book.listedInFav ? "Added to Favorite" : "Favorite"}
-                </Text>
-              </TouchableOpacity>
 
-              <TouchableOpacity
-                style={{
-                  flex: 1,
-                  flexDirection: "row",
-                  borderRadius: 25,
-                  backgroundColor: book.listedInWish ? "#aadecc" : "#00a46c",
-                  paddingHorizontal: 20,
-                }}
-                onPress={() => AddInfoToWishList()}
-                disabled={book.listedInWish || disabled}
-              >
-                <Text
-                  style={{
-                    fontWeight: "bold",
-                    paddingBottom: 1,
-                    fontSize: 18,
-                    marginTop: book.listedInWish ? 0 : 15,
-                    paddingLeft: book.listedInWish ? 0 : 18,
-                  }}
-                >
-                  {book.listedInWish ? "Added to Wish" : "Wish"}
-                </Text>
-              </TouchableOpacity>
-            </View>
+
             <View
               style={{
                 margin: 45,
