@@ -1,18 +1,17 @@
+import { useEffect, useState } from "react";
 import {
+  Alert,
   Image,
   ImageBackground,
   SafeAreaView,
   ScrollView,
   StyleSheet,
   Text,
-  View,
   TouchableOpacity,
-  Alert,
+  View,
 } from "react-native";
+import { Rating } from "react-native-ratings";
 import Icon from "react-native-vector-icons/Ionicons";
-import Commentadmin from "./Commentadmin";
-import { Rating, AirbnbRating } from "react-native-ratings";
-import { useEffect, useState } from "react";
 
 //import Map from './screens/Map';
 //import Fetch from './src/Fetch';
@@ -33,9 +32,9 @@ import {
   where,
 } from "firebase/firestore";
 import { db } from "../../config/firebase";
-import Discovery from "./Discovery";
 export default function BookInfoApi({ route, navigation }) {
   const book = route.params;
+  // console.log("🚀 ~", route.params);
   var Auth = getAuth();
 
   let [bookstar, setBookStar] = useState(0);
@@ -357,9 +356,15 @@ export default function BookInfoApi({ route, navigation }) {
               <View style={{ flexDirection: "row" }}>
                 <View style={styles.buttonCont}>
                   <TouchableOpacity
-                    onPress={() => navigation.navigate("Editbook", book)}
+                    onPress={() =>
+                      navigation.navigate({
+                        name: "Editbook",
+                        key: "step_2",
+                        params: book,
+                      })
+                    }
                   >
-                    <Text style={styles.bouttontitle}>Edit book </Text>
+                    <Text style={styles.bouttontitle}>Edit book</Text>
                   </TouchableOpacity>
                 </View>
                 <View style={styles.buttonCont2}>

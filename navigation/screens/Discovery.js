@@ -12,7 +12,6 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import * as Notifications from 'expo-notifications';
 //import PushNotificationIOS from '@react-native-community/push-notification-ios';
 //import * as Notifications from 'expo-notifications';
 import Icon from "react-native-vector-icons/Ionicons";
@@ -26,11 +25,12 @@ function Discovry({ navigation, isAdmin }) {
 
   console.log("isAdmin", isAdmin);
 
-  const onRefresh = () => {
+  const onRefresh = async () => {
     setRefreshing(true);
-    getData();
+    await getData();
     setRefreshing(false);
   };
+
   const CategoryList = () => {
     return (
       <View style={styles.categoryContainer}>
@@ -224,10 +224,11 @@ function Discovry({ navigation, isAdmin }) {
                     </View>
                     <TouchableOpacity
                       onPress={() =>
-                        navigation.navigate(
-                          isAdmin ? "BookInfoApi" : "BookInfo",
-                          item
-                        )
+                        navigation.navigate({
+                          name: isAdmin ? "BookInfoApi" : "BookInfo",
+                          key: "step_1",
+                          params: item,
+                        })
                       }
                     >
                       <Image
@@ -268,8 +269,6 @@ function Discovry({ navigation, isAdmin }) {
                           category:
                           {Datacat(item.category, 10)} {"\n"}{" "}
                         </Text>
-
-                        
                       </Text>
                     </TouchableOpacity>
                   </View>

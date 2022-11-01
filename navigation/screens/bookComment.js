@@ -1,20 +1,9 @@
 import React, { Component } from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  Image,
-  ScrollView,
-  FlatList,
-  SafeAreaView,
-} from "react-native";
-import { AirbnbRating, Rating } from "react-native-ratings";
+import { FlatList, SafeAreaView, StyleSheet, Text, View } from "react-native";
+import { Rating } from "react-native-ratings";
 import Icon from "react-native-vector-icons/Ionicons";
-import Reviewbook from "./Reviewbook";
 
-export default class BookComment extends Component {
- 
+class BookComment extends Component {
   render() {
     let book = this.props.route.params;
     console.log(book);
@@ -107,6 +96,7 @@ export default class BookComment extends Component {
     );
   }
 }
+export default BookComment;
 
 const styles = StyleSheet.create({
   container: {

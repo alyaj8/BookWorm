@@ -1,7 +1,6 @@
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { doc, getDoc, getFirestore, updateDoc } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
-import { registerForPushNotificationsAsync } from "../util/Notifcations";
 import {
   Image,
   LogBox,
@@ -13,6 +12,7 @@ import {
   View,
 } from "react-native";
 import { withUser } from "../config/UserContext";
+import { registerForPushNotificationsAsync } from "../util/Notifcations";
 
 function msg(error) {
   switch (error.code) {
@@ -46,8 +46,8 @@ function WelcomePage({ navigation, isAdmin, setIsAdmin }) {
     });
   }, []);
   const [value, setValue] = React.useState({
-    email: "",
-    password: "",
+    email: "Alm@hotmail.com",
+    password: "123456",
     error: "",
   });
 
@@ -88,36 +88,37 @@ function WelcomePage({ navigation, isAdmin, setIsAdmin }) {
         value.email,
         value.password
       );
-      console.log('====================================');
+      console.log("====================================");
       console.log("user.uid", user.uid);
-      console.log('====================================');
-      setValue({ email: "", password: "", error: "", });
-      getDoc(doc(db, "users", user.uid)).then(async (docSnap) => {
-        if (docSnap.data()?.isAdmin) {
-          setIsAdmin(true);
-          navigation.navigate("Adminpage");
-        } else {
-          setIsAdmin(false);
-          if (push_token) {
-            await updateDoc(doc(db, "users", user.uid), { push_token });
+      console.log("====================================");
+      setValue({ email: "", password: "", error: "" });
+      getDoc(doc(db, "users", user.uid))
+        .then(async (docSnap) => {
+          if (docSnap.data()?.isAdmin) {
+            setIsAdmin(true);
+            navigation.navigate("Adminpage");
+          } else {
+            setIsAdmin(false);
+            if (push_token) {
+              await updateDoc(doc(db, "users", user.uid), { push_token });
+            }
+            navigation.navigate("Maincontainer");
           }
-          navigation.navigate("Maincontainer");
-        }
-      }).catch(e => {
-        console.log('====================================');
-        console.log(e, " e");
-        console.log('====================================');
-      })
-
+        })
+        .catch((e) => {
+          console.log("====================================");
+          console.log(e, " e");
+          console.log("====================================");
+        });
     } catch (er) {
       er = msg(er);
       setValue({
         ...value,
         error: er,
       });
-      console.log('====================================');
+      console.log("====================================");
       console.log(er);
-      console.log('====================================');
+      console.log("====================================");
     }
   }
 

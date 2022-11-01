@@ -1,45 +1,33 @@
+import { Entypo } from "@expo/vector-icons";
 import React, { useEffect, useState } from "react";
 import {
+  Image,
+  ImageBackground,
+  ScrollView,
   StyleSheet,
   Text,
   TextInput,
-  Button,
-  Image,
-  View,
-  ImageBackground,
-  Alert,
-  TextTrack,
-  ActivityIndicator,
-  date,
   TouchableHighlight,
   TouchableOpacity,
-  ScrollView,
-  Keyboard,
+  View,
 } from "react-native";
-import { Entypo } from "@expo/vector-icons";
-import { Formik } from "formik";
 import Icon from "react-native-vector-icons/Ionicons";
 
+import { AntDesign } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import {
   collection,
   doc,
-  getFirestore,
-  setDoc,
-  firestore,
-  addDoc,
-  updateDoc,
-  query,
-  where,
-  deleteDoc,
-  getDocs,
   documentId,
+  getDocs,
+  getFirestore,
+  query,
+  updateDoc,
+  where,
 } from "firebase/firestore";
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
-import Toast, { BaseToast, ErrorToast } from "react-native-toast-message";
+import Toast, { BaseToast } from "react-native-toast-message";
 import { sendPushNotification } from "../../util/Notifcations";
-import { AntDesign } from "@expo/vector-icons";
 
 import background_image from "./222.jpg";
 
@@ -351,16 +339,32 @@ export default function AddBookTest({ navigation, route }) {
           authortype3: true,
           authortype8: true,
         });
-        await navigation.navigate("Adminpage", {
-          title: value.title,
-          Description: value.Description,
-          category: value.category,
-          ISBN: value.ISBN,
-          author: value.author,
-          pdf: value.pdf,
-          pric: value.pric,
-          poster: image,
-          id: book.id,
+        // await navigation.navigate("BookInfoApi", {
+        //   title: value.title,
+        //   Description: value.Description,
+        //   category: value.category,
+        //   ISBN: value.ISBN,
+        //   author: value.author,
+        //   pdf: value.pdf,
+        //   pric: value.pric,
+        //   poster: image,
+        //   id: book.id,
+        // });
+
+        await navigation.navigate({
+          key: "step_1",
+          params: {
+            title: value.title,
+            Description: value.Description,
+            category: value.category,
+            ISBN: value.ISBN,
+            author: value.author,
+            pdf: value.pdf,
+            pric: value.pric,
+            poster: image,
+            id: book.id,
+          },
+          merge: true,
         });
       } catch (error) {
         setValue({
@@ -371,6 +375,7 @@ export default function AddBookTest({ navigation, route }) {
       }
     }
   }
+
   const toastConfig = {
     success: (props) => (
       <BaseToast
@@ -511,7 +516,7 @@ export default function AddBookTest({ navigation, route }) {
                   marginLeft: 10,
                 }}
               >
-                Title only accept letters less than 20digit
+                Title only accept letters less than 20 digit
               </Text>
             )}
             <TextInput

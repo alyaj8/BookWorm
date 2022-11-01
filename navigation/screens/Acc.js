@@ -1,15 +1,24 @@
+import { getAuth, updateEmail } from "firebase/auth";
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  setDoc,
+  where,
+} from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import {
-  StyleSheet,
-  View,
-  Text,
-  Image,
-  TextInput,
-  ScrollView,
-  TouchableOpacity,
-  SafeAreaView,
-  Button,
   FlatList,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+  Button,
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import {

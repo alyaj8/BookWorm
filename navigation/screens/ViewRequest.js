@@ -34,13 +34,17 @@ function ViewRequest({ navigation, isAdmin }) {
   const [search, setSearch] = useState("");
   const [addingBook, setAddingBook] = useState(false);
 
+  const [searchIndex, setsearchIndex] = useState(0);
+  const [loadingExtending, setLoadingExtending] = useState(false);
+
   const searchBooks = (bookName) => {
+    setsearchIndex(0);
     setSearch(bookName);
     //console.log(bookName);
     setBooks([]);
     setLoading(true);
     const response = fetch(
-      `https://www.googleapis.com/books/v1/volumes?q=${bookName}`
+      `https://www.googleapis.com/books/v1/volumes?q=${bookName}&maxResults=40&startIndex=${searchIndex}`
     )
       .then((res) => res.json())
       .then((data) => {
@@ -63,6 +67,7 @@ function ViewRequest({ navigation, isAdmin }) {
                 pdf: book.volumeInfo.previewLink
                   ? book.volumeInfo.previewLink
                   : "",
+                exist: false,
               };
             })
           : [];
@@ -72,6 +77,49 @@ function ViewRequest({ navigation, isAdmin }) {
       })
       .catch((err) => console.log(err))
       .finally(() => setLoading(false));
+  };
+
+  const extendSearch = (bookName) => {
+    setsearchIndex((prev) => prev + 40);
+    console.log("🚀 ~ searchIndex", searchIndex);
+
+    setLoadingExtending(true);
+    const response = fetch(
+      `https://www.googleapis.com/books/v1/volumes?q=${bookName}&maxResults=40&startIndex=${
+        searchIndex + 40
+      }`
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        const books = data.items
+          ? data.items.map((book) => {
+              return {
+                id: book.id,
+                title: book.volumeInfo.title || "No title",
+                author: book.volumeInfo.authors
+                  ? book.volumeInfo.authors[0]
+                  : "No Author",
+                Description: book.volumeInfo.description || "No description",
+                poster: book.volumeInfo.imageLinks
+                  ? book.volumeInfo.imageLinks.thumbnail
+                  : "",
+                category: book.volumeInfo.categories
+                  ? book.volumeInfo.categories[0]
+                  : "No category",
+
+                pdf: book.volumeInfo.previewLink
+                  ? book.volumeInfo.previewLink
+                  : "",
+                exist: false,
+              };
+            })
+          : [];
+
+        // console.log(data);
+        setBooks((prev) => [...prev, ...books]);
+      })
+      .catch((err) => console.log(err))
+      .finally(() => setLoadingExtending(false));
   };
 
   const getBook = async (bookId) => {
@@ -87,13 +135,20 @@ function ViewRequest({ navigation, isAdmin }) {
 
   // check if book exists in db by title and author
   const checkBook = async (book) => {
+    // console.log("🚀 ~ book", book.title);
+
     const bookRef = collection(db, "Book");
     const bookSnap = await getDocs(bookRef);
     const books = bookSnap.docs.map((doc) => doc.data());
     const bookExists = books.find(
       (b) => b.title === book.title && b.author === book.author
     );
-    return bookExists;
+    // console.log("🚀 ~ bookExists", bookExists);
+
+    const status = bookExists ? true : false;
+    // console.log("🚀 ~ status", status);
+
+    return status;
   };
 
   const addBook = async (book) => {
@@ -129,6 +184,12 @@ function ViewRequest({ navigation, isAdmin }) {
         showToast("error", "Error adding book ❌" + err);
         setAddingBook(false);
       });
+  };
+
+  const onEndReachedHandler = () => {
+    if (!loadingExtending) {
+      extendSearch(search);
+    }
   };
 
   const categories = ["ALL", "ADULT", "ROMANCE"];
@@ -177,12 +238,24 @@ function ViewRequest({ navigation, isAdmin }) {
                 width: 260,
               }}
             />
+            <Text>{books.length}</Text>
+            {/* <Text>{searchIndex}</Text> */}
           </View>
 
           <View>
             {books.length < 1 ? (
               loading ? (
-                <Text>Loading...</Text>
+                <Text
+                  style={{
+                    color: "#b1e5d3",
+                    fontSize: 20,
+                    fontWeight: "bold",
+                    textAlign: "center",
+                    marginTop: 20,
+                  }}
+                >
+                  Loading...
+                </Text>
               ) : (
                 <View>
                   <Text
@@ -208,9 +281,23 @@ function ViewRequest({ navigation, isAdmin }) {
                       columnWrapperStyle={{ justifyContent: "space-between" }}
                       numColumns={2}
                       data={books}
-                      keyExtractor={(item) => item.title}
+                      keyExtractor={(item) => item.title + item.author}
+                      onEndReached={onEndReachedHandler}
+                      onEndReachedThreshold={0.7}
+                      ListFooterComponent={
+                        loadingExtending ? (
+                          <ActivityIndicator
+                            size="large"
+                            color="#b1e5d3"
+                            style={{ marginTop: 20 }}
+                          />
+                        ) : null
+                      }
                       renderItem={({ item }) => {
                         // console.log("🚀 ~ item", item);
+                        // const status = checkBook(item).then((st) => st);
+                        // console.log("🚀 ~ status", status);
+
                         return (
                           //  restUrl(item.data.poster)
                           <View
@@ -283,7 +370,9 @@ function ViewRequest({ navigation, isAdmin }) {
                                           color: "#fff",
                                         }}
                                       />
-                                      <Text style={styles.addText}>Add</Text>
+                                      <Text style={styles.addText}>
+                                        {"Add"}
+                                      </Text>
                                     </>
                                   )}
                                 </View>

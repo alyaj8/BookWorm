@@ -1,10 +1,16 @@
-import * as React from "react";
-import { View, Text, ScrollView, TouchableOpacity, Image, Alert } from "react-native";
-import Icon from "react-native-vector-icons/Ionicons";
 import { getAuth, signOut } from "firebase/auth";
+import * as React from "react";
+import {
+  Alert,
+  Image,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import Icon from "react-native-vector-icons/Ionicons";
 export default function AdminAccount({ navigation }) {
   const showAlert = () =>
-
     Alert.alert(
       "Loging out ",
       "Are sure you want to log out?",
@@ -22,7 +28,6 @@ export default function AdminAccount({ navigation }) {
             await signOut(auth);
             navigation.navigate("WelcomePage");
           },
-
         },
       ],
       {
@@ -59,7 +64,7 @@ export default function AdminAccount({ navigation }) {
           ></Image>
           <Text style={{ fontSize: 25, fontWeight: "bold", padding: 10 }}>
             {" "}
-            HELLO WELCOME,
+            HELLO WELCOME!
           </Text>
           <Text style={{ fontSize: 15, fontWeight: "bold", color: "grey" }}>
             {" "}
