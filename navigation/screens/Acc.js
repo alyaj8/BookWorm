@@ -261,6 +261,8 @@ export default function Acc({ navigation }) {
     var letters = /^[0-9a-zA-Z-_]+$/;
     if (value.match(letters) && value.length < 26) {
       return true;
+    } else {
+      return false;
     }
   };
 
@@ -375,8 +377,8 @@ export default function Acc({ navigation }) {
                     marginLeft: 10,
                   }}
                 >
-                  Please enter a firstname of only characters and dosnt exceed
-                  15 digit
+                  Firstname only accepts English letters less 15digit
+
                 </Text>
               )}
               <TextInput
@@ -412,8 +414,7 @@ export default function Acc({ navigation }) {
                     // marginLeft: 10,
                   }}
                 >
-                  Please enter a lasttname of only characters and dosnt exceed
-                  25 digit
+                  Lastname only accepts English letters less 25digit
                 </Text>
               )}
               <TextInput
@@ -449,8 +450,7 @@ export default function Acc({ navigation }) {
                     // marginLeft: 10,
                   }}
                 >
-                  Please enter a username that has character or _ or- and dosnt
-                  exceed 25 digit
+                  Username only accepts English letters or _ or- and less 25digit
                 </Text>
               )}
               {!Error.usernameunique && (
@@ -504,8 +504,8 @@ export default function Acc({ navigation }) {
                 placeholderTextColor="black"
                 onChangeText={(text) => setValue({ ...value, email: text })}
                 underlineColorAndroid="transparent"
-                //  titl
-                // value={user.email}
+              //  titl
+              // value={user.email}
               />
             </View>
 

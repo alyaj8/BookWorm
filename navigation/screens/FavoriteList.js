@@ -19,7 +19,6 @@ import Icon from "react-native-vector-icons/Ionicons";
 import { deleteDoc, doc, getDoc } from "firebase/firestore";
 import { db } from "../../config/firebase";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
-
 export default function FavoriteList({ navigation, route }) {
   let [books, setBooks] = useState([]);
   let [update, setUpdate] = useState(false);
