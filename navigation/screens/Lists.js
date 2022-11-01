@@ -6,6 +6,7 @@ import {
   TextInput,
   ScrollView,
   TouchableOpacity,
+  Alert,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import ReadBookList from "./ReadBookList";
@@ -17,9 +18,11 @@ import {
   getFirestore,
   doc,
   getDoc,
+  deleteDoc,
 } from "firebase/firestore";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { db } from "../../config/firebase";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 
 export default function Lists({ navigation }) {
   let [BookList, setBookList] = useState([]);
@@ -48,6 +51,7 @@ export default function Lists({ navigation }) {
         if (!querySnapshot.empty) {
           querySnapshot.forEach((doc) => {
             let book = doc.data();
+            book.readId = doc.id;
             book.listed = true;
             list.push(book);
           });
@@ -75,6 +79,7 @@ export default function Lists({ navigation }) {
         if (!querySnapshot.empty) {
           querySnapshot.forEach((doc) => {
             let book = doc.data();
+            book.favriteId = doc.id;
             book.listedInFav = true;
             list.push(book);
           });
@@ -101,6 +106,7 @@ export default function Lists({ navigation }) {
         if (!querySnapshot.empty) {
           querySnapshot.forEach((doc) => {
             let book = doc.data();
+            book.wishId = doc.id;
             book.listedInWish = true;
             list.push(book);
           });
@@ -120,6 +126,46 @@ export default function Lists({ navigation }) {
     console.log(book);
     navigation.navigate("BookInfo", book);
   };
+  let DeleteReadBookList = async (val) => {
+    await deleteDoc(doc(db, "readBookList", val.readId));
+    GetBookList();
+    Alert.alert("the book got deleted");
+  };
+
+  let DeleteFavoriteBookList = async (val) => {
+    await deleteDoc(doc(db, "favoriteList", val.favriteId));
+    GetBookFavList();
+    Alert.alert("the book got deleted");
+  };
+  let DeleteWishBookList = async (val) => {
+    await deleteDoc(doc(db, "wishList", val.wishId));
+    GetBookWishList();
+    Alert.alert("the book got deleted");
+  };
+  const DeleteFunc = (message, func, val) =>
+    Alert.alert(
+      message,
+      "Are sure you want to delete",
+      [
+        {
+          text: "Cancel",
+          //  onPress: () => Alert.alert("Cancel Pressed"),
+          style: "cancel",
+        },
+        {
+          text: "Delete",
+          onPress: () => func(val),
+          style: "cancel",
+        },
+      ],
+      {
+        cancelable: true,
+        onDismiss: () =>
+          Alert.alert(
+            "This alert was dismissed by tapping outside of the alert dialog."
+            ),
+        }
+      );
   useEffect(() => {
     navigation.addListener("focus", () => {
       GetBookList();
@@ -257,6 +303,26 @@ export default function Lists({ navigation }) {
         />
         {BookList.length > 0 ? (
           BookList.map((val, ind) => (
+            <View>
+            <MaterialIcons
+              name="close"
+              size={30}
+              style={{
+                color: "black",
+                marginTop: 30,
+                marginLeft: 10,
+                position: "absolute",
+                left: 10,
+                zIndex: 1,
+              }}
+              onPress={() =>
+                DeleteFunc(
+                  "Deleting From Read List ",
+                  DeleteReadBookList,
+                  val
+                )
+              }
+            />
             <TouchableOpacity
               key={ind}
               onPress={() => OpenInfo(val)}
@@ -320,6 +386,7 @@ export default function Lists({ navigation }) {
                 </Text>
               </View>
             </TouchableOpacity>
+            </View>
           ))
         ) : (
           <Text
@@ -402,6 +469,26 @@ export default function Lists({ navigation }) {
         />
         {BookFavList.length > 0 ? (
           BookFavList.map((val, ind) => (
+            <View>
+            <MaterialIcons
+              name="close"
+              size={30}
+              style={{
+                color: "black",
+                marginTop: 30,
+                marginLeft: 10,
+                position: "absolute",
+                left: 10,
+                zIndex: 1,
+              }}
+              onPress={() =>
+                DeleteFunc(
+                  "Deleting From Favorite Book List ",
+                  DeleteFavoriteBookList,
+                  val
+                )
+              }
+            />
             <TouchableOpacity
               key={ind}
               onPress={() => OpenInfo(val)}
@@ -465,6 +552,7 @@ export default function Lists({ navigation }) {
                 </Text>
               </View>
             </TouchableOpacity>
+            </View>
           ))
         ) : (
           <Text
@@ -546,6 +634,26 @@ export default function Lists({ navigation }) {
         />
         {BookWishList.length > 0 ? (
           BookWishList.map((val, ind) => (
+            <View>
+            <MaterialIcons
+              name="close"
+              size={30}
+              style={{
+                color: "black",
+                marginTop: 30,
+                marginLeft: 10,
+                position: "absolute",
+                left: 10,
+                zIndex: 1,
+              }}
+              onPress={() =>
+                DeleteFunc(
+                  "Deleting From Wish Book List ",
+                  DeleteWishBookList,
+                  val
+                )
+              }
+            />
             <TouchableOpacity
               key={ind}
               onPress={() => OpenInfo(val)}
@@ -609,6 +717,7 @@ export default function Lists({ navigation }) {
                 </Text>
               </View>
             </TouchableOpacity>
+            </View>
           ))
         ) : (
           <Text
