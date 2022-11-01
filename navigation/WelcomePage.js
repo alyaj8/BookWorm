@@ -46,8 +46,8 @@ function WelcomePage({ navigation, isAdmin, setIsAdmin }) {
     });
   }, []);
   const [value, setValue] = React.useState({
-    email: "Alm@hotmail.com",
-    password: "123456",
+    email: "",
+    password: "",
     error: "",
   });
 
