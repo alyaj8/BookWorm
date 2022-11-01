@@ -158,7 +158,6 @@ export default function Home({ navigation }) {
     }
   };
 
-
   useEffect(() => {
     navigation.addListener("focus", async () => {
       await GetBookFavList();
@@ -170,7 +169,6 @@ export default function Home({ navigation }) {
 
   console.log(faveIds, "========>ids");
   console.log(highetRatedList);
-
 
   return (
     <View
@@ -196,12 +194,9 @@ export default function Home({ navigation }) {
           height: 90,
           marginTop: -45,
         }}
-      >
-
-      </View>
+      ></View>
 
       <ScrollView>
-
         <View
           style={{
             width: "100%",
@@ -234,7 +229,9 @@ export default function Home({ navigation }) {
                 width: 89,
                 height: 27,
               }}
-              onPress={() => navigation.navigate("RatedViewAll", highetRatedList)}
+              onPress={() =>
+                navigation.navigate("RatedViewAll", highetRatedList)
+              }
             >
               <Text
                 style={{
@@ -271,7 +268,7 @@ export default function Home({ navigation }) {
                 (val, ind) =>
                   ind < 5 && (
                     <TouchableOpacity
-                      //////////////////////////////////////////////////////////////here book 
+                      //////////////////////////////////////////////////////////////here book
                       key={ind}
                       onPress={() => navigation.navigate("BookInfo", val)}
                       style={{
@@ -319,11 +316,8 @@ export default function Home({ navigation }) {
                         {val.totalReview}
                       </Text>
                     </TouchableOpacity>
-
-
                   )
               )
-
             ) : (
               <Text
                 style={{
@@ -337,11 +331,11 @@ export default function Home({ navigation }) {
               >
                 There is no review yet
               </Text>
-
             )}
             <TouchableOpacity
-
-              onPress={() => navigation.navigate("RatedViewAll", highetRatedList)}
+              onPress={() =>
+                navigation.navigate("RatedViewAll", highetRatedList)
+              }
               style={{
                 height: 500,
                 elevation: 2,
@@ -353,9 +347,7 @@ export default function Home({ navigation }) {
                 marginBottom: 10,
                 width: 160,
               }}
-
             >
-
               <View
                 style={{
                   flexDirection: "row",
@@ -374,17 +366,8 @@ export default function Home({ navigation }) {
                 </Text>
               </View>
             </TouchableOpacity>
-
           </ScrollView>
         </View>
-
-
-
-
-
-
-
-
 
         <View
           //////////////////////////////////////////////////// recommendation
@@ -427,12 +410,19 @@ export default function Home({ navigation }) {
           >
             <TouchableOpacity
               onPress={() =>
-                navigation.navigate("RecViewall", RecommendationList)
+                navigation.navigate("RecViewall", {
+                  RecommendationList: RecommendationList,
+                  faveIds: faveIds,
+                })
               }
               disabled={RecommendationList.length > 0 ? false : true}
               title="View all"
             >
-              <Text style={{ color: "white", fontWeight: "bold", fontSize: 13 }}>View all</Text>
+              <Text
+                style={{ color: "white", fontWeight: "bold", fontSize: 13 }}
+              >
+                View all
+              </Text>
             </TouchableOpacity>
           </View>
           <Modal
@@ -458,7 +448,7 @@ export default function Home({ navigation }) {
                   size={30}
                   style={{ color: "red", textAlign: "right" }}
                 />
-                <Text style={{ fontWeight: "bold" }}>Categories Are:</Text>
+                <Text style={{ fontWeight: "bold" }}>Based on categories that you liked:</Text>
                 <Text>{categories.join("-")}</Text>
               </View>
             </View>
@@ -532,9 +522,6 @@ export default function Home({ navigation }) {
                         style={{ width: "100%", height: 200 }}
                       />
 
-
-
-
                       <View
                         style={{
                           flexDirection: "row",
@@ -551,7 +538,6 @@ export default function Home({ navigation }) {
                           {"\n"}
                         </Text>
                       </View>
-
                     </TouchableOpacity>
                   )
                 );
@@ -570,7 +556,6 @@ export default function Home({ navigation }) {
                 Please add some book to your favorit list
               </Text>
             )}
-
           </ScrollView>
         </View>
       </ScrollView>

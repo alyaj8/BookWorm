@@ -19,7 +19,8 @@ import { doc, getDoc } from "firebase/firestore";
 import { db } from "../../config/firebase";
 
 export default function RecViewall({ navigation, route }) {
-  let books = route.params;
+  let books = route.params.RecommendationList;
+  let faveIds = route.params.faveIds;
   const Datacat = (str, num) => {
     if (str.length > num) {
       return str.substring(0, num) + "...";
@@ -35,17 +36,53 @@ export default function RecViewall({ navigation, route }) {
   };
   return (
     <SafeAreaView style={{ flex: 1 }}>
+
+
       <ImageBackground
         style={{ flex: 1 }}
         source={require("./222.jpg")}
         resizeMode="cover"
       >
-        <Icon
-          name="arrow-back-outline"
-          size={40}
-          style={{ color: "black", marginTop: 30, marginLeft: 10 }}
-          onPress={() => navigation.goBack()}
-        />
+        <View
+          style={{
+            backgroundColor: "#00a46c",
+            height: "13%",
+            borderBottomLeftRadius: 20,
+            borderBottomRightRadius: 20,
+            paddingHorizontal: 20,
+            marginBottom: 15,
+          }}
+        >
+          <Icon
+            name="arrow-back-outline"
+            size={45}
+            style={{ color: "black", marginTop: 35, marginLeft: -15 }}
+            onPress={() => navigation.goBack()}
+          />
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              marginTop: -10,
+              width: "100%",
+            }}
+          >
+            <Text
+              style={{
+                marginLeft: 60,
+                marginTop: -35,
+                fontSize: 29,
+                color: "#FFF",
+                fontWeight: "bold",
+                alignSelf: "center",
+              }}
+            >
+              All recommendation          </Text>
+          </View>
+        </View>
+
+
+
         <ScrollView showsVerticalScrollIndicator={true}>
           <View
             style={{
@@ -56,71 +93,75 @@ export default function RecViewall({ navigation, route }) {
             }}
           >
             {books.length > 0 ? (
-              books.map((val, ind) => (
-                <TouchableOpacity
-                  key={ind}
-                  onPress={() => OpenInfo(val)}
-                  style={{
-                    height: 250,
-                    elevation: 2,
-                    backgroundColor: "#EFF3EF",
-                    marginLeft: 20,
-                    marginTop: 20,
-                    borderRadius: 15,
-                    marginBottom: 10,
-                    width: 160,
-                  }}
-                  disabled={val.deleted}
-                >
-                  {val.deleted && (
-                    <View
+              books.map(
+                (val, ind) =>
+                  faveIds.length > 0 &&
+                  !faveIds.join("").includes(val.id) && (
+                    <TouchableOpacity
+                      key={ind}
+                      onPress={() => OpenInfo(val)}
                       style={{
-                        position: "absolute",
-                        zIndex: 1,
-                        alignSelf: "center",
-                        width: 160,
-                        opacity: 0.6,
-                        justifyContent: "center",
-                        alignItems: "center",
-                        backgroundColor: "#525454",
                         height: 250,
+                        elevation: 2,
+                        backgroundColor: "#EFF3EF",
+                        marginLeft: 20,
+                        marginTop: 20,
+                        borderRadius: 15,
+                        marginBottom: 10,
+                        width: 160,
                       }}
+                      disabled={val.deleted}
                     >
-                      <Text
+                      {val.deleted && (
+                        <View
+                          style={{
+                            position: "absolute",
+                            zIndex: 1,
+                            alignSelf: "center",
+                            width: 160,
+                            opacity: 0.6,
+                            justifyContent: "center",
+                            alignItems: "center",
+                            backgroundColor: "#525454",
+                            height: 250,
+                          }}
+                        >
+                          <Text
+                            style={{
+                              color: "white",
+                              textAlign: "center",
+                              fontWeight: "bold",
+                              // backgroundColor: "black",
+                            }}
+                          >
+                            DELETED
+                          </Text>
+                        </View>
+                      )}
+
+                      <Image
+                        source={{ uri: val.poster }}
+                        style={{ width: "100%", height: 200 }}
+                      />
+                      <View
                         style={{
-                          color: "white",
-                          textAlign: "center",
-                          fontWeight: "bold",
-                          // backgroundColor: "black",
+                          flexDirection: "row",
+                          paddingTop: 10,
+                          paddingHorizontal: 10,
                         }}
                       >
-                        DELETED
-                      </Text>
-                    </View>
-                  )}
-
-                  <Image
-                    source={{ uri: val.poster }}
-                    style={{ width: "100%", height: 200 }}
-                  />
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      paddingTop: 10,
-                      paddingHorizontal: 10,
-                    }}
-                  >
-                    <Text
-                      style={{
-                        fontWeight: "bold",
-                      }}
-                    >
-                      {Datacat(val.title, 25)}
-                      {"\n"}{" "}
-                    </Text>
-                  </View>
-                </TouchableOpacity>
-              ))
+                        <Text
+                          style={{
+                            fontWeight: "bold",
+                          }}
+                        >
+                          {Datacat(val.title, 25)}
+                          {"\n"}{" "}
+                        </Text>
+                      </View>
+                    </TouchableOpacity>
+                  )
+              )
             ) : (
               <Text
                 style={{

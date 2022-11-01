@@ -68,6 +68,7 @@ export default function AddBookTest({ navigation, route }) {
     authortype: true,
     authortype2: true,
     authortype3: true,
+    authortype8: true,
 
     poster: true,
     pdf: true,
@@ -154,7 +155,7 @@ export default function AddBookTest({ navigation, route }) {
     }
   };
 
-  let checC = (text) => {
+  let checD = (text) => {
     var letters = /^[A-Za-z ]+$/;
     if (text.match(letters)) {
       return true;
@@ -165,7 +166,15 @@ export default function AddBookTest({ navigation, route }) {
 
   let checT = (text) => {
     var letters = /^[\u0600-\u06FFA-Za-z ]+$/;
-    if (text.match(letters)) {
+    if (text.match(letters) && text.length < 25) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+  let checC = (text) => {
+    var letters = /^[\u0600-\u06FFA-Za-z ,]+$/;
+    if (text.match(letters) && text.length < 30) {
       return true;
     } else {
       return false;
@@ -183,6 +192,7 @@ export default function AddBookTest({ navigation, route }) {
       value.Description === undefined ||
       value.ISBN === "" ||
       value.ISBN === undefined ||
+      checC(value.category) === false ||
       checISBN(value.ISBN) === false ||
       checT(value.title) === false ||
       value.author === "" ||
@@ -243,6 +253,15 @@ export default function AddBookTest({ navigation, route }) {
         Error.category = true;
         setError(Error);
         setupdate(!update);
+        if (checC(value.category)) {
+          Error.authortype8 = true;
+          setError(Error);
+          setupdate(!update);
+        } else {
+          Error.authortype8 = false;
+          setError(Error);
+          setupdate(!update);
+        }
       }
 
       if (value.ISBN === "" || value.ISBN === undefined) {
@@ -330,6 +349,7 @@ export default function AddBookTest({ navigation, route }) {
           authortype: true,
           authortype2: true,
           authortype3: true,
+          authortype8: true,
         });
         await navigation.navigate("Adminpage", {
           title: value.title,
@@ -491,7 +511,7 @@ export default function AddBookTest({ navigation, route }) {
                   marginLeft: 10,
                 }}
               >
-                Title only accept character
+                Title only accept letters less than 20digit
               </Text>
             )}
             <TextInput
@@ -541,6 +561,16 @@ export default function AddBookTest({ navigation, route }) {
                 }}
               >
                 This Field is mandatory
+              </Text>
+            )}
+            {!Error.authortype8 && (
+              <Text
+                style={{
+                  color: "red",
+                  marginLeft: 10,
+                }}
+              >
+                Category only accepts letters or ,
               </Text>
             )}
             <TextInput
