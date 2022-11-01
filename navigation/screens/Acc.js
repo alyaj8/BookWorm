@@ -1,4 +1,3 @@
-import { getAuth, updateEmail } from "firebase/auth";
 import {
   collection,
   doc,
@@ -26,8 +25,6 @@ import {
   createUserWithEmailAndPassword,
   updateEmail,
 } from "firebase/auth";
-import { collection, getDoc, getDocs, query, where } from "firebase/firestore";
-import { doc, getFirestore, setDoc } from "firebase/firestore";
 import { db } from "../../config/firebase";
 import { withUser } from "../../config/UserContext";
 export default function Acc({ navigation }) {
