@@ -54,6 +54,7 @@ export default function BookInfo({ route, navigation }) {
   let [AlreadyList, setAlreadyList] = useState([]);
   const [ListName, setListName] = useState("");
   const [isFocus, setIsFocus] = useState(false);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     (async function () {
@@ -151,9 +152,9 @@ export default function BookInfo({ route, navigation }) {
         await addDoc(collection(db, "BookCustomeLists"), data);
         AlreadyList.push(ListName);
         setAlreadyList(AlreadyList);
-        alert("This book is added Successfully to List");
+        setError("Added Success");
       } else {
-        alert("This book is already added to the List");
+        setError("This book is already added to the List");
       }
     } catch (error) {
       alert(error);
@@ -594,7 +595,8 @@ export default function BookInfo({ route, navigation }) {
                     valueField="value"
                     placeholder={!isFocus ? "Add to custom lists" : "..."}
                     value={ListName}
-                    onFocus={() => setIsFocus(true)}
+                    onFocus={() => {setIsFocus(true)
+                      setError("");}}
                     onBlur={() => setIsFocus(false)}
                     onChange={(item) => {
                       setListName(item.value);
@@ -611,6 +613,7 @@ export default function BookInfo({ route, navigation }) {
                       />
                     </TouchableOpacity>
                   )}
+              
                 </View>
               ) : (
                 <TouchableOpacity
@@ -619,6 +622,17 @@ export default function BookInfo({ route, navigation }) {
                   
                 </TouchableOpacity>
               ))}
+                    {error && (
+               <Text
+                style={{
+                padding: 10,
+                color: error === "Added Success" ? "green" : "red",
+                fontWeight: "bold",
+              }}
+            >
+              {error}
+            </Text>
+          )}
             <View
               style={{
                 margin: 45,

@@ -53,9 +53,9 @@ export default function CreateCustomList({ navigation }) {
       };
       if(ListName.length>20)
       setError("You Can't name the list with more than 20 character");
-      if(ListName.length<2)
+       else if(ListName.length<2)
       setError("You Can't name the list with less than 2 character");
-      if(checkFirstLetterSpace(ListName))
+      else if(checkFirstLetterSpace(ListName))
       setError("You Can't name the list with space");
       else {
       setError("Success");
