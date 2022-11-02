@@ -65,6 +65,7 @@ let GetAddList = async () => {
   }
 };
 useEffect(() => {
+  
   GetAddList();
 }, []); 
     return (
@@ -100,7 +101,6 @@ useEffect(() => {
           <MaterialIcons
               name="lock"
               size={30}
-              disabled={true}
               style={{
                 color: "black",
                 position:"absolute",
@@ -112,22 +112,7 @@ useEffect(() => {
                 
               }}
             />
-             <MaterialIcons
-              name="lock-open"
-              size={30}
-              
-              style={{
-                color: "gray",
-                position:"absolute",
-                marginTop:20,
-                right:120,
-              }}
-              onPress={() => {
-                navigation.navigate("EditListPrivacy");
-                
-              }}
-            />
-          
+             
             </View>
 
             <View style={styles.bottomView}>
@@ -145,9 +130,8 @@ useEffect(() => {
              Favorite List
             </Text>
             <MaterialIcons
-                name="lock"
+                name="lock-open"
                 size={30}
-                disabled={true}
                 style={{
                   color: "black",
                   position:"absolute",
@@ -159,22 +143,6 @@ useEffect(() => {
                   
                 }}
               />
-               <MaterialIcons
-                name="lock-open"
-                size={30}
-                
-                style={{
-                  color: "gray",
-                  position:"absolute",
-                  marginTop:20,
-                  right:120,
-                }}
-                onPress={() => {
-                  navigation.navigate("EditListPrivacy");
-                  
-                }}
-              />
-            
               </View>
   
               <View style={styles.bottomView}>
@@ -192,9 +160,9 @@ useEffect(() => {
             Wish List
             </Text>
             <MaterialIcons
-                name="lock"
+                name="lock-open"
                 size={30}
-                disabled={true}
+              
                 style={{
                   color: "black",
                   position:"absolute",
@@ -206,23 +174,9 @@ useEffect(() => {
                   
                 }}
               />
-               <MaterialIcons
-                name="lock-open"
-                size={30}
-                
-                style={{
-                  color: "gray",
-                  position:"absolute",
-                  marginTop:20,
-                  right:120,
-                }}
-                onPress={() => {
-                  navigation.navigate("EditListPrivacy");
-                  
-                }}
-              />
-            
+
               </View>
+
               {CustomeList.length > 0 ? (
                CustomeList.map((val, ind) => (
             <View key={ind} style={styles.bottomView}>
@@ -240,9 +194,8 @@ useEffect(() => {
             {Datacat(val.ListName, 25)}
             </Text>
             <MaterialIcons
-              name="lock"
+              name={val.privacy?"lock":"lock-open"}
               size={30}
-              disabled={true}
               style={{
                 color: "black",
                 position:"absolute",
@@ -250,23 +203,6 @@ useEffect(() => {
                 marginTop:20,
               }}
               onPress={() => {
-                navigation.navigate("EditListPrivacy");
-                
-              }}
-            />
-             <MaterialIcons
-              name="lock-open"
-              size={30}
-              
-              style={{
-                color: "gray",
-                position:"absolute",
-                marginTop:20,
-                right:120,
-              }}
-              onPress={() => {
-                navigation.navigate("EditListPrivacy");
-                
               }}
             />
             </View>
