@@ -153,7 +153,7 @@ export default function BookInfo({ route, navigation }) {
         setAlreadyList(AlreadyList);
         alert("This book is added Successfully to List");
       } else {
-        alert("This book is already present in In this List");
+        alert("This book is already added to the List");
       }
     } catch (error) {
       alert(error);
@@ -465,8 +465,7 @@ export default function BookInfo({ route, navigation }) {
               </Text>
             ) : (
               <Text style={{ color: "black" }}>
-                {" "}
-                No Reviews yet {"\n     0 Poeple "}
+               
               </Text>
             )}
 
@@ -499,7 +498,7 @@ export default function BookInfo({ route, navigation }) {
                 alignItems: "center",
                 justifyContent: "center",
                 marginTop: 9,
-                paddingLeft: 10,
+                paddingLeft: 1,
                 paddingRight: 10,
                 paddingBottom: 5,
                 // fontSize: "15%",
@@ -514,21 +513,21 @@ export default function BookInfo({ route, navigation }) {
 
               <Icon
                 name={book.listedInRead ? "book" : "book-outline"}
-                size={30}
+                size={35}
                 style={{ marginRight: 19 }}
                 onPress={() => AddInfoToReadList()}
                 disabled={book.listedInRead || disabled}
               />
               <Icon
                 name={book.listedInFav ? "heart" : "heart-outline"}
-                size={30}
+                size={35}
                 style={{ marginRight: 19 }}
                 onPress={() => AddInfoToFavList()}
                 disabled={book.listedInFav || disabled}
               />
               <Icon
                 name={book.listedInWish ? "bookmark" : "bookmark-outline"}
-                size={30}
+                size={35}
                 style={{ marginRight: 19 }}
                 onPress={() => AddInfoToWishList()}
                 disabled={book.listedInWish || disabled}
@@ -593,7 +592,7 @@ export default function BookInfo({ route, navigation }) {
                     }}
                     labelField="label"
                     valueField="value"
-                    placeholder={!isFocus ? "ADD TO LIST" : "..."}
+                    placeholder={!isFocus ? "Add to custom lists" : "..."}
                     value={ListName}
                     onFocus={() => setIsFocus(true)}
                     onBlur={() => setIsFocus(false)}
@@ -606,7 +605,7 @@ export default function BookInfo({ route, navigation }) {
                   {ListName !== "" && (
                     <TouchableOpacity onPress={() => AddCustomeList()}>
                       <MaterialIcons
-                        name="done"
+                        name="add"
                         size={36}
                         style={{ color: "white" }}
                       />
@@ -615,25 +614,9 @@ export default function BookInfo({ route, navigation }) {
                 </View>
               ) : (
                 <TouchableOpacity
-                  style={{
-                    flex: 1,
-                    flexDirection: "row",
-                    borderRadius: 25,
-                    backgroundColor: book.listed ? "#aadecc" : "#00a46c",
-                    paddingHorizontal: 20,
-                    marginTop: 10,
-                  }}
-                  disabled={book.listed}
+                  
                 >
-                  <Text
-                    style={{
-                      fontWeight: "bold",
-                      paddingVertical: 10,
-                      fontSize: 18,
-                    }}
-                  >
-                    AlREADY ADDED TO LIST
-                  </Text>
+                  
                 </TouchableOpacity>
               ))}
             <View
@@ -738,5 +721,10 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 10,
     marginRight: 18,
+  },
+  placeholderStyle:{
+  textAlign:"center",
+  fontWeight: "bold",
+  paddingLeft:45,
   },
 });
