@@ -252,6 +252,7 @@ export default function Lists({ navigation }) {
                 color: "white",
                 position:"absolute",
                 right:10,
+                top:-7,
               }}
               onPress={() => {
                 navigation.navigate("EditListPrivacy");
