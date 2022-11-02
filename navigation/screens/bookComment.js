@@ -3,6 +3,7 @@ import { FlatList, SafeAreaView, StyleSheet, Text, View } from "react-native";
 import { Rating } from "react-native-ratings";
 import Icon from "react-native-vector-icons/Ionicons";
 
+
 class BookComment extends Component {
   render() {
     let book = this.props.route.params;
