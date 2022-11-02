@@ -51,8 +51,8 @@ export default function CreateCustomList({ navigation }) {
         time: new Date().toLocaleTimeString(),
         date: new Date().toLocaleDateString(),
       };
-      if(ListName.length>30)
-      setError("You Can't name the list with more than 30 character");
+      if(ListName.length>25)
+      setError("You Can't name the list with more than 25 character");
       if(ListName.length<2)
       setError("You Can't name the list with less than 2 character");
       if(checkFirstLetterSpace(ListName))
