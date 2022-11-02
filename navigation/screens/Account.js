@@ -209,7 +209,7 @@ export default function Account({ navigation }) {
             elevation: 15,
             marginTop: 20,
           }}
-          onPress={() => navigation.navigate("myfriend")}
+          onPress={() => navigation.navigate("MyFriend")}
         >
           <Icon name="people-outline" size={30} style={{ marginRight: 10 }} />
           <Text style={{ fontSize: 16, marginTop: 7 }}>My friends</Text>

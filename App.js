@@ -101,10 +101,11 @@ function App() {
               name="CreateCustomList"
               component={CreateCustomList}
             />
-            <Stack.Screen name="myfriend" component={MyFriend} />
+            <Stack.Screen name="MyFriend" component={MyFriend} />
             <Stack.Screen name="friendProfile" component={FriendProfile} />
             <Stack.Screen name="EditListPrivacy" component={EditListPrivacy} />
             <Stack.Screen name="ViewCustomeLists" component={ViewCustomeLists} />
+
           </Stack.Navigator>
         </NavigationContainer>
       </StripeProvider>

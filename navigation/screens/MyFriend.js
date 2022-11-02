@@ -121,7 +121,7 @@ const MyFriend = ({ navigation }) => {
   };
   return (
     <SafeAreaView style={{ marginTop: StatusBar.currentHeight }}>
-      {users.length === 0 ? (
+      {following.length === 0 ? (
         <>
           <View
             style={{
@@ -214,93 +214,91 @@ const MyFriend = ({ navigation }) => {
               </Text>
             </View>
           </View>
-          <ScrollView>
-            <FlatList
-              data={users}
-              columnWrapperStyle={{ justifyContent: "space-around" }}
-              numColumns={2}
-              style={{ width: "100%" }}
-              contentContainerStyle={{
-                alignSelf: "center",
-                justifyContent: "space-between",
-              }}
-              keyExtractor={(item, index) => item.id + index.toString()}
-              renderItem={({ item }) => (
+          <FlatList
+            data={following}
+            columnWrapperStyle={{ justifyContent: "space-around" }}
+            numColumns={2}
+            style={{ width: "100%" }}
+            contentContainerStyle={{
+              alignSelf: "center",
+              justifyContent: "space-between",
+            }}
+            keyExtractor={(item, index) => item.id + index.toString()}
+            renderItem={({ item }) => (
+              <View
+                style={{
+                  width: width1,
+                  height: hight1,
+                  borderWidth: 1,
+                  borderRadius: 5,
+                  marginBottom: 10,
+                  alignItems: "center",
+                  justifyContent: "center",
+                  margin: 10,
+                }}
+              >
                 <View
                   style={{
-                    width: width1,
-                    height: hight1,
-                    borderWidth: 1,
-                    borderRadius: 5,
-                    marginBottom: 10,
+                    height: 70,
+                    width: 70,
+                    // borderWidth: 1,
+                    borderRadius: 100,
                     alignItems: "center",
                     justifyContent: "center",
-                    margin: 10,
                   }}
                 >
-                  <View
+                  <Image
+                    source={require("./profile1.jpg")}
                     style={{
                       height: 70,
                       width: 70,
-                      // borderWidth: 1,
-                      borderRadius: 100,
-                      alignItems: "center",
-                      justifyContent: "center",
+                      marginTop: -9,
+                      marginLeft: -9,
                     }}
-                  >
-                    <Image
-                      source={require("./profile1.jpg")}
-                      style={{
-                        height: 70,
-                        width: 70,
-                        marginTop: -9,
-                        marginLeft: -9,
-                      }}
-                    ></Image>
-                  </View>
-                  <TouchableOpacity
-                    style={{
-                      marginTop: 10,
-                    }}
-                  >
-                    <Text>
-                      <Text
-                        style={{
-                          textAlign: "center",
-                          textAlignVertical: "center",
-                          fontWeight: "bold",
-                          fontSize: 12,
-                          //margin: 10,
-                        }}
-                      >
-                        {Datacat(item.username, 11)}
-                        {"\n"}
-                        {console.log("itmesss", item.uid)}
-                      </Text>
-                    </Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={{
-                      backgroundColor: "green",
-                      height: 30,
-                      width: 80,
-                      alignItems: "center",
-                      justifyContent: "center",
-                      borderRadius: 10,
-                    }}
-                    onPress={() => {
-                      onUnfollow(item.uid);
-                      fetchUserFollowing();
-                      getData();
-                    }}
-                  >
-                    <Text style={{ color: "#fff" }}>unfollow</Text>
-                  </TouchableOpacity>
+                  ></Image>
                 </View>
-              )}
-            />
-            <View style={{ height: 100 }} />
-          </ScrollView>
+                <TouchableOpacity
+                  style={{
+                    marginTop: 10,
+                  }}
+                >
+                  <Text>
+                    <Text
+                      style={{
+                        textAlign: "center",
+                        textAlignVertical: "center",
+                        fontWeight: "bold",
+                        fontSize: 12,
+                        //margin: 10,
+                      }}
+                    >
+                      {Datacat(item.username, 11)}
+                      {"\n"}
+                      {console.log("itmesss", item.uid)}
+                    </Text>
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={{
+                    backgroundColor: "green",
+                    height: 30,
+                    width: 80,
+                    alignItems: "center",
+                    justifyContent: "center",
+                    borderRadius: 10,
+                  }}
+                  onPress={() => {
+                    onUnfollow(item.uid);
+                    fetchUserFollowing();
+                    getData();
+                  }}
+                >
+                  <Text style={{ color: "#fff" }}>unfollow</Text>
+                </TouchableOpacity>
+              </View>
+            )}
+          />
+          <View style={{ height: 100 }} />
         </>
       )}
     </SafeAreaView>
