@@ -7,17 +7,66 @@ import {
     TouchableOpacity,
     ScrollView,
   } from "react-native";
-  import React, { useState } from "react";
+  import React, { useState ,useEffect} from "react";
   import Icon from "react-native-vector-icons/Ionicons";
   import { AirbnbRating, Rating } from "react-native-ratings";
-  import { doc, updateDoc } from "firebase/firestore";
+  import {
+    collection,
+    doc,
+    getFirestore,
+    setDoc,
+    addDoc,
+    query,
+    where,
+    getDocs,
+    updateDoc,
+  } from "firebase/firestore";
   import { getAuth } from "firebase/auth";
   import { Dropdown } from 'react-native-element-dropdown';
   import { db } from "../../config/firebase";
   import MaterialIcons from "react-native-vector-icons/MaterialIcons";
   export default function EditListPrivacy({ navigation }) {
 const [PrivacyOption, setPrivacyOption] = useState(0);
-    
+let [CustomeList, setCustomeLists] = useState([]);
+const Datacat = (str, num) => {
+  if (str.length > num) {
+    return str.substring(0, num) + "...";
+  }
+  return str;
+};
+let GetAddList = async () => {
+  setCustomeLists([]);
+
+  try {
+    let lists = [];
+    const Auth = getAuth();
+    Auth.onAuthStateChanged(async (user) => {
+      const db = getFirestore();
+      console.log(user.uid);
+      const q = query(
+        collection(db, "CustomLists"),
+        where("List_user_mail", "==", user.email)
+      );
+      const querySnapshot = await getDocs(q);
+      if (!querySnapshot.empty) {
+        lists = [];
+        querySnapshot.forEach((doc) => {
+          let list = doc.data();
+          console.log(list);
+          lists.push(list);
+        });
+        setCustomeLists(lists);
+      } else {
+        setCustomeLists([]);
+      }
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+useEffect(() => {
+  GetAddList();
+}, []); 
     return (
       <SafeAreaView>
           <View style={styles.container}>
@@ -174,6 +223,55 @@ const [PrivacyOption, setPrivacyOption] = useState(0);
               />
             
               </View>
+              {CustomeList.length > 0 ? (
+               CustomeList.map((val, ind) => (
+            <View key={ind} style={styles.bottomView}>
+
+              <Text
+              style={{
+                fontWeight: "bold",
+                fontSize: 17,
+                color: "#585a61",
+                marginTop:30,
+                marginLeft:30,
+                marginBottom:30,
+              }}
+            >
+            {Datacat(val.ListName, 25)}
+            </Text>
+            <MaterialIcons
+              name="lock"
+              size={30}
+              disabled={true}
+              style={{
+                color: "black",
+                position:"absolute",
+                right:60,
+                marginTop:20,
+              }}
+              onPress={() => {
+                navigation.navigate("EditListPrivacy");
+                
+              }}
+            />
+             <MaterialIcons
+              name="lock-open"
+              size={30}
+              
+              style={{
+                color: "gray",
+                position:"absolute",
+                marginTop:20,
+                right:120,
+              }}
+              onPress={() => {
+                navigation.navigate("EditListPrivacy");
+                
+              }}
+            />
+            </View>
+          ))
+        ):(<SafeAreaView></SafeAreaView>)}
   
 
           </View>
