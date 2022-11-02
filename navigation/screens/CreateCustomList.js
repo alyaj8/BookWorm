@@ -51,15 +51,22 @@ export default function CreateCustomList({ navigation }) {
         time: new Date().toLocaleTimeString(),
         date: new Date().toLocaleDateString(),
       };
+      if(ListName.length>30)
+      setError("You Can't name the list with more than 30 character");
+      if(ListName.length<2)
+      setError("You Can't name the list with less than 2 character");
+      if(checkFirstLetterSpace(ListName))
+      setError("You Can't name the list with space");
+      else {
       setError("Success");
       await setDoc(
         doc(db, "CustomLists", `${ListName} ${user.uid}`),
         custtomListObj
       );
       navigation.goBack();
-    } else {
+    } } else {
       setError(
-        "Please Enter Unique Name. This Name Already have a Custome List"
+        "Please Enter Unique Name. You Already have a Custome List with the same name"
       );
     }
   };
@@ -79,7 +86,10 @@ export default function CreateCustomList({ navigation }) {
     }
     return null;
   };
-
+  function checkFirstLetterSpace(_string)
+  {
+  return /^\s/.test( _string);
+  }
   return (
     <SafeAreaView>
       <View style={styles.container}>
@@ -94,17 +104,7 @@ export default function CreateCustomList({ navigation }) {
         </View>
 
         <View style={styles.bottomView}>
-          {err && (
-            <Text
-              style={{
-                padding: 10,
-                color: err === "Success" ? "green" : "red",
-                fontWeight: "bold",
-              }}
-            >
-              {err}
-            </Text>
-          )}
+         
           <Text
             style={{
               fontWeight: "bold",
@@ -118,7 +118,7 @@ export default function CreateCustomList({ navigation }) {
           </Text>
           <TextInput
             style={styles.review}
-            placeholder="Write the name of your new custom list."
+            placeholder="* mandatory"
             onChangeText={(text) => setListName(text)}
           />
           <View style={styles.DDsyleC}>
@@ -131,7 +131,7 @@ export default function CreateCustomList({ navigation }) {
               maxHeight={300}
               labelField="label"
               valueField="value"
-              placeholder={!isFocus ? "Select privacy options" : "..."}
+              placeholder={!isFocus ? "Select privacy options (mandatory)" : "..."}
               value={PrivacyOption}
               onFocus={() => setIsFocus(true)}
               onBlur={() => setIsFocus(false)}
@@ -141,7 +141,17 @@ export default function CreateCustomList({ navigation }) {
               }}
             />
           </View>
-
+          {err && (
+            <Text
+              style={{
+                padding: 10,
+                color: err === "Success" ? "green" : "red",
+                fontWeight: "bold",
+              }}
+            >
+              {err}
+            </Text>
+          )}
           <TouchableOpacity
             style={{
               borderRadius: 25,
