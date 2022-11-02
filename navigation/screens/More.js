@@ -169,7 +169,7 @@ function Discovry({ navigation, isAdmin }) {
       "userFollowing"
     );
     setDoc(doc(dataRef, userId), {})
-      .then((res) => {})
+      .then((res) => { })
       .finally(() => {
         getData();
         fetchUserFollowing();
@@ -177,7 +177,7 @@ function Discovry({ navigation, isAdmin }) {
 
     const dataRef1 = collection(db, "following", userId, "userFollower");
     setDoc(doc(dataRef1, auth.currentUser.uid), {})
-      .then((res) => {})
+      .then((res) => { })
       .finally(() => {
         getData();
         fetchUserFollowing();
