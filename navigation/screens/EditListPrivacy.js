@@ -69,7 +69,7 @@ useEffect(() => {
   GetAddList();
 }, []); 
     return (
-      <SafeAreaView>
+      <ScrollView>
           <View style={styles.container}>
             <View style={styles.header}>
               <Icon
@@ -191,7 +191,7 @@ useEffect(() => {
                 marginBottom:30,
               }}
             >
-            {Datacat(val.ListName, 25)}
+            {Datacat(val.ListName, 20)}
             </Text>
             <MaterialIcons
               name={val.privacy?"lock":"lock-open"}
@@ -211,7 +211,7 @@ useEffect(() => {
   
 
           </View>
-      </SafeAreaView>
+      </ScrollView>
     );
   }
   
