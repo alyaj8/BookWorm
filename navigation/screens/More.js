@@ -342,7 +342,7 @@ function Discovry({ navigation, isAdmin }) {
                     following.join("").includes(item.id) ? (
                       <TouchableOpacity
                         style={{
-                          backgroundColor: "green",
+                          backgroundColor: "gray",
                           height: 30,
                           width: 80,
                           alignItems: "center",
@@ -351,7 +351,7 @@ function Discovry({ navigation, isAdmin }) {
                         }}
                         onPress={() => onUnfollow(item.id)}
                       >
-                        <Text style={{ color: "#fff" }}>Following</Text>
+                        <Text style={{ color: "#fff" }}>Followed</Text>
                       </TouchableOpacity>
                     ) : (
                       <TouchableOpacity
