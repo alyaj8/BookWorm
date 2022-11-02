@@ -36,6 +36,7 @@ import ReadBookList from "./navigation/screens/ReadBookList";
 import ReviewBook from "./navigation/screens/Reviewbook";
 import StripeApp from "./navigation/screens/StripeApp";
 import WishList from "./navigation/screens/WishList";
+import ViewCustomeLists from "./navigation/screens/ViewCustomLists";
 import EditListPrivacy from "./navigation/screens/EditListPrivacy";
 const firebaseConfig = {
   apiKey: "AIzaSyCb8vT5-UmFZV-954feGAE2L0-T4Tgpqhs",
@@ -103,6 +104,7 @@ function App() {
             <Stack.Screen name="myfriend" component={MyFriend} />
             <Stack.Screen name="friendProfile" component={FriendProfile} />
             <Stack.Screen name="EditListPrivacy" component={EditListPrivacy} />
+            <Stack.Screen name="ViewCustomeLists" component={ViewCustomeLists} />
           </Stack.Navigator>
         </NavigationContainer>
       </StripeProvider>

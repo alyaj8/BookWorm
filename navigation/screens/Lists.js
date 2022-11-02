@@ -28,6 +28,7 @@ export default function Lists({ navigation }) {
   let [BookList, setBookList] = useState([]);
   let [BookFavList, setBookFavList] = useState([]);
   let [BookWishList, setBookWishList] = useState([]);
+  let [CustomeList, setCustomeLists] = useState([]);
   let [numberOfBook, setNumberOfBook] = useState(0);
   const Datacat = (str, num) => {
     if (str.length > num) {
@@ -41,13 +42,11 @@ export default function Lists({ navigation }) {
       const Auth = getAuth();
       Auth.onAuthStateChanged(async (user) => {
         const db = getFirestore();
-
         const q = query(
           collection(db, "readBookList"),
           where("favouriteUserId", "==", user.uid)
         );
         const querySnapshot = await getDocs(q);
-
         if (!querySnapshot.empty) {
           querySnapshot.forEach((doc) => {
             let book = doc.data();
@@ -79,8 +78,8 @@ export default function Lists({ navigation }) {
         if (!querySnapshot.empty) {
           querySnapshot.forEach((doc) => {
             let book = doc.data();
-            book.favriteId = doc.id;
             book.listedInFav = true;
+            book.favriteId = doc.id;
             list.push(book);
           });
           setBookFavList(list);
@@ -106,7 +105,6 @@ export default function Lists({ navigation }) {
         if (!querySnapshot.empty) {
           querySnapshot.forEach((doc) => {
             let book = doc.data();
-            book.wishId = doc.id;
             book.listedInWish = true;
             list.push(book);
           });
@@ -118,6 +116,36 @@ export default function Lists({ navigation }) {
     }
   };
 
+  let GetAddList = async () => {
+    setCustomeLists([]);
+
+    try {
+      let lists = [];
+      const Auth = getAuth();
+      Auth.onAuthStateChanged(async (user) => {
+        const db = getFirestore();
+        console.log(user.uid);
+        const q = query(
+          collection(db, "CustomLists"),
+          where("List_user_mail", "==", user.email)
+        );
+        const querySnapshot = await getDocs(q);
+        if (!querySnapshot.empty) {
+          lists = [];
+          querySnapshot.forEach((doc) => {
+            let list = doc.data();
+            console.log(list);
+            lists.push(list);
+          });
+          setCustomeLists(lists);
+        } else {
+          setCustomeLists([]);
+        }
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
   let OpenInfo = async (val) => {
     const colRef = doc(db, "Book", val.id);
     const snapshot = await getDoc(colRef);
@@ -126,6 +154,19 @@ export default function Lists({ navigation }) {
     console.log(book);
     navigation.navigate("BookInfo", book);
   };
+  useEffect(() => {
+    navigation.addListener("focus", () => {
+      GetBookList();
+      GetBookFavList();
+      GetBookWishList();
+      GetAddList();
+    });
+  }, []);
+
+  useEffect(() => {
+    GetAddList();
+  }, []);
+
   let DeleteReadBookList = async (val) => {
     await deleteDoc(doc(db, "readBookList", val.readId));
     GetBookList();
@@ -163,16 +204,9 @@ export default function Lists({ navigation }) {
         onDismiss: () =>
           Alert.alert(
             "This alert was dismissed by tapping outside of the alert dialog."
-            ),
-        }
-      );
-  useEffect(() => {
-    navigation.addListener("focus", () => {
-      GetBookList();
-      GetBookFavList();
-      GetBookWishList();
-    });
-  }, []);
+          ),
+      }
+    );
   //console.log(BookList, "========>bookList");
   return (
     <ScrollView
@@ -184,14 +218,14 @@ export default function Lists({ navigation }) {
       <View
         style={{
           backgroundColor: "#00a46c",
-          height: "7%",
+          height: "5%",
           borderBottomLeftRadius: 20,
           borderBottomRightRadius: 20,
           paddingHorizontal: 20,
           marginBottom: 15,
         }}
       >
-        <View
+             <View
           style={{
             flexDirection: "row",
             alignItems: "center",
@@ -227,33 +261,7 @@ export default function Lists({ navigation }) {
           </View>
         </View>
       </View>
-      <TouchableOpacity
-              style={{
-                width: 150,
-                height: 50,
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-              
-              onPress={() => {
-                navigation.navigate("CreateCustomList");
-                
-              }}
-             
-            >
-              <Text
-                style={{
-                  color: "green",
-                  textDecorationLine: "underline",
-                  fontWeight: "bold",
-                  fontSize: 16,
-                }}
-                
-                
-              >
-                Create custom list
-              </Text>
-            </TouchableOpacity>
+     
 
       <View
         style={{
@@ -318,89 +326,89 @@ export default function Lists({ navigation }) {
         />
         {BookList.length > 0 ? (
           BookList.map((val, ind) => (
-            <View>
-            <MaterialIcons
-              name="close"
-              size={30}
-              style={{
-                color: "black",
-                marginTop: 30,
-                marginLeft: 10,
-                position: "absolute",
-                left: 10,
-                zIndex: 1,
-              }}
-              onPress={() =>
-                DeleteFunc(
-                  "Deleting From Read List ",
-                  DeleteReadBookList,
-                  val
-                )
-              }
-            />
-            <TouchableOpacity
-              key={ind}
-              onPress={() => OpenInfo(val)}
-              style={{
-                height: 250,
-                elevation: 2,
-                backgroundColor: "#FFF",
-                marginLeft: 20,
-                marginTop: 20,
-                borderRadius: 15,
-                marginBottom: 10,
-                width: 160,
-              }}
-              disabled={val.deleted}
-            >
-              {val.deleted && (
+            <View key={ind}>
+              <MaterialIcons
+                name="close"
+                size={30}
+                style={{
+                  color: "black",
+                  marginTop: 30,
+                  marginLeft: 10,
+                  position: "absolute",
+                  left: 10,
+                  zIndex: 1,
+                }}
+                onPress={() =>
+                  DeleteFunc(
+                    "Deleting From Read List ",
+                    DeleteReadBookList,
+                    val
+                  )
+                }
+              />
+              <TouchableOpacity
+                key={ind}
+                onPress={() => OpenInfo(val)}
+                style={{
+                  height: 250,
+                  elevation: 2,
+                  backgroundColor: "#FFF",
+                  marginLeft: 20,
+                  marginTop: 20,
+                  borderRadius: 15,
+                  marginBottom: 10,
+                  width: 160,
+                }}
+                disabled={val.deleted}
+              >
+                {val.deleted && (
+                  <View
+                    style={{
+                      position: "absolute",
+                      zIndex: 1,
+                      alignSelf: "center",
+                      width: 160,
+                      opacity: 0.6,
+                      justifyContent: "center",
+                      alignItems: "center",
+                      backgroundColor: "#525454",
+                      height: 250,
+                    }}
+                  >
+                    <Text
+                      style={{
+                        color: "white",
+                        textAlign: "center",
+                        fontWeight: "bold",
+                        // backgroundColor: "black",
+                      }}
+                    >
+                      DELETED
+                    </Text>
+                  </View>
+                )}
+
+                <Image
+                  source={{ uri: val.poster }}
+                  style={{ width: "100%", height: 200 }}
+                />
                 <View
                   style={{
-                    position: "absolute",
-                    zIndex: 1,
-                    alignSelf: "center",
-                    width: 160,
-                    opacity: 0.6,
-                    justifyContent: "center",
-                    alignItems: "center",
-                    backgroundColor: "#525454",
-                    height: 250,
+                    flexDirection: "row",
+                    paddingTop: 10,
+                    paddingHorizontal: 10,
                   }}
                 >
                   <Text
                     style={{
-                      color: "white",
-                      textAlign: "center",
                       fontWeight: "bold",
-                      // backgroundColor: "black",
                     }}
                   >
-                    DELETED
+                    {Datacat(val.title, 25)}
+                    {"\n"}
                   </Text>
                 </View>
-              )}
-
-              <Image
-                source={{ uri: val.poster }}
-                style={{ width: "100%", height: 200 }}
-              />
-              <View
-                style={{
-                  flexDirection: "row",
-                  paddingTop: 10,
-                  paddingHorizontal: 10,
-                }}
-              >
-                <Text
-                  style={{
-                    fontWeight: "bold",
-                  }}
-                >
-                  {Datacat(val.title, 25)}
-                  {"\n"}
-                </Text>
-              </View>
-            </TouchableOpacity>
+              </TouchableOpacity>
             </View>
           ))
         ) : (
@@ -420,7 +428,7 @@ export default function Lists({ navigation }) {
           </Text>
         )}
       </ScrollView>
-     
+
       <View
         style={{
           flexDirection: "row",
@@ -484,89 +492,89 @@ export default function Lists({ navigation }) {
         />
         {BookFavList.length > 0 ? (
           BookFavList.map((val, ind) => (
-            <View>
-            <MaterialIcons
-              name="close"
-              size={30}
-              style={{
-                color: "black",
-                marginTop: 30,
-                marginLeft: 10,
-                position: "absolute",
-                left: 10,
-                zIndex: 1,
-              }}
-              onPress={() =>
-                DeleteFunc(
-                  "Deleting From Favorite Book List ",
-                  DeleteFavoriteBookList,
-                  val
-                )
-              }
-            />
-            <TouchableOpacity
-              key={ind}
-              onPress={() => OpenInfo(val)}
-              style={{
-                height: 250,
-                elevation: 2,
-                backgroundColor: "#FFF",
-                marginLeft: 20,
-                marginTop: 20,
-                borderRadius: 15,
-                marginBottom: 10,
-                width: 160,
-              }}
-              disabled={val.deleted}
-            >
-              {val.deleted && (
+            <View key={ind}>
+              <MaterialIcons
+                name="close"
+                size={30}
+                style={{
+                  color: "black",
+                  marginTop: 30,
+                  marginLeft: 10,
+                  position: "absolute",
+                  left: 10,
+                  zIndex: 1,
+                }}
+                onPress={() =>
+                  DeleteFunc(
+                    "Deleting From Favorite Book List ",
+                    DeleteFavoriteBookList,
+                    val
+                  )
+                }
+              />
+              <TouchableOpacity
+                key={ind}
+                onPress={() => OpenInfo(val)}
+                style={{
+                  height: 250,
+                  elevation: 2,
+                  backgroundColor: "#FFF",
+                  marginLeft: 20,
+                  marginTop: 20,
+                  borderRadius: 15,
+                  marginBottom: 10,
+                  width: 160,
+                }}
+                disabled={val.deleted}
+              >
+                {val.deleted && (
+                  <View
+                    style={{
+                      position: "absolute",
+                      zIndex: 1,
+                      alignSelf: "center",
+                      width: 160,
+                      opacity: 0.6,
+                      justifyContent: "center",
+                      alignItems: "center",
+                      backgroundColor: "#525454",
+                      height: 250,
+                    }}
+                  >
+                    <Text
+                      style={{
+                        color: "white",
+                        textAlign: "center",
+                        fontWeight: "bold",
+                        // backgroundColor: "black",
+                      }}
+                    >
+                      DELETED
+                    </Text>
+                  </View>
+                )}
+
+                <Image
+                  source={{ uri: val.poster }}
+                  style={{ width: "100%", height: 200 }}
+                />
                 <View
                   style={{
-                    position: "absolute",
-                    zIndex: 1,
-                    alignSelf: "center",
-                    width: 160,
-                    opacity: 0.6,
-                    justifyContent: "center",
-                    alignItems: "center",
-                    backgroundColor: "#525454",
-                    height: 250,
+                    flexDirection: "row",
+                    paddingTop: 10,
+                    paddingHorizontal: 10,
                   }}
                 >
                   <Text
                     style={{
-                      color: "white",
-                      textAlign: "center",
                       fontWeight: "bold",
-                      // backgroundColor: "black",
                     }}
                   >
-                    DELETED
+                    {Datacat(val.title, 25)}
+                    {"\n"}
                   </Text>
                 </View>
-              )}
-
-              <Image
-                source={{ uri: val.poster }}
-                style={{ width: "100%", height: 200 }}
-              />
-              <View
-                style={{
-                  flexDirection: "row",
-                  paddingTop: 10,
-                  paddingHorizontal: 10,
-                }}
-              >
-                <Text
-                  style={{
-                    fontWeight: "bold",
-                  }}
-                >
-                  {Datacat(val.title, 25)}
-                  {"\n"}
-                </Text>
-              </View>
-            </TouchableOpacity>
+              </TouchableOpacity>
             </View>
           ))
         ) : (
@@ -751,8 +759,145 @@ export default function Lists({ navigation }) {
           </Text>
         )}
       </ScrollView>
-   
-          
+
+      <View
+        style={{
+          flexDirection: "row",
+          paddingHorizontal: 20,
+          width: "100%",
+          alignItems: "center",
+        }}
+      >
+        <View style={{ width: "50%" }}>
+          <Text
+            style={{
+              fontWeight: "bold",
+              fontSize: 17,
+              color: "#585a61",
+            }}
+          >
+            My Custom Lists
+          </Text>
+        </View>
+        <View style={{ width: "50%", alignItems: "flex-end" }}>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate("CreateCustomList");
+            }}
+          >
+            <View
+              style={{
+                backgroundColor: "#00a46c",
+                paddingHorizontal: 20,
+                paddingVertical: 5,
+                borderRadius: 15,
+              }}
+            >
+              <Text
+                style={{
+                  fontWeight: "bold",
+                  fontSize: 13,
+                  color: "#FFF",
+                }}
+              >
+                Create new
+              </Text>
+            </View>
+          </TouchableOpacity>
+        </View>
+      </View>
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={true}
+        style={{ height: 320 }}
+      >
+        <LinearGradient
+          colors={["rgba(0,164,109,0.09)", "transparent"]}
+          style={{
+            position: "absolute",
+            left: 0,
+            right: 0,
+            height: 50,
+            marginTop: 180,
+            top: 0,
+            width: 9999,
+          }}
+        />
+        {CustomeList.length > 0 ? (
+          CustomeList.map((val, ind) => (
+            <View key={ind}>
+              {/* <MaterialIcons
+                name="delete"
+                size={30}
+                style={{
+                  color: "red",
+                  marginTop: 30,
+                  marginLeft: 10,
+                  position: "absolute",
+                  left: 10,
+                  zIndex: 1,
+                }}
+                onPress={() =>
+                  DeleteFunc(
+                    "Deleting From Read List ",
+                    DeleteReadBookList,
+                    val
+                  )
+                }
+              /> */}
+              <TouchableOpacity
+                key={ind}
+                onPress={() => navigation.navigate("ViewCustomeLists", val)}
+                style={{
+                  height: 100,
+                  elevation: 2,
+                  backgroundColor: "rgba(0,164,109,0.09)",
+                  marginLeft: 20,
+                  marginTop: 50,
+                  borderRadius: 15,
+                  marginBottom: 10,
+                  width: 160,
+                }}
+              >
+                <View
+                  style={{
+                    flexDirection: "row",
+                    paddingTop: 10,
+                    paddingHorizontal: 10,
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontWeight: "bold",
+                      fontSize: 22,
+                      color: "#585a61",
+                      textAlign: "center",
+                    }}
+                  >
+                    {Datacat(val.ListName, 25)}
+                    {"\n"}
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+          ))
+        ) : (
+          <Text
+            style={{
+              //  flex: 1,
+              //textAlign: "center",
+              marginTop: -10, ////////////////////////////////////////
+              marginLeft: 130, ////////////////////////////////////////
+              fontSize: 15,
+              fontWeight: "bold",
+              color: "grey",
+              alignSelf: "center",
+            }}
+          >
+            You do not have custom lists
+          </Text>
+        )}
+      </ScrollView>
     </ScrollView> //for all the page
   );
 }

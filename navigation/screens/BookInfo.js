@@ -18,13 +18,13 @@ import { StripeProvider } from "@stripe/stripe-react-native";
 import react, { useEffect, useState } from "react";
 import { Rating, AirbnbRating } from "react-native-ratings";
 import Icon from "react-native-vector-icons/Ionicons";
-
+import { Dropdown } from "react-native-element-dropdown";
 //import Map from './screens/Map';
 //import Fetch from './src/Fetch';
 //import {userSate,userEffect} from "react";
 //import{collection, query,orderBy,onSanpshot,setDoc,doc,getDoc,getDocs} from "firebase/firestore";
 import { db } from "../../config/firebase";
-
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import {
   collection,
   doc,
@@ -50,6 +50,10 @@ export default function BookInfo({ route, navigation }) {
   let [reviewDone, setReviewDone] = useState(false);
   let [update, setUpdate] = useState(false);
   const [isNotified, setIsNotified] = useState(false);
+  let [AllLists, setAllLists] = useState([]);
+  let [AlreadyList, setAlreadyList] = useState([]);
+  const [ListName, setListName] = useState("");
+  const [isFocus, setIsFocus] = useState(false);
 
   useEffect(() => {
     (async function () {
@@ -128,6 +132,34 @@ export default function BookInfo({ route, navigation }) {
       setDisabled(false);
     }
   };
+  let AddCustomeList = async () => {
+    setDisabled(true);
+    try {
+      let flag = true;
+      AlreadyList.length > 0 &&
+        AlreadyList.map((val) => {
+          if (val === ListName) {
+            flag = false;
+          }
+        });
+      if (flag === true) {
+        const uid = Auth?.currentUser?.uid;
+        const db = getFirestore();
+        const data = book;
+        data.listName = ListName;
+        data.user_uid = uid;
+        await addDoc(collection(db, "BookCustomeLists"), data);
+        AlreadyList.push(ListName);
+        setAlreadyList(AlreadyList);
+        alert("This book is added Successfully to List");
+      } else {
+        alert("This book is already present in In this List");
+      }
+    } catch (error) {
+      alert(error);
+      setDisabled(false);
+    }
+  };
   let AddInfoToWishList = async () => {
     setDisabled(true);
     try {
@@ -193,7 +225,26 @@ export default function BookInfo({ route, navigation }) {
       }
     });
   };
-
+  let CheckAddList = () => {
+    let ALList = [];
+    const Auth = getAuth();
+    Auth.onAuthStateChanged(async (user) => {
+      console.log(user.uid);
+      const db = getFirestore();
+      const q = query(
+        collection(db, "BookCustomeLists"),
+        where("user_uid", "==", user.uid),
+        where("id", "==", book.id)
+      );
+      const querySnapshot = await getDocs(q);
+      if (!querySnapshot.empty) {
+        querySnapshot.forEach((doc) => {
+          ALList.push(doc.data().listName);
+        });
+        setAlreadyList(ALList);
+        setUpdate(true);
+      }
+    });};
   let checkReview = () => {
     let countStar = 0;
     book?.reviews?.length > 0 &&
@@ -207,6 +258,36 @@ export default function BookInfo({ route, navigation }) {
         setBookStar(countStar);
       });
   };
+  let GetAddList = async () => {
+    setAllLists([]);
+
+    try {
+      let lists = [];
+      const Auth = getAuth();
+      Auth.onAuthStateChanged(async (user) => {
+        const db = getFirestore();
+        const q = query(
+          collection(db, "CustomLists"),
+          where("List_user_id", "==", user.uid)
+        );
+        const querySnapshot = await getDocs(q);
+        if (!querySnapshot.empty) {
+          querySnapshot.forEach((doc) => {
+            let list = doc.data();
+            list.label = list.ListName;
+            list.value = list.ListName;
+
+            lists.push(list);
+          });
+          setAllLists(lists);
+        } else {
+          setAllLists([]);
+        }
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", () => {
       // The screen is focused
@@ -217,6 +298,8 @@ export default function BookInfo({ route, navigation }) {
       CheckListedInFav();
       CheckListedInWish();
       checkReview();
+      GetAddList();
+      CheckAddList();
     });
 
     return unsubscribe;
@@ -249,6 +332,8 @@ export default function BookInfo({ route, navigation }) {
     CheckListedInFav();
     CheckListedInWish();
     CheckOrder();
+    GetAddList();
+    CheckAddList();
   }, [navigation]);
 
   const onShare = async () => {
@@ -481,7 +566,76 @@ export default function BookInfo({ route, navigation }) {
               {!!book.pric && `PRICE: ${book.pric}$\n\n`}
             </Text>
 
-
+            {AllLists.length > 0 &&
+              (!book.listed ? (
+                <View
+                  style={{
+                    flex: 1,
+                    flexDirection: "row",
+                    borderRadius: 25,
+                    backgroundColor: book.listed ? "#aadecc" : "#00a46c",
+                    paddingHorizontal: 20,
+                    marginTop: 10,
+                    width: "90%",
+                  }}
+                >
+                  <Dropdown
+                    borderColor="black"
+                    placeholderStyle={styles.placeholderStyle}
+                    data={AllLists}
+                    maxHeight={300}
+                    style={{
+                      width: "90%",
+                      color: "white",
+                    }}
+                    selectedTextStyle={{
+                      color: "white",
+                    }}
+                    labelField="label"
+                    valueField="value"
+                    placeholder={!isFocus ? "ADD TO LIST" : "..."}
+                    value={ListName}
+                    onFocus={() => setIsFocus(true)}
+                    onBlur={() => setIsFocus(false)}
+                    onChange={(item) => {
+                      setListName(item.value);
+                      setIsFocus(false);
+                    }}
+                    // disabled={disabled}
+                  />
+                  {ListName !== "" && (
+                    <TouchableOpacity onPress={() => AddCustomeList()}>
+                      <MaterialIcons
+                        name="done"
+                        size={36}
+                        style={{ color: "white" }}
+                      />
+                    </TouchableOpacity>
+                  )}
+                </View>
+              ) : (
+                <TouchableOpacity
+                  style={{
+                    flex: 1,
+                    flexDirection: "row",
+                    borderRadius: 25,
+                    backgroundColor: book.listed ? "#aadecc" : "#00a46c",
+                    paddingHorizontal: 20,
+                    marginTop: 10,
+                  }}
+                  disabled={book.listed}
+                >
+                  <Text
+                    style={{
+                      fontWeight: "bold",
+                      paddingVertical: 10,
+                      fontSize: 18,
+                    }}
+                  >
+                    AlREADY ADDED TO LIST
+                  </Text>
+                </TouchableOpacity>
+              ))}
             <View
               style={{
                 margin: 45,
