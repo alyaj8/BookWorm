@@ -174,18 +174,11 @@ export default function Home({ navigation }) {
     <View
       style={{
         backgroundColor: "#edf5f0",
+        marginTop: -20,
         flex: 1,
       }}
     >
-      <View
-        style={{
-          backgroundColor: "#00a46c",
-          height: "14%",
-          borderBottomLeftRadius: 20,
-          borderBottomRightRadius: 20,
-          paddingHorizontal: 20,
-        }}
-      ></View>
+     
       <View
         colors={["rgba(0,164,109,0.4)"]}
         style={{
