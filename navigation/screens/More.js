@@ -175,6 +175,14 @@ function Discovry({ navigation, isAdmin }) {
         fetchUserFollowing();
       });
 
+    const dataRef1 = collection(db, "following", userId, "userFollower");
+    setDoc(doc(dataRef1, auth.currentUser.uid), {})
+      .then((res) => {})
+      .finally(() => {
+        getData();
+        fetchUserFollowing();
+      });
+
     // const docRef = doc(db, "following", currentUser.uid,);
     // const docSnap = await getDocs(collection(docRef, "userFollowing", userId));
     // console.log()
@@ -187,7 +195,11 @@ function Discovry({ navigation, isAdmin }) {
       "userFollowing"
     );
     deleteDoc(doc(dataRef, userId));
+
+    const dataRef1 = collection(db, "following", userId, "userFollower");
+    deleteDoc(doc(dataRef1, auth.currentUser.uid));
   };
+
   const fetchUserFollowing = () => {
     const dataRef = doc(db, "following", auth.currentUser.uid);
     const q = collection(dataRef, "userFollowing");
@@ -327,7 +339,7 @@ function Discovry({ navigation, isAdmin }) {
                     </Text>
                   </TouchableOpacity>
                   {item?.id !== auth.currentUser.uid ? (
-                    follow ? (
+                    following.join("").includes(item.id) ? (
                       <TouchableOpacity
                         style={{
                           backgroundColor: "green",
