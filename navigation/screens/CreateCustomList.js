@@ -1,28 +1,23 @@
+import { getAuth } from "firebase/auth";
 import {
-  View,
-  Text,
-  SafeAreaView,
-  StyleSheet,
-  TextInput,
-  TouchableOpacity,
-  ScrollView,
-} from "react-native";
-import React, { useEffect, useState } from "react";
-import Icon from "react-native-vector-icons/Ionicons";
-import { AirbnbRating, Rating } from "react-native-ratings";
-import {
-  addDoc,
   collection,
   doc,
   getDocs,
-  getFirestore,
   query,
   setDoc,
-  updateDoc,
   where,
 } from "firebase/firestore";
-import { getAuth } from "firebase/auth";
+import React, { useState } from "react";
+import {
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { Dropdown } from "react-native-element-dropdown";
+import Icon from "react-native-vector-icons/Ionicons";
 import { db } from "../../config/firebase";
 export default function CreateCustomList({ navigation }) {
   const [PrivacyOption, setPrivacyOption] = useState(0);
@@ -32,17 +27,22 @@ export default function CreateCustomList({ navigation }) {
   const [err, setError] = useState("");
   const auth = getAuth();
   const user = auth.currentUser;
+
   let AddCutomeList = async () => {
     const Auth = getAuth();
     let user = await Auth.currentUser;
     console.log(user);
+
     const q = query(
       collection(db, "CustomLists"),
       where("List_user_mail", "==", user.email),
       where("ListName", "==", ListName)
     );
+
     const snapshot = await getDocs(q);
+
     if (snapshot.empty) {
+      const listId = Math.random().toString(36).substring(2, 15);
       let custtomListObj = {
         ListName,
         privacy: PrivacyOption === "1" ? true : false,
@@ -50,21 +50,20 @@ export default function CreateCustomList({ navigation }) {
         List_user_id: user.uid,
         time: new Date().toLocaleTimeString(),
         date: new Date().toLocaleDateString(),
+        listId,
       };
-      if(ListName.length>20)
-      setError("You Can't name the list with more than 20 character");
-       else if(ListName.length<2)
-      setError("You Can't name the list with less than 2 character");
-      else if(checkFirstLetterSpace(ListName))
-      setError("You Can't name the list with space");
+      if (ListName.length > 20)
+        setError("You Can't name the list with more than 20 character");
+      if (ListName.length < 2)
+        setError("You Can't name the list with less than 2 character");
+      if (checkFirstLetterSpace(ListName))
+        setError("You Can't name the list with space");
       else {
-      setError("Success");
-      await setDoc(
-        doc(db, "CustomLists", `${ListName} ${user.uid}`),
-        custtomListObj
-      );
-      navigation.goBack();
-    } } else {
+        setError("Success");
+        await setDoc(doc(db, "CustomLists", listId), custtomListObj);
+        navigation.goBack();
+      }
+    } else {
       setError(
         "Please Enter Unique Name. You Already have a Custome List with the same name"
       );
@@ -86,9 +85,8 @@ export default function CreateCustomList({ navigation }) {
     }
     return null;
   };
-  function checkFirstLetterSpace(_string)
-  {
-  return /^\s/.test( _string);
+  function checkFirstLetterSpace(_string) {
+    return /^\s/.test(_string);
   }
   return (
     <SafeAreaView>
@@ -104,7 +102,6 @@ export default function CreateCustomList({ navigation }) {
         </View>
 
         <View style={styles.bottomView}>
-         
           <Text
             style={{
               fontWeight: "bold",
@@ -131,7 +128,9 @@ export default function CreateCustomList({ navigation }) {
               maxHeight={300}
               labelField="label"
               valueField="value"
-              placeholder={!isFocus ? "Select privacy options (mandatory)" : "..."}
+              placeholder={
+                !isFocus ? "Select privacy options (mandatory)" : "..."
+              }
               value={PrivacyOption}
               onFocus={() => setIsFocus(true)}
               onBlur={() => setIsFocus(false)}

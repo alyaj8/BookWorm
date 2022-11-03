@@ -1,28 +1,24 @@
 import {
-  View,
-  Text,
-  SafeAreaView,
-  StatusBar,
-  Dimensions,
-  Image,
-  TouchableOpacity,
-  FlatList,
-  ActivityIndicator,
-  ScrollView,
-} from "react-native";
-import React, { useEffect, useState } from "react";
-import Icon from "react-native-vector-icons/Ionicons";
-import {
   collection,
   deleteDoc,
   doc,
   getDoc,
   getDocs,
   onSnapshot,
-  query,
 } from "firebase/firestore";
+import React, { useEffect, useState } from "react";
+import {
+  Dimensions,
+  FlatList,
+  Image,
+  SafeAreaView,
+  StatusBar,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import Icon from "react-native-vector-icons/Ionicons";
 import { auth, db } from "../../config/firebase";
-import { async } from "@firebase/util";
 var tempUser = [];
 const MyFriend = ({ navigation }) => {
   const width1 = Dimensions.get("screen").width / 2 - 35;
@@ -32,11 +28,26 @@ const MyFriend = ({ navigation }) => {
   const [users, setUsers] = useState([]);
   const [allUsers, setAllUsers] = useState([]);
   const [following, setFollowing] = useState([]);
+
+  const [loading, setLoading] = useState(true);
+
+  // console.log("🚀 ~ following", following);
+
+  useEffect(() => {
+    // console.log("🚀 ~ start");
+    getData();
+    fetchUserFollowing();
+    setLoader(false);
+  }, []);
+
   useEffect(() => {
     getData();
     fetchUserFollowing();
-    console.log("heoooo", tempUser);
+    setLoader(false);
+
+    // console.log("heoooo", tempUser);
   }, [following.length]);
+
   const Datacat = (str, num) => {
     if (str.length > num) {
       return str.substring(0, num) + "...";
@@ -55,6 +66,7 @@ const MyFriend = ({ navigation }) => {
         console.log("-er", er);
       });
   };
+
   // const fetchUserFollowing = () => {
   //   const dataRef = doc(db, "following", auth.currentUser.uid);
   //   const q = collection(dataRef, "userFollowing");
@@ -69,6 +81,7 @@ const MyFriend = ({ navigation }) => {
   //     });
   //   });
   // };
+
   const getData = async () => {
     try {
       const colRef = collection(db, "users");
@@ -87,7 +100,7 @@ const MyFriend = ({ navigation }) => {
       );
 
       //store data in AsyncStorage
-      myData.sort((a, b) => a.username.localeCompare(b.username));
+      // myData.sort((a, b) => a.username.localeCompare(b.username));
       setAllUsers(myData);
       const data2 = myData
         .filter((i) => i.isAdmin == false && i.uid == following.map((i) => i))
@@ -98,6 +111,7 @@ const MyFriend = ({ navigation }) => {
       console.log(error);
     }
   };
+
   const onUnfollow = (userId) => {
     console.log("user ID", userId);
     const dataRef = collection(
@@ -108,113 +122,153 @@ const MyFriend = ({ navigation }) => {
     );
     deleteDoc(doc(dataRef, userId));
   };
+
   const fetchUserFollowing = () => {
+    setLoader(true);
     const dataRef = doc(db, "following", auth.currentUser.uid);
     const q = collection(dataRef, "userFollowing");
-    onSnapshot(q, (snapshot) => {
-      let data = snapshot.docs.map((doc) => {
-        const id = doc.id;
-        return id;
-      });
-      setFollowing(data);
-    });
-  };
-  return (
-    <SafeAreaView style={{ marginTop: StatusBar.currentHeight }}>
-      {following.length === 0 ? (
-        <>
-          <View
-            style={{
-              backgroundColor: "#00a46c",
-              height: "10%",
-              borderBottomLeftRadius: 20,
-              borderBottomRightRadius: 20,
-              paddingHorizontal: 20,
-              marginBottom: 15,
-              justifyContent: "center",
-            }}
-          >
-            <Icon
-              name="arrow-back-outline"
-              size={45}
-              style={{ color: "black", marginLeft: -10 }}
-              onPress={() => navigation.goBack()}
-            />
-            <View
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-                marginTop: -10,
-                width: "100%",
-              }}
-            >
-              <Text
-                style={{
-                  marginLeft: 79,
-                  marginTop: -35,
-                  fontSize: 29,
-                  color: "#FFF",
-                  fontWeight: "bold",
-                  alignSelf: "center",
-                }}
-              >
-                My Followings
-              </Text>
-            </View>
-          </View>
-          <View
-            style={{
-              height: "90%",
 
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <Text>No User Found</Text>
-          </View>
-        </>
-      ) : (
-        <>
-          <View
+    onSnapshot(q, (snapshot) => {
+      const tempData = [];
+      snapshot.docs.map((doc) => {
+        // get the id of the document and get the data
+        const id = doc.id;
+        // get the data of the document
+        const data = doc.data();
+        // console.log("🚀 ~ data", data);
+        // push the id and data to the tempData array
+        tempData.push(id);
+      });
+      setLoader(false);
+
+      setFollowing(tempData);
+    });
+    setLoader(false);
+  };
+
+  const RenderItem = ({ uid }) => {
+    const user = allUsers.find((i) => i.uid == uid);
+    console.log("🚀 ~ user", user);
+
+    return (
+      <TouchableOpacity
+        style={{
+          width: width1,
+          height: hight1,
+          borderWidth: 1,
+          borderRadius: 5,
+          marginBottom: 10,
+          alignItems: "center",
+          justifyContent: "center",
+          margin: 10,
+        }}
+        onPress={() => navigation.navigate("friendProfile", user)}
+      >
+        <View
+          style={{
+            height: 70,
+            width: 70,
+            // borderWidth: 1,
+            borderRadius: 100,
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <Image
+            source={require("./profile1.jpg")}
             style={{
-              backgroundColor: "#00a46c",
-              height: "10%",
-              borderBottomLeftRadius: 20,
-              borderBottomRightRadius: 20,
-              paddingHorizontal: 20,
-              marginBottom: 15,
-              justifyContent: "center",
+              height: 70,
+              width: 70,
+              marginTop: -9,
+              marginLeft: -9,
             }}
-          >
-            <Icon
-              name="arrow-back-outline"
-              size={45}
-              style={{ color: "black", marginLeft: -10 }}
-              onPress={() => navigation.goBack()}
-            />
-            <View
+          ></Image>
+        </View>
+        <TouchableOpacity
+          style={{
+            marginTop: 10,
+          }}
+        >
+          <Text>
+            <Text
               style={{
-                flexDirection: "row",
-                alignItems: "center",
-                marginTop: -10,
-                width: "100%",
+                textAlign: "center",
+                textAlignVertical: "center",
+                fontWeight: "bold",
+                fontSize: 12,
+                //margin: 10,
               }}
             >
-              <Text
+              {user?.username}
+            </Text>
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={{
+            backgroundColor: "green",
+            height: 30,
+            width: 80,
+            alignItems: "center",
+            justifyContent: "center",
+            borderRadius: 10,
+          }}
+          onPress={() => {
+            onUnfollow(uid);
+            fetchUserFollowing();
+            getData();
+          }}
+        >
+          <Text style={{ color: "#fff" }}>unfollow</Text>
+        </TouchableOpacity>
+      </TouchableOpacity>
+    );
+  };
+
+  return (
+    <SafeAreaView style={{ marginTop: StatusBar.currentHeight, flex: 1 }}>
+      <>
+        {!!following ? (
+          <>
+            <View
+              style={{
+                backgroundColor: "#00a46c",
+                height: "10%",
+                borderBottomLeftRadius: 20,
+                borderBottomRightRadius: 20,
+                paddingHorizontal: 20,
+                marginBottom: 15,
+                justifyContent: "center",
+              }}
+            >
+              <Icon
+                name="arrow-back-outline"
+                size={45}
+                style={{ color: "black", marginLeft: -10 }}
+                onPress={() => navigation.goBack()}
+              />
+              <View
                 style={{
-                  marginLeft: 79,
-                  marginTop: -35,
-                  fontSize: 29,
-                  color: "#FFF",
-                  fontWeight: "bold",
-                  alignSelf: "center",
+                  flexDirection: "row",
+                  alignItems: "center",
+                  marginTop: -10,
+                  width: "100%",
                 }}
               >
-                My Followings
-              </Text>
+                <Text
+                  style={{
+                    marginLeft: 79,
+                    marginTop: -35,
+                    fontSize: 29,
+                    color: "#FFF",
+                    fontWeight: "bold",
+                    alignSelf: "center",
+                  }}
+                >
+                  My Followings
+                </Text>
+              </View>
             </View>
-          </View>
-          <ScrollView>
+
             <FlatList
               data={following}
               columnWrapperStyle={{ justifyContent: "space-around" }}
@@ -225,84 +279,72 @@ const MyFriend = ({ navigation }) => {
                 justifyContent: "space-between",
               }}
               keyExtractor={(item, index) => item.id + index.toString()}
-              renderItem={({ item }) => (
-                <View
-                  style={{
-                    width: width1,
-                    height: hight1,
-                    borderWidth: 1,
-                    borderRadius: 5,
-                    marginBottom: 10,
-                    alignItems: "center",
-                    justifyContent: "center",
-                    margin: 10,
-                  }}
-                >
-                  <View
-                    style={{
-                      height: 70,
-                      width: 70,
-                      // borderWidth: 1,
-                      borderRadius: 100,
-                      alignItems: "center",
-                      justifyContent: "center",
-                    }}
-                  >
-                    <Image
-                      source={require("./profile1.jpg")}
-                      style={{
-                        height: 70,
-                        width: 70,
-                        marginTop: -9,
-                        marginLeft: -9,
-                      }}
-                    ></Image>
-                  </View>
-                  <TouchableOpacity
-                    style={{
-                      marginTop: 10,
-                    }}
-                  >
-                    <Text>
-                      <Text
-                        style={{
-                          textAlign: "center",
-                          textAlignVertical: "center",
-                          fontWeight: "bold",
-                          fontSize: 12,
-                          //margin: 10,
-                        }}
-                      >
-                        {Datacat(item.username, 11)}
-                        {"\n"}
-                        {console.log("itmesss", item.uid)}
-                      </Text>
-                    </Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={{
-                      backgroundColor: "green",
-                      height: 30,
-                      width: 80,
-                      alignItems: "center",
-                      justifyContent: "center",
-                      borderRadius: 10,
-                    }}
-                    onPress={() => {
-                      onUnfollow(item.uid);
-                      fetchUserFollowing();
-                      getData();
-                    }}
-                  >
-                    <Text style={{ color: "#fff" }}>unfollow</Text>
-                  </TouchableOpacity>
-                </View>
-              )}
+              renderItem={({ item }) => {
+                console.log("🚀 ~ item", item);
+
+                return (
+                  <>
+                    <RenderItem uid={item} />
+                  </>
+                );
+              }}
             />
             <View style={{ height: 100 }} />
-          </ScrollView>
-        </>
-      )}
+          </>
+        ) : (
+          <>
+            <View
+              style={{
+                backgroundColor: "#00a46c",
+                height: "10%",
+                borderBottomLeftRadius: 20,
+                borderBottomRightRadius: 20,
+                paddingHorizontal: 20,
+                marginBottom: 15,
+                justifyContent: "center",
+              }}
+            >
+              <Icon
+                name="arrow-back-outline"
+                size={45}
+                style={{ color: "black", marginLeft: -10 }}
+                onPress={() => navigation.goBack()}
+              />
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  marginTop: -10,
+                  width: "100%",
+                }}
+              >
+                <Text
+                  style={{
+                    marginLeft: 79,
+                    marginTop: -35,
+                    fontSize: 29,
+                    color: "#FFF",
+                    fontWeight: "bold",
+                    alignSelf: "center",
+                  }}
+                >
+                  My Followings
+                </Text>
+              </View>
+            </View>
+            <View
+              style={{
+                height: "90%",
+
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Text>No User Found</Text>
+            </View>
+          </>
+        )}
+      </>
     </SafeAreaView>
   );
 };

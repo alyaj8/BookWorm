@@ -1,13 +1,10 @@
 import {
-  addDoc,
   collection,
   deleteDoc,
   doc,
-  Firestore,
   getDocs,
   onSnapshot,
   setDoc,
-  where,
 } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import {
@@ -22,7 +19,6 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import * as Notifications from "expo-notifications";
 //import PushNotificationIOS from '@react-native-community/push-notification-ios';
 //import * as Notifications from 'expo-notifications';
 import Icon from "react-native-vector-icons/Ionicons";
@@ -34,7 +30,7 @@ function Discovry({ navigation, isAdmin }) {
   //const categories = ["ALL", "ADULT", "ROMANCE"];
   const [refreshing, setRefreshing] = useState(false);
 
-  console.log("isAdmin", isAdmin);
+  // console.log("isAdmin", isAdmin);
 
   const onRefresh = () => {
     setRefreshing(true);
@@ -72,22 +68,23 @@ function Discovry({ navigation, isAdmin }) {
   useEffect(() => {
     getData();
     fetchUserFollowing();
-    console.log("folowwwwwwwwwwwwwww", following);
-    console.log(
-      "folwwwoswsss",
-      users.filter((item) => item.uid != following.map((i) => i))
-    );
+    // console.log("folowwwwwwwwwwwwwww", following);
+    // console.log(
+    //   "folwwwoswsss",
+    //   users.filter((item) => item.uid != following.map((i) => i))
+    // );
     if (following.indexOf(auth.currentUser.uid) > -1) {
       setFollow(true);
     } else {
       setFollow(false);
     }
-  }, [following.length, users.length]);
+  }, [following.length]);
 
   const width1 = Dimensions.get("screen").width / 2 - 35;
   const hight1 = Dimensions.get("screen").height / 3 - 70;
 
   const width2 = Dimensions.get("screen").width / 2.5 - 20;
+
   const Datacat = (str, num) => {
     if (str.length > num) {
       return str.substring(0, num) + "...";
@@ -129,14 +126,15 @@ function Discovry({ navigation, isAdmin }) {
     console.log(text);
     const filter = [];
     allUsers.forEach((e) => {
-      console.log("For Eeach", e.isAdmin);
+      console.log("🚀 ~ e", e);
       if (e.username.toLowerCase().includes(text.toLowerCase())) {
         e.isAdmin == false ? filter.push(e) : null;
       }
     });
     setUsers(filter);
-    console.log(users);
+    // console.log(users);
   };
+
   /* const restUrl = (link1) => {
     setUrl(link1)  }*/
   /////////////////////// notification
@@ -219,6 +217,7 @@ function Discovry({ navigation, isAdmin }) {
         source={require("./222.jpg")}
         resizeMode="cover"
       >
+        {/* Search */}
         <View
           style={{
             backgroundColor: "#FFF",
@@ -247,6 +246,7 @@ function Discovry({ navigation, isAdmin }) {
             }}
           />
         </View>
+
         <View
           style={{
             paddingVertical: 10,

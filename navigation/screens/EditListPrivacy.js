@@ -14,6 +14,7 @@ import Icon from "react-native-vector-icons/Ionicons";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import { db } from "../../config/firebase";
 export default function EditListPrivacy({ navigation }) {
+  const [loading, setLoading] = useState(true);
   const [PrivacyOption, setPrivacyOption] = useState(0);
   let [CustomeList, setCustomeLists] = useState([]);
   const [currentActiveUser, setCurrentActiveUser] = useState("");
@@ -47,6 +48,7 @@ export default function EditListPrivacy({ navigation }) {
   };
 
   let GetAddList = async () => {
+    setLoading(true);
     setCustomeLists([]);
     try {
       let lists = [];
@@ -62,7 +64,6 @@ export default function EditListPrivacy({ navigation }) {
           lists = [];
           querySnapshot.forEach((doc) => {
             let list = doc.data();
-            console.log(list);
             lists.push(list);
           });
           setCustomeLists(lists);
@@ -72,6 +73,8 @@ export default function EditListPrivacy({ navigation }) {
       });
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -90,23 +93,26 @@ export default function EditListPrivacy({ navigation }) {
         >
           {title}
         </Text>
-        <MaterialIcons
-          name={isLocked ? "lock" : "lock-open"}
-          size={30}
-          style={{
-            color: "black",
-            position: "absolute",
-            right: 60,
-            marginTop: 20,
-          }}
-          onPress={onPress}
-        />
+        {
+          <MaterialIcons
+            name={isLocked ? "lock" : "lock-open"}
+            size={30}
+            style={{
+              color: "black",
+              position: "absolute",
+              right: 60,
+              marginTop: 20,
+            }}
+            onPress={onPress}
+          />
+        }
       </View>
     );
   };
 
   const handleChangeListPrivacy = (listType) => {
     // update current user list at db
+    setLoading(true);
     const db = getFirestore();
     const docRef = doc(db, "users", currentUser.uid);
 
@@ -128,6 +134,32 @@ export default function EditListPrivacy({ navigation }) {
       })
       .catch((error) => {
         console.error("Error updating document: ", error);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+
+  const handleChangeCustomListPrivacy = (list) => {
+    console.log("🚀 ~ listفففففففففففف", list);
+    // update current user list at db
+    const docRef = doc(db, "CustomLists", list.listId);
+
+    const updatedList = {
+      ...list,
+      privacy: !list?.privacy,
+    };
+
+    setDoc(docRef, updatedList, { merge: true })
+      .then(() => {
+        console.log("List privacy updated!");
+      })
+      .catch((error) => {
+        console.error("Error updating document: ", error);
+      })
+      .finally(() => {
+        GetAddList();
+        setLoading(false);
       });
   };
 
@@ -158,6 +190,7 @@ export default function EditListPrivacy({ navigation }) {
             handleChangeListPrivacy("read");
           }}
           isLocked={currentActiveUser?.lists?.read?.isPrivate}
+          isLoading={loading}
         />
 
         {/* Favorite List */}
@@ -168,6 +201,7 @@ export default function EditListPrivacy({ navigation }) {
             handleChangeListPrivacy("fav");
           }}
           isLocked={currentActiveUser?.lists?.fav?.isPrivate}
+          isLoading={loading}
         />
 
         {/* Wish List */}
@@ -178,37 +212,43 @@ export default function EditListPrivacy({ navigation }) {
             handleChangeListPrivacy("wish");
           }}
           isLocked={currentActiveUser?.lists?.wish?.isPrivate}
+          isLoading={loading}
         />
 
         {/* CustomeList */}
         {CustomeList.length > 0 ? (
-          CustomeList.map((val, ind) => (
-            <View key={ind} style={styles.bottomView}>
-              <Text
-                style={{
-                  fontWeight: "bold",
-                  fontSize: 17,
-                  color: "#585a61",
-                  marginTop: 30,
-                  marginLeft: 30,
-                  marginBottom: 30,
-                }}
-              >
-                {Datacat(val.ListName, 20)}
-              </Text>
-              <MaterialIcons
-                name={val.privacy ? "lock" : "lock-open"}
-                size={30}
-                style={{
-                  color: "black",
-                  position: "absolute",
-                  right: 60,
-                  marginTop: 20,
-                }}
-                onPress={() => { }}
-              />
-            </View>
-          ))
+          CustomeList.map((val, ind) => {
+            console.log(val);
+            return (
+              <View key={ind} style={styles.bottomView}>
+                <Text
+                  style={{
+                    fontWeight: "bold",
+                    fontSize: 17,
+                    color: "#585a61",
+                    marginTop: 30,
+                    marginLeft: 30,
+                    marginBottom: 30,
+                  }}
+                >
+                  {Datacat(val.ListName, 20)}
+                </Text>
+                {
+                  <MaterialIcons
+                    name={val.privacy ? "lock" : "lock-open"}
+                    size={30}
+                    style={{
+                      color: "black",
+                      position: "absolute",
+                      right: 60,
+                      marginTop: 20,
+                    }}
+                    onPress={() => handleChangeCustomListPrivacy(val)}
+                  />
+                }
+              </View>
+            );
+          })
         ) : (
           <SafeAreaView></SafeAreaView>
         )}
