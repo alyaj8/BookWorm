@@ -1,27 +1,16 @@
+import { getAuth, signOut } from "firebase/auth";
+import { collection, getDocs, query, where } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import {
-  StyleSheet,
-  View,
-  Text,
+  Alert,
   Image,
-  TextInput,
   ScrollView,
+  Text,
   TouchableOpacity,
-  SafeAreaView,
-  Button,
-  FlatList,
-  Alert
+  View,
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
-import {
-  getAuth,
-  createUserWithEmailAndPassword,
-  signOut,
-} from "firebase/auth";
-import { collection, getDocs, query, where } from "firebase/firestore";
-import { doc, getFirestore, setDoc } from "firebase/firestore";
 import { db } from "../../config/firebase";
-import { withUser } from "../../config/UserContext";
 
 export default function Account({ navigation }) {
   const [infoList, setinfoList] = useState([]);
@@ -48,7 +37,6 @@ export default function Account({ navigation }) {
             await signOut(auth);
             navigation.navigate("WelcomePage");
           },
-
         },
       ],
       {
@@ -59,6 +47,7 @@ export default function Account({ navigation }) {
           ),
       }
     );
+
   useEffect(() => {
     getData();
   }, []);
@@ -70,11 +59,18 @@ export default function Account({ navigation }) {
         where("uid", "==", user.uid)
       );
       const snapshot = await getDocs(colRef);
+
       var myData = [];
       //store the data in an array myData
       snapshot.forEach((doc) => {
         let userinfo2 = doc.data();
+        console.log("🚀 ~ userinfo2", userinfo2);
+
+        setFname(userinfo2.firstname);
+        setLname(userinfo2.lastname);
+
         userinfo2.id = doc.id;
+
         myData.push(userinfo2);
       });
       setinfoList(myData);
@@ -82,22 +78,9 @@ export default function Account({ navigation }) {
       console.log(error);
     }
   };
+
   return (
     <View style={{ backgroundColor: "#EDF5F0" }}>
-      <FlatList
-        columnWrapperStyle={{ justifyContent: "space-between" }}
-        numColumns={2}
-        data={infoList}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <View>
-            <Text>
-              {setFname(item.firstname)}
-              {setLname(item.lastname)}
-            </Text>
-          </View>
-        )}
-      />
       <ScrollView>
         <View style={{ padding: 10, width: "100%", height: 150 }}>
           <TouchableOpacity>
@@ -128,6 +111,7 @@ export default function Account({ navigation }) {
             style={{ fontSize: 15, fontWeight: "bold", color: "grey" }}
           ></Text>
         </View>
+
         <TouchableOpacity onPress={() => navigation.navigate("Acc")}>
           <View
             style={{

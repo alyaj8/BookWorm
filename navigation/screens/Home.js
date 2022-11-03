@@ -178,7 +178,7 @@ export default function Home({ navigation }) {
         flex: 1,
       }}
     >
-     
+
       <View
         colors={["rgba(0,164,109,0.4)"]}
         style={{
@@ -539,7 +539,7 @@ export default function Home({ navigation }) {
               <Text
                 style={{
                   marginTop: -10,
-                  marginLeft: 130,
+                  marginLeft: 40,
                   fontSize: 15,
                   fontWeight: "bold",
                   color: "grey",
