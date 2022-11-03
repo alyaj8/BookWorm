@@ -551,11 +551,11 @@ export default function FriendProfile({ navigation, route }) {
               key={ind}
               onPress={() => navigation.navigate("ViewCustomeLists", val)}
               style={{
-                height: 250,
+                height: 100,
                 elevation: 2,
-                backgroundColor: "#FFF",
+                backgroundColor: "rgba(0,164,109,0.09)",
                 marginLeft: 20,
-                marginTop: 20,
+                marginTop: 50,
                 borderRadius: 15,
                 marginBottom: 10,
                 width: 160,
@@ -601,9 +601,10 @@ export default function FriendProfile({ navigation, route }) {
                 }}
               >
                 <Text
-                  style={{
+                   style={{
                     fontWeight: "bold",
-                    fontSize: 25,
+                    fontSize: 22,
+                    color: "#585a61",
                     textAlign: "center",
                   }}
                 >
@@ -728,7 +729,7 @@ export default function FriendProfile({ navigation, route }) {
               color: "#585a61",
             }}
           >
-            My Custom Lists
+          Custom Lists
           </Text>
         </View>
         <View style={{ width: "50%", alignItems: "flex-end" }}>
@@ -737,24 +738,7 @@ export default function FriendProfile({ navigation, route }) {
               navigation.navigate("ViewAllCustomeLists", CustomeList)
             }
           >
-            <View
-              style={{
-                backgroundColor: "#00a46c",
-                paddingHorizontal: 20,
-                paddingVertical: 5,
-                borderRadius: 15,
-              }}
-            >
-              <Text
-                style={{
-                  fontWeight: "bold",
-                  fontSize: 13,
-                  color: "#FFF",
-                }}
-              >
-                View all
-              </Text>
-            </View>
+            
           </TouchableOpacity>
         </View>
       </View>
