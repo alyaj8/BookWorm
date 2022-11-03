@@ -80,6 +80,7 @@ export default function EditListPrivacy({ navigation }) {
 
   const ListItem = ({ title, onPress, isLocked }) => {
     return (
+      <ScrollView>
       <View style={styles.bottomView}>
         <Text
           style={{
@@ -107,6 +108,7 @@ export default function EditListPrivacy({ navigation }) {
           />
         }
       </View>
+      </ScrollView>
     );
   };
 

@@ -252,7 +252,7 @@ export default function Lists({ navigation }) {
                 color: "white",
                 position:"absolute",
                 right:10,
-                top:-7,
+                top:-10,
               }}
               onPress={() => {
                 navigation.navigate("EditListPrivacy");
@@ -888,7 +888,7 @@ export default function Lists({ navigation }) {
               //  flex: 1,
               //textAlign: "center",
               marginTop: -10, ////////////////////////////////////////
-              marginLeft: 130, ////////////////////////////////////////
+              marginLeft: 75, ////////////////////////////////////////
               fontSize: 15,
               fontWeight: "bold",
               color: "grey",
