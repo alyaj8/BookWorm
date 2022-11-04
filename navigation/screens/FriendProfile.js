@@ -35,12 +35,12 @@ export default function FriendProfile({ navigation, route }) {
   const Auth = getAuth();
   const currentUser = auth?.currentUser;
 
-  const Datacat = (str, num) => {
-    if (str.length > num) {
-      return str.substring(0, num) + "...";
-    }
-    return str;
-  };
+  // const Datacat = (str, num) => {
+  //   if (str.len gth > num) {
+  //     return str.substring(0, num) + "...";
+  //   }
+  //   return str;
+  // };
 
   let GetBookList = async () => {
     // console.log("Gte Book List");
@@ -379,32 +379,7 @@ export default function FriendProfile({ navigation, route }) {
               {listTitle}
             </Text>
           </View>
-          <View style={{ width: "50%", alignItems: "flex-end" }}>
-            {isListEmpty || isListPrivate ? null : (
-              <TouchableOpacity
-                onPress={() => navigation.navigate(listNav, booksList)}
-              >
-                <View
-                  style={{
-                    backgroundColor: "#00a46c",
-                    paddingHorizontal: 20,
-                    paddingVertical: 5,
-                    borderRadius: 15,
-                  }}
-                >
-                  <Text
-                    style={{
-                      fontWeight: "bold",
-                      fontSize: 13,
-                      color: "#FFF",
-                    }}
-                  >
-                    View all
-                  </Text>
-                </View>
-              </TouchableOpacity>
-            )}
-          </View>
+
         </View>
         {booksList?.length > 0 && !isListPrivate ? (
           <ScrollView
@@ -483,7 +458,7 @@ export default function FriendProfile({ navigation, route }) {
                       fontWeight: "bold",
                     }}
                   >
-                    {Datacat(val.title, 25)}
+                    {val.title}
                     {"\n"}
                   </Text>
                 </View>
@@ -601,14 +576,14 @@ export default function FriendProfile({ navigation, route }) {
                 }}
               >
                 <Text
-                   style={{
+                  style={{
                     fontWeight: "bold",
                     fontSize: 22,
-                    color: "#585a61",
                     textAlign: "center",
+                    color: "#585a61"
                   }}
                 >
-                  {Datacat(val.ListName, 25)}
+                  {val.ListName}
                   {"\n"}
                 </Text>
               </View>
@@ -729,17 +704,11 @@ export default function FriendProfile({ navigation, route }) {
               color: "#585a61",
             }}
           >
-          Custom Lists
+            Custom Lists
           </Text>
         </View>
         <View style={{ width: "50%", alignItems: "flex-end" }}>
-          <TouchableOpacity
-            onPress={() =>
-              navigation.navigate("ViewAllCustomeLists", CustomeList)
-            }
-          >
-            
-          </TouchableOpacity>
+
         </View>
       </View>
       {renderCustomList(CustomeList)}

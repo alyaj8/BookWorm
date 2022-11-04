@@ -85,7 +85,7 @@ export default function EditListPrivacy({ navigation }) {
           style={{
             fontWeight: "bold",
             fontSize: 17,
-            color: "#585a61",
+            color: "black",
             marginTop: 30,
             marginLeft: 30,
             marginBottom: 30,

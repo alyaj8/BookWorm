@@ -10,9 +10,12 @@ import Editbook from "./navigation/screens/Editbook";
 import ForgetPassword from "./navigation/screens/ForgetPassword";
 import Orders from "./navigation/screens/Orders";
 import RatedViewAll from "./navigation/screens/RatedViewAll";
+import ViewallCustomLists from "./navigation/screens/ViewallCustomLists";
+
 import RecViewall from "./navigation/screens/RecViewall";
 import UserSignUp from "./navigation/screens/UserSignUp";
 import WelcomePage from "./navigation/WelcomePage";
+
 
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -29,15 +32,15 @@ import { UserProvider } from "./config/UserContext";
 import BookComment from "./navigation/screens/BookComment";
 import Commentadmin from "./navigation/screens/Commentadmin";
 import CreateCustomList from "./navigation/screens/CreateCustomList";
+import EditListPrivacy from "./navigation/screens/EditListPrivacy";
 import FavoriteList from "./navigation/screens/FavoriteList";
 import FriendProfile from "./navigation/screens/FriendProfile";
 import MyFriend from "./navigation/screens/MyFriend";
 import ReadBookList from "./navigation/screens/ReadBookList";
 import ReviewBook from "./navigation/screens/Reviewbook";
 import StripeApp from "./navigation/screens/StripeApp";
-import WishList from "./navigation/screens/WishList";
 import ViewCustomeLists from "./navigation/screens/ViewCustomLists";
-import EditListPrivacy from "./navigation/screens/EditListPrivacy";
+import WishList from "./navigation/screens/WishList";
 const firebaseConfig = {
   apiKey: "AIzaSyCb8vT5-UmFZV-954feGAE2L0-T4Tgpqhs",
   authDomain: "group16-de98b.firebaseapp.com",
@@ -55,6 +58,7 @@ Notifications.setNotificationHandler({
     shouldSetBadge: false,
   }),
 });
+
 export const Stack = createNativeStackNavigator();
 initializeApp(firebaseConfig);
 
@@ -97,6 +101,10 @@ function App() {
             <Stack.Screen name="Commentadmin" component={Commentadmin} />
             <Stack.Screen name="Discovery" component={Discovery} />
             <Stack.Screen name="RecViewall" component={RecViewall} />
+            <Stack.Screen name="ViewallCustomLists" component={ViewallCustomLists} />
+
+
+
             <Stack.Screen
               name="CreateCustomList"
               component={CreateCustomList}
@@ -104,8 +112,10 @@ function App() {
             <Stack.Screen name="MyFriend" component={MyFriend} />
             <Stack.Screen name="friendProfile" component={FriendProfile} />
             <Stack.Screen name="EditListPrivacy" component={EditListPrivacy} />
-            <Stack.Screen name="ViewCustomeLists" component={ViewCustomeLists} />
-
+            <Stack.Screen
+              name="ViewCustomeLists"
+              component={ViewCustomeLists}
+            />
           </Stack.Navigator>
         </NavigationContainer>
       </StripeProvider>

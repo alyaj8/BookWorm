@@ -1,21 +1,17 @@
+import { useEffect, useState } from "react";
 import {
-  View,
-  Text,
-  TextInput,
-  StyleSheet,
-  Button,
-  FlatList,
-  ScrollView,
-  SafeAreaView,
-  TouchableOpacity,
-  Image,
-  Dimensions,
-  ImageBackground,
   Alert,
+  Image,
+  ImageBackground,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from "react-native";
-import { useState, useEffect } from "react";
 
-import Icon from "react-native-vector-icons/Ionicons";
+import { getAuth } from "firebase/auth";
 import {
   collection,
   deleteDoc,
@@ -26,9 +22,9 @@ import {
   query,
   where,
 } from "firebase/firestore";
-import { db } from "../../config/firebase";
-import { getAuth } from "firebase/auth";
+import Icon from "react-native-vector-icons/Ionicons";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import { db } from "../../config/firebase";
 
 export default function ViewCustomeLists({ navigation, route }) {
   let [listbook, setListbooks] = useState([]);
@@ -57,7 +53,7 @@ export default function ViewCustomeLists({ navigation, route }) {
 
         const q = query(
           collection(db, "BookCustomeLists"),
-          where("user_uid", "==", user.uid),
+          // where("user_uid", "==", user.uid),
           where("listName", "==", data.ListName)
         );
         const querySnapshot = await getDocs(q);
@@ -137,10 +133,10 @@ export default function ViewCustomeLists({ navigation, route }) {
               listbook.map((val, ind) => (
                 <View>
                   <MaterialIcons
-                    name="delete"
+                    name="close"
                     size={30}
                     style={{
-                      color: "red",
+                      color: "black",
                       marginTop: 30,
                       marginLeft: 10,
                       position: "absolute",

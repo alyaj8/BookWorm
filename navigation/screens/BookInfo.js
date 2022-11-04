@@ -245,7 +245,8 @@ export default function BookInfo({ route, navigation }) {
         setAlreadyList(ALList);
         setUpdate(true);
       }
-    });};
+    });
+  };
   let checkReview = () => {
     let countStar = 0;
     book?.reviews?.length > 0 &&
@@ -466,7 +467,7 @@ export default function BookInfo({ route, navigation }) {
               </Text>
             ) : (
               <Text style={{ color: "black" }}>
-               
+
               </Text>
             )}
 
@@ -595,14 +596,16 @@ export default function BookInfo({ route, navigation }) {
                     valueField="value"
                     placeholder={!isFocus ? "Add to custom lists" : "..."}
                     value={ListName}
-                    onFocus={() => {setIsFocus(true)
-                      setError("");}}
+                    onFocus={() => {
+                      setIsFocus(true)
+                      setError("");
+                    }}
                     onBlur={() => setIsFocus(false)}
                     onChange={(item) => {
                       setListName(item.value);
                       setIsFocus(false);
                     }}
-                    // disabled={disabled}
+                  // disabled={disabled}
                   />
                   {ListName !== "" && (
                     <TouchableOpacity onPress={() => AddCustomeList()}>
@@ -613,26 +616,26 @@ export default function BookInfo({ route, navigation }) {
                       />
                     </TouchableOpacity>
                   )}
-              
+
                 </View>
               ) : (
                 <TouchableOpacity
-                  
+
                 >
-                  
+
                 </TouchableOpacity>
               ))}
-                    {error && (
-               <Text
+            {error && (
+              <Text
                 style={{
-                padding: 10,
-                color: error === "Added Success" ? "green" : "red",
-                fontWeight: "bold",
-              }}
-            >
-              {error}
-            </Text>
-          )}
+                  padding: 10,
+                  color: error === "Added Success" ? "green" : "red",
+                  fontWeight: "bold",
+                }}
+              >
+                {error}
+              </Text>
+            )}
             <View
               style={{
                 margin: 45,
@@ -736,9 +739,9 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     marginRight: 18,
   },
-  placeholderStyle:{
-  textAlign:"center",
-  fontWeight: "bold",
-  paddingLeft:45,
+  placeholderStyle: {
+    textAlign: "center",
+    fontWeight: "bold",
+    paddingLeft: 45,
   },
 });

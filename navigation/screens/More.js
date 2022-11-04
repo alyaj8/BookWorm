@@ -110,10 +110,10 @@ function Discovry({ navigation, isAdmin }) {
       );
 
       //store data in AsyncStorage
-      myData.sort((a, b) => a.username.localeCompare(b.username));
+      //myData.filter((user,index,self) =>index===self.findIndex((t)=>t.username === user.username));
       setAllUsers(myData);
       const data2 = myData
-        .filter((i) => i.isAdmin == false && i.uid != following.map((i) => i))
+        .filter((i) => i.isAdmin == false && i.uid != following.map((i) => i) && i.uid != i.currentUser.uid)
         .map((item) => item);
 
       setUsers(data2);
@@ -126,13 +126,13 @@ function Discovry({ navigation, isAdmin }) {
     console.log(text);
     const filter = [];
     allUsers.forEach((e) => {
-      console.log("🚀 ~ e", e);
+      // console.log("🚀 ~ e", e);
       if (e.username.toLowerCase().includes(text.toLowerCase())) {
-        e.isAdmin == false ? filter.push(e) : null;
+        filter.push(e)
       }
     });
     setUsers(filter);
-    // console.log(users);
+    console.log(users);
   };
 
   /* const restUrl = (link1) => {

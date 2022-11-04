@@ -1,26 +1,16 @@
 import * as React from "react";
 import {
-  View,
-  Text,
-  StyleSheet,
-  SafeAreaView,
-  TextInput,
-  Platform,
-  StatusBar,
-  ScrollView,
   Image,
-  Dimensions,
-  Button,
-  Alert,
-  ImageBackground,
-  TouchableOpacity,
-  Pressable,
   Modal,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from "react-native";
-import { Rating, AirbnbRating } from "react-native-ratings";
+import { Rating } from "react-native-ratings";
 import Icon from "react-native-vector-icons/Ionicons";
 //import { LinearGradient } from "expo-linear-gradient";
-import { useEffect, useState } from "react";
 import { LinearGradient } from "expo-linear-gradient";
 import { getAuth } from "firebase/auth";
 import {
@@ -30,6 +20,7 @@ import {
   query,
   where,
 } from "firebase/firestore";
+import { useEffect, useState } from "react";
 
 export default function Home({ navigation }) {
   let [rec, setrec] = useState([]);
@@ -167,8 +158,8 @@ export default function Home({ navigation }) {
     });
   }, []);
 
-  console.log(faveIds, "========>ids");
-  console.log(highetRatedList);
+  // console.log(faveIds, "========>ids");
+  // console.log(highetRatedList);
 
   return (
     <View
@@ -441,7 +432,9 @@ export default function Home({ navigation }) {
                   size={30}
                   style={{ color: "red", textAlign: "right" }}
                 />
-                <Text style={{ fontWeight: "bold" }}>Based on categories that you liked:</Text>
+                <Text style={{ fontWeight: "bold" }}>
+                  Based on categories that you liked:
+                </Text>
                 <Text>{categories.join("-")}</Text>
               </View>
             </View>

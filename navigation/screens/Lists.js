@@ -1,28 +1,26 @@
-import React, { useEffect, useState } from "react";
-import {
-  View,
-  Text,
-  Image,
-  TextInput,
-  ScrollView,
-  TouchableOpacity,
-  Alert,
-} from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-import ReadBookList from "./ReadBookList";
+import { getAuth } from "firebase/auth";
 import {
   collection,
-  query,
-  where,
-  getDocs,
-  getFirestore,
+  deleteDoc,
   doc,
   getDoc,
-  deleteDoc,
+  getDocs,
+  getFirestore,
+  query,
+  where,
 } from "firebase/firestore";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-import { db } from "../../config/firebase";
+import React, { useEffect, useState } from "react";
+import {
+  Alert,
+  Image,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import { db } from "../../config/firebase";
 
 export default function Lists({ navigation }) {
   let [BookList, setBookList] = useState([]);
@@ -225,7 +223,7 @@ export default function Lists({ navigation }) {
           marginBottom: 15,
         }}
       >
-             <View
+        <View
           style={{
             flexDirection: "row",
             alignItems: "center",
@@ -244,25 +242,22 @@ export default function Lists({ navigation }) {
               You have read {numberOfBook} books
             </Text>
           </View>
-          <View style={{ width: "30%" }} >
-          <MaterialIcons
+          <View style={{ width: "30%" }}>
+            <MaterialIcons
               name="settings"
               size={30}
               style={{
                 color: "white",
-                position:"absolute",
-                right:10,
-                top:-7,
+                position: "absolute",
+                right: 10,
               }}
               onPress={() => {
                 navigation.navigate("EditListPrivacy");
-                
               }}
             />
           </View>
         </View>
       </View>
-     
 
       <View
         style={{
@@ -659,88 +654,88 @@ export default function Lists({ navigation }) {
         {BookWishList.length > 0 ? (
           BookWishList.map((val, ind) => (
             <View>
-            <MaterialIcons
-              name="close"
-              size={30}
-              style={{
-                color: "black",
-                marginTop: 30,
-                marginLeft: 10,
-                position: "absolute",
-                left: 10,
-                zIndex: 1,
-              }}
-              onPress={() =>
-                DeleteFunc(
-                  "Deleting From Wish Book List ",
-                  DeleteWishBookList,
-                  val
-                )
-              }
-            />
-            <TouchableOpacity
-              key={ind}
-              onPress={() => OpenInfo(val)}
-              style={{
-                height: 250,
-                elevation: 2,
-                backgroundColor: "#FFF",
-                marginLeft: 20,
-                marginTop: 20,
-                borderRadius: 15,
-                marginBottom: 10,
-                width: 160,
-              }}
-              disabled={val.deleted}
-            >
-              {val.deleted && (
+              <MaterialIcons
+                name="close"
+                size={30}
+                style={{
+                  color: "black",
+                  marginTop: 30,
+                  marginLeft: 10,
+                  position: "absolute",
+                  left: 10,
+                  zIndex: 1,
+                }}
+                onPress={() =>
+                  DeleteFunc(
+                    "Deleting From Wish Book List ",
+                    DeleteWishBookList,
+                    val
+                  )
+                }
+              />
+              <TouchableOpacity
+                key={ind}
+                onPress={() => OpenInfo(val)}
+                style={{
+                  height: 250,
+                  elevation: 2,
+                  backgroundColor: "#FFF",
+                  marginLeft: 20,
+                  marginTop: 20,
+                  borderRadius: 15,
+                  marginBottom: 10,
+                  width: 160,
+                }}
+                disabled={val.deleted}
+              >
+                {val.deleted && (
+                  <View
+                    style={{
+                      position: "absolute",
+                      zIndex: 1,
+                      alignSelf: "center",
+                      width: 160,
+                      opacity: 0.6,
+                      justifyContent: "center",
+                      alignItems: "center",
+                      backgroundColor: "#525454",
+                      height: 250,
+                    }}
+                  >
+                    <Text
+                      style={{
+                        color: "white",
+                        textAlign: "center",
+                        fontWeight: "bold",
+                        // backgroundColor: "black",
+                      }}
+                    >
+                      DELETED
+                    </Text>
+                  </View>
+                )}
+
+                <Image
+                  source={{ uri: val.poster }}
+                  style={{ width: "100%", height: 200 }}
+                />
                 <View
                   style={{
-                    position: "absolute",
-                    zIndex: 1,
-                    alignSelf: "center",
-                    width: 160,
-                    opacity: 0.6,
-                    justifyContent: "center",
-                    alignItems: "center",
-                    backgroundColor: "#525454",
-                    height: 250,
+                    flexDirection: "row",
+                    paddingTop: 10,
+                    paddingHorizontal: 10,
                   }}
                 >
                   <Text
                     style={{
-                      color: "white",
-                      textAlign: "center",
                       fontWeight: "bold",
-                      // backgroundColor: "black",
                     }}
                   >
-                    DELETED
+                    {Datacat(val.title, 25)}
+                    {"\n"}
                   </Text>
                 </View>
-              )}
-
-              <Image
-                source={{ uri: val.poster }}
-                style={{ width: "100%", height: 200 }}
-              />
-              <View
-                style={{
-                  flexDirection: "row",
-                  paddingTop: 10,
-                  paddingHorizontal: 10,
-                }}
-              >
-                <Text
-                  style={{
-                    fontWeight: "bold",
-                  }}
-                >
-                  {Datacat(val.title, 25)}
-                  {"\n"}
-                </Text>
-              </View>
-            </TouchableOpacity>
+              </TouchableOpacity>
             </View>
           ))
         ) : (
